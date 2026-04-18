@@ -1,4 +1,7 @@
 import { PrismaClient } from '@prisma/client'
+import { PrismaBetterSqlite3 } from '@prisma/adapter-better-sqlite3'
+
+const adapter = new PrismaBetterSqlite3({ url: 'file:./prisma/dev.db' })
 
 // 第一大件：数据库的长链接保持点 (Singleton)
 // 这个代码的唯一作用是：保证在写代码（热更新重新编译）时，
@@ -12,6 +15,7 @@ const globalForPrisma = globalThis as unknown as {
 export const prisma =
   globalForPrisma.prisma ??
   new PrismaClient({
+    adapter,
     // 如果想要看底层具体查询了什么原本的 SQL 语句，可以把 "query" 写进这行里
     log: process.env.NODE_ENV === 'development' ? ['error', 'warn'] : ['error'],
   })
