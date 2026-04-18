@@ -2,8 +2,15 @@ import React from 'react'
 import Cart from './Cart'
 import SearchBar from './SearchBar'
 import { Store } from 'lucide-react'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '@/app/api/auth/[...nextauth]/route'
+import UserMenu from './UserMenu'
+import Link from 'next/link'
 
-const Navbar = () => {
+const Navbar = async () => {
+  // 服务端极速捞取用户的登录态（不耗费任何客户端性能）
+  const session = await getServerSession(authOptions)
+
   return (
     // Sticky positioning + Glassmorphism (blur) + Subtle border
     <header className="sticky top-0 z-40 w-full border-b border-zinc-200/50 bg-white/80 backdrop-blur-md">
@@ -32,8 +39,31 @@ const Navbar = () => {
         </div>
 
         {/* Actions Context */}
-        <div className="flex items-center">
+        <div className="flex items-center gap-4">
           <Cart />
+          
+          {/* 破茧成蝶：如果有 session 显示用户菜单，没有则显示登录按钮 */}
+          {session?.user ? (
+            <UserMenu 
+              name={session.user.name || 'User'} 
+              email={session.user.email || ''} 
+            />
+          ) : (
+            <div className="flex items-center gap-2">
+              <Link 
+                href="/login"
+                className="hidden md:block text-sm font-medium text-[#1C2B33] hover:underline"
+              >
+                Log In
+              </Link>
+              <Link
+                href="/signup"
+                className="hidden md:flex h-9 items-center justify-center rounded-full bg-[#0064E0] px-4 text-sm font-bold text-white transition-all hover:bg-[#0143B5]"
+              >
+                Sign Up
+              </Link>
+            </div>
+          )}
         </div>
       </div>
     </header>
