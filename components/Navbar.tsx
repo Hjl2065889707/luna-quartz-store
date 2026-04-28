@@ -18,18 +18,18 @@ const Navbar = async () => {
         {/* Left Section: Logo + Nav */}
         <div className="flex items-center gap-8">
           {/* Logo Section */}
-          <div className="flex cursor-pointer items-center gap-2 text-zinc-900 transition-opacity hover:opacity-80">
+          <Link href="/" className="flex cursor-pointer items-center gap-2 text-zinc-900 transition-opacity hover:opacity-80">
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-zinc-900 text-white shadow-sm">
               <Store size={18} strokeWidth={2.5} />
             </div>
             <span className="text-lg font-bold tracking-tight">Antigravity Store</span>
-          </div>
+          </Link>
 
-          {/* Navigation Links (Mock) */}
+          {/* Navigation Links */}
           <nav className="hidden items-center gap-6 text-sm font-medium text-zinc-500 lg:flex">
-            <a href="#" className="font-bold text-zinc-900 transition-colors">所有商品(All)</a>
-            <a href="#" className="transition-colors hover:text-zinc-900">服饰(Clothing)</a>
-            <a href="#" className="transition-colors hover:text-zinc-900">生活(Lifestyle)</a>
+            <Link href="/" className="font-bold text-zinc-900 transition-colors">All</Link>
+            <Link href="/" className="transition-colors hover:text-zinc-900">Electronics</Link>
+            <Link href="/" className="transition-colors hover:text-zinc-900">Lifestyle</Link>
           </nav>
         </div>
 

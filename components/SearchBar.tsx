@@ -2,11 +2,11 @@
 
 import { useCart } from '@/context/CartContext'
 import { useDebounce } from '@/hooks/useDebounce'
-import { getSearchProducts } from '@/service/productService'
+import { searchProducts } from '@/api-client/productApi'
 import { Product } from '@/types'
 import { Plus, Search, X } from 'lucide-react'
 import Image from 'next/image'
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import useSWR from 'swr'
 
 const SearchBar = () => {
@@ -20,7 +20,7 @@ const SearchBar = () => {
   const debouncedSearchText = useDebounce(searchText, 500)
   const { data: searchedProduct = [], isLoading } = useSWR(
     debouncedSearchText ? debouncedSearchText : null,
-    () => getSearchProducts(debouncedSearchText),
+    () => searchProducts(debouncedSearchText),
   )
 
   // UX Best Practice: Global Click-Outside Listener
@@ -47,11 +47,10 @@ const SearchBar = () => {
   return (
     // 1. The relative container that holds everything and acts as the boundary
     <div className="relative w-full max-w-md" ref={searchContainerRef}>
-      
       {/* 2. 🔮 Search Input Pill - Sleek Focus Ring */}
       <div className="flex h-10 w-full items-center justify-between rounded-full bg-zinc-100 px-4 transition-all focus-within:bg-white focus-within:shadow-sm focus-within:ring-2 focus-within:ring-zinc-900/10 hover:bg-zinc-200/50">
         <Search size={16} className="text-zinc-400" />
-        
+
         <input
           className="flex-1 bg-transparent px-3 text-sm font-medium text-zinc-900 outline-none placeholder:font-normal placeholder:text-zinc-400"
           type="text"
@@ -60,7 +59,7 @@ const SearchBar = () => {
           onChange={(e) => {
             setSearchText(e.target.value)
             // Show dropdown immediately when user types
-            setIsDropdownOpen(true) 
+            setIsDropdownOpen(true)
           }}
           onFocus={() => {
             // Restore dropdown if user clicks back into input and there's text
@@ -83,19 +82,20 @@ const SearchBar = () => {
 
       {/* 3. 🔮 Premium Dropdown Popup */}
       {isDropdownOpen && searchText.length > 0 && (
-        <div className="absolute left-0 top-full z-50 mt-2 w-full overflow-hidden rounded-2xl border border-zinc-100 bg-white p-2 shadow-[0_8px_30px_rgb(0,0,0,0.12)] duration-200 animate-in fade-in slide-in-from-top-2">
-          
+        <div className="animate-in fade-in slide-in-from-top-2 absolute top-full left-0 z-50 mt-2 w-full overflow-hidden rounded-2xl border border-zinc-100 bg-white p-2 shadow-[0_8px_30px_rgb(0,0,0,0.12)] duration-200">
           {/* Loading State */}
           {isLoading && (
             <div className="flex h-20 items-center justify-center">
-              <span className="text-sm font-medium text-zinc-400">正在搜索...</span>
+              <span className="text-sm font-medium text-zinc-400">
+                正在搜索...
+              </span>
             </div>
           )}
 
           {/* Results State */}
           {!isLoading && searchedProduct.length > 0 && (
             <div className="custom-scrollbar flex max-h-[60vh] flex-col gap-1 overflow-y-auto pt-1">
-              <div className="px-3 pb-2 pt-1 text-xs font-bold tracking-wider text-zinc-400">
+              <div className="px-3 pt-1 pb-2 text-xs font-bold tracking-wider text-zinc-400">
                 商品结果 ({searchedProduct.length})
               </div>
 
@@ -116,7 +116,7 @@ const SearchBar = () => {
                     </div>
 
                     <div className="flex flex-col justify-center">
-                      <span className="text-sm font-bold text-zinc-900 line-clamp-1">
+                      <span className="line-clamp-1 text-sm font-bold text-zinc-900">
                         {product.name}
                       </span>
                       <span className="mt-0.5 text-xs font-black text-zinc-500">
@@ -131,7 +131,7 @@ const SearchBar = () => {
                       addToCart(product)
                       // No explicit close here, matching the industrial standard!
                     }}
-                    className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-zinc-600 transition-all active:scale-90 group-hover:bg-zinc-900 group-hover:text-white group-hover:shadow-md"
+                    className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-zinc-600 transition-all group-hover:bg-zinc-900 group-hover:text-white group-hover:shadow-md active:scale-90"
                     aria-label="加入购物车"
                     title="加入购物车"
                   >

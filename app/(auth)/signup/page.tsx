@@ -1,12 +1,11 @@
 'use client'
 
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Country, State } from 'country-state-city'
 import { signIn } from 'next-auth/react'
 import { SignupFormValues, signupSchema } from '@/lib/schemas/auth'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { z } from 'zod'
 
 const MAX_STEP = 3
 
@@ -76,7 +75,6 @@ const SignupPage = () => {
 
   const onSubmit = async (data: SignupFormValues) => {
     try {
-      console.log('数据:', data)
       const res = await fetch('/api/auth/register', {
         method: 'POST',
         headers: {
