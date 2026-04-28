@@ -8,10 +8,10 @@ export default function ShopLayout({
 }>) {
   return (
     <CartProvider>
-      {/* 属于商城专属的头部大吊灯 */}
-      <Navbar />
-      {/* 商城里所有奇奇怪怪的页面，比如大首页主卧、商品详情次卧，全部插进这里 */}
-      <main className="min-h-screen">{children}</main>
+      <div className="flex min-h-screen flex-col">
+        <Navbar />
+        <main className="flex-1">{children}</main>
+      </div>
     </CartProvider>
   )
 }

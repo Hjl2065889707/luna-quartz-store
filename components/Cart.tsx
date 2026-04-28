@@ -3,11 +3,13 @@
 import { useCart } from '@/context/CartContext'
 import { Minus, Plus, ShoppingBag, Trash2, ArrowRight } from 'lucide-react'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import { useState, useRef, useEffect } from 'react'
 
 const Cart = () => {
   const { cartState, updateCartItemQuantity, removeFromCart } = useCart()
   const [isOpenDropdown, setIsOpenDropdown] = useState(false)
+  const router = useRouter()
 
   // Industrial Practice: the badge should reflect total pieces, not total unique items.
   const totalItemCount = cartState.items.reduce(
@@ -34,6 +36,11 @@ const Cart = () => {
       document.removeEventListener('mousedown', handleClickOutside)
     }
   }, [isOpenDropdown])
+
+  const handleCheckoutButtonClick = () => {
+    setIsOpenDropdown(false)
+    router.push('/checkout')
+  }
 
   return (
     <div
@@ -161,7 +168,7 @@ const Cart = () => {
                   </span>
                 </div>
                 <button
-                  onClick={() => setIsOpenDropdown(false)}
+                  onClick={() => handleCheckoutButtonClick()}
                   className="flex w-full items-center justify-center gap-2 rounded-xl bg-zinc-900 px-4 py-3.5 text-sm font-bold text-white shadow-md transition-all hover:bg-zinc-800 active:scale-[0.98]"
                 >
                   去结算
