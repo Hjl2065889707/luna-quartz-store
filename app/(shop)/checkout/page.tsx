@@ -1,5 +1,6 @@
 'use client'
 
+import { createOrder } from '@/api-client/orderApi'
 import { useCart } from '@/context/CartContext'
 import { CheckoutFormValues, checkoutSchema } from '@/lib/schemas/checkout'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -9,17 +10,8 @@ import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 
 export default function CheckoutPage() {
-  const { cartState } = useCart()
+  const { cartState, clearCart } = useCart()
   const router = useRouter()
-
-  // 工业级防御：如果用户清空了购物车还强行手敲 URL 进这个页面，就踢回首页
-  useEffect(() => {
-    if (cartState.items.length === 0) {
-      router.push('/')
-    }
-  }, [cartState.items.length, router])
-
-  if (cartState.items.length === 0) return null
 
   const {
     register,
@@ -30,9 +22,32 @@ export default function CheckoutPage() {
   })
 
   const onSubmit = async (data: CheckoutFormValues) => {
-    console.log('data:', data)
-    await new Promise((resolve) => setTimeout(resolve, 1000))
+    const items = cartState.items.map((item) => ({
+      productId: item.id,
+      quantity: item.quantity,
+      price: item.price,
+    }))
+
+    try {
+      const res = await createOrder({
+        ...data,
+        items: items,
+      })
+      clearCart()
+      router.push('/')
+    } catch (error) {
+      alert('下单失败，请重试')
+    }
   }
+
+  // 如果用户清空了购物车还强行手敲 URL 进这个页面，就跳转回首页
+  useEffect(() => {
+    if (cartState.items.length === 0) {
+      router.push('/')
+    }
+  }, [cartState.items.length, router])
+
+  if (cartState.items.length === 0) return null
 
   return (
     <div className="mx-auto max-w-7xl px-4 pt-10 pb-24 sm:px-6 lg:px-8">
@@ -44,7 +59,11 @@ export default function CheckoutPage() {
           <div className="rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm sm:p-8">
             <h2 className="mb-6 text-xl font-bold text-zinc-900">配送地址</h2>
 
-            <form className="space-y-6">
+            <form
+              id="checkout-form"
+              onSubmit={handleSubmit(onSubmit)}
+              className="space-y-6"
+            >
               <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
                 <div>
                   <label className="mb-2 block text-sm font-medium text-zinc-700">
@@ -77,6 +96,7 @@ export default function CheckoutPage() {
                 <input
                   type="text"
                   className="w-full rounded-xl border border-zinc-300 px-4 py-3 transition-all outline-none focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900"
+                  {...register('address')}
                 />
               </div>
 
@@ -87,6 +107,7 @@ export default function CheckoutPage() {
                 <input
                   type="tel"
                   className="w-full rounded-xl border border-zinc-300 px-4 py-3 transition-all outline-none focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900"
+                  {...register('phone')}
                 />
               </div>
             </form>
@@ -146,7 +167,11 @@ export default function CheckoutPage() {
               </div>
             </div>
 
-            <button className="mt-8 w-full rounded-xl bg-zinc-900 py-4 text-base font-bold text-white shadow-lg transition-all hover:bg-zinc-800 active:scale-[0.98]">
+            <button
+              className="mt-8 w-full rounded-xl bg-zinc-900 py-4 text-base font-bold text-white shadow-lg transition-all hover:bg-zinc-800 active:scale-[0.98]"
+              form="checkout-form"
+              type="submit"
+            >
               确认并支付
             </button>
           </div>
