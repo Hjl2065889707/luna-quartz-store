@@ -23,6 +23,9 @@ model User {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  orders    Order[]
+
 }
 
 model Product {
@@ -35,4 +38,39 @@ model Product {
   stock       Int      @default(100)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+
+  orderItems OrderItem[]
+}
+
+model Order {
+  id          String      @id @default(cuid())
+  userId      String      // 关联到购买的用户
+  user        User        @relation(fields: [userId], references: [id])
+  
+  // 配送信息
+  firstName   String
+  lastName    String
+  address     String
+  phone       String
+  
+  // 订单金额与状态
+  totalAmount Float
+  status      String      @default("PENDING") // PENDING, PAID, SHIPPED 等
+  
+  items       OrderItem[] // 一个订单包含多个子项目
+  
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+}
+
+model OrderItem {
+  id        String   @id @default(cuid())
+  orderId   String   // 属于哪个订单
+  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  
+  productId String   // 买了哪个商品
+  product   Product  @relation(fields: [productId], references: [id])
+  
+  quantity  Int      // 买了几个
+  price     Float    // 工业级细节：必须记录【当时】的购买单价，不能依赖 Product 表的价格（万一以后商品涨价了，老订单的记录不能变！）
 }

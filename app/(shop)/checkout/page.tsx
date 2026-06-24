@@ -1,9 +1,12 @@
 'use client'
 
 import { useCart } from '@/context/CartContext'
+import { CheckoutFormValues, checkoutSchema } from '@/lib/schemas/checkout'
+import { zodResolver } from '@hookform/resolvers/zod'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
+import { useForm } from 'react-hook-form'
 
 export default function CheckoutPage() {
   const { cartState } = useCart()
@@ -17,6 +20,19 @@ export default function CheckoutPage() {
   }, [cartState.items.length, router])
 
   if (cartState.items.length === 0) return null
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<CheckoutFormValues>({
+    resolver: zodResolver(checkoutSchema),
+  })
+
+  const onSubmit = async (data: CheckoutFormValues) => {
+    console.log('data:', data)
+    await new Promise((resolve) => setTimeout(resolve, 1000))
+  }
 
   return (
     <div className="mx-auto max-w-7xl px-4 pt-10 pb-24 sm:px-6 lg:px-8">
@@ -32,19 +48,23 @@ export default function CheckoutPage() {
               <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
                 <div>
                   <label className="mb-2 block text-sm font-medium text-zinc-700">
-                    名字
+                    First Name
                   </label>
                   <input
                     type="text"
+                    placeholder="Enter your First Name"
+                    {...register('firstName')}
                     className="w-full rounded-xl border border-zinc-300 px-4 py-3 transition-all outline-none focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900"
                   />
                 </div>
                 <div>
                   <label className="mb-2 block text-sm font-medium text-zinc-700">
-                    姓氏
+                    Last Name
                   </label>
                   <input
                     type="text"
+                    placeholder="Enter your Last Name"
+                    {...register('lastName')}
                     className="w-full rounded-xl border border-zinc-300 px-4 py-3 transition-all outline-none focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900"
                   />
                 </div>
