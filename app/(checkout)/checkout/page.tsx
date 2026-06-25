@@ -2,6 +2,7 @@
 
 import { createOrder } from '@/api-client/orderApi'
 import { useCart } from '@/context/CartContext'
+import { cn } from '@/lib/classnameUtils'
 import { CheckoutFormValues, checkoutSchema } from '@/lib/schemas/checkout'
 import { zodResolver } from '@hookform/resolvers/zod'
 import Image from 'next/image'
@@ -10,7 +11,7 @@ import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 
 export default function CheckoutPage() {
-  const { cartState, clearCart } = useCart()
+  const { cartState } = useCart()
   const router = useRouter()
 
   const {
@@ -33,8 +34,7 @@ export default function CheckoutPage() {
         ...data,
         items: items,
       })
-      clearCart()
-      router.push('/')
+      router.push(`/checkout/success?orderId=${res.orderId}`)
     } catch (error) {
       alert('下单失败，请重试')
     }
@@ -73,8 +73,17 @@ export default function CheckoutPage() {
                     type="text"
                     placeholder="Enter your First Name"
                     {...register('firstName')}
-                    className="w-full rounded-xl border border-zinc-300 px-4 py-3 transition-all outline-none focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900"
+                    className={cn(
+                      'w-full rounded-xl border border-zinc-300 px-4 py-3 transition-all outline-none focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900',
+                      errors.firstName &&
+                        'border-red-500 focus:border-red-500 focus:ring-red-500',
+                    )}
                   />
+                  {errors.firstName && (
+                    <p className="mt-1 text-sm text-red-500">
+                      {errors.firstName.message}
+                    </p>
+                  )}
                 </div>
                 <div>
                   <label className="mb-2 block text-sm font-medium text-zinc-700">
@@ -84,8 +93,17 @@ export default function CheckoutPage() {
                     type="text"
                     placeholder="Enter your Last Name"
                     {...register('lastName')}
-                    className="w-full rounded-xl border border-zinc-300 px-4 py-3 transition-all outline-none focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900"
+                    className={cn(
+                      'w-full rounded-xl border border-zinc-300 px-4 py-3 transition-all outline-none focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900',
+                      errors.lastName &&
+                        'border-red-500 focus:border-red-500 focus:ring-red-500',
+                    )}
                   />
+                  {errors.lastName && (
+                    <p className="mt-1 text-sm text-red-500">
+                      {errors.lastName.message}
+                    </p>
+                  )}
                 </div>
               </div>
 
@@ -95,9 +113,18 @@ export default function CheckoutPage() {
                 </label>
                 <input
                   type="text"
-                  className="w-full rounded-xl border border-zinc-300 px-4 py-3 transition-all outline-none focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900"
+                  className={cn(
+                    'w-full rounded-xl border border-zinc-300 px-4 py-3 transition-all outline-none focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900',
+                    errors.address &&
+                      'border-red-500 focus:border-red-500 focus:ring-red-500',
+                  )}
                   {...register('address')}
                 />
+                {errors.address && (
+                  <p className="mt-1 text-sm text-red-500">
+                    {errors.address.message}
+                  </p>
+                )}
               </div>
 
               <div>
@@ -106,9 +133,18 @@ export default function CheckoutPage() {
                 </label>
                 <input
                   type="tel"
-                  className="w-full rounded-xl border border-zinc-300 px-4 py-3 transition-all outline-none focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900"
+                  className={cn(
+                    'w-full rounded-xl border border-zinc-300 px-4 py-3 transition-all outline-none focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900',
+                    errors.phone &&
+                      'border-red-500 focus:border-red-500 focus:ring-red-500',
+                  )}
                   {...register('phone')}
                 />
+                {errors.phone && (
+                  <p className="mt-1 text-sm text-red-500">
+                    {errors.phone.message}
+                  </p>
+                )}
               </div>
             </form>
           </div>
