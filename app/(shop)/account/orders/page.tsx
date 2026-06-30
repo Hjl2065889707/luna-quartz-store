@@ -1,4 +1,4 @@
-import { getUserOrders } from '@/api-client/orderApi'
+import { getUserOrders } from '@/api-client/orderApi.server'
 import { Prisma } from '@prisma/client'
 import { ShoppingBag, Calendar, MapPin } from 'lucide-react'
 import Image from 'next/image'
@@ -108,14 +108,14 @@ const OrderPage = async () => {
                     <div className="ml-6 flex flex-1 flex-col justify-between">
                       <div>
                         <div className="flex justify-between">
-                          <h4 className="text-sm font-bold text-zinc-900 line-clamp-1">
+                          <h4 className="line-clamp-1 text-sm font-bold text-zinc-900">
                             {item.product?.name || '未知商品'}
                           </h4>
                           <span className="text-sm font-black text-zinc-900">
                             ¥{item.price}
                           </span>
                         </div>
-                        <p className="mt-1 text-xs text-zinc-400 line-clamp-2">
+                        <p className="mt-1 line-clamp-2 text-xs text-zinc-400">
                           {item.product?.description}
                         </p>
                       </div>

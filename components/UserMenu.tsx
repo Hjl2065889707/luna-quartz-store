@@ -2,7 +2,8 @@
 
 import React, { useState, useRef, useEffect } from 'react'
 import { signOut } from 'next-auth/react'
-import { User, LogOut } from 'lucide-react'
+import { LogOut, ShoppingBag } from 'lucide-react'
+import Link from 'next/link'
 
 interface UserMenuProps {
   name: string
@@ -47,6 +48,14 @@ export default function UserMenu({ name, email }: UserMenuProps) {
           </div>
           
           <div className="p-2">
+            <Link
+              href="/account/orders"
+              onClick={() => setIsOpen(false)}
+              className="flex w-full items-center gap-3 rounded-[8px] px-3 py-2 text-left text-[14px] font-medium text-[#1C2B33] transition-colors hover:bg-[#F1F4F7]"
+            >
+              <ShoppingBag size={16} />
+              我的订单
+            </Link>
             <button
               onClick={() => signOut({ callbackUrl: '/' })}
               className="flex w-full items-center gap-3 rounded-[8px] px-3 py-2 text-left text-[14px] font-medium text-[#E41E3F] transition-colors hover:bg-[#F1F4F7]"

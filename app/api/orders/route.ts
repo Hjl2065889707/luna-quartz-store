@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
 
     const order = await prisma.order.create({
       data: {
-        userId: (session.user as any).id,
+        userId: session.user.id,
         firstName: body.firstName,
         lastName: body.lastName,
         address: body.address,

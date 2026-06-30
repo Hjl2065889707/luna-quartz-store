@@ -8,6 +8,7 @@ const ClearCartHelper = () => {
 
   useEffect(() => {
     clearCart()
+    localStorage.removeItem('cart')
   }, [clearCart])
 
   return null

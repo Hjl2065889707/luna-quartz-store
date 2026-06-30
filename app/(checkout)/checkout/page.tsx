@@ -1,6 +1,6 @@
 'use client'
 
-import { createOrder } from '@/api-client/orderApi'
+import { createCheckoutSession } from '@/api-client/orderApi'
 import { useCart } from '@/context/CartContext'
 import { cn } from '@/lib/classnameUtils'
 import { CheckoutFormValues, checkoutSchema } from '@/lib/schemas/checkout'
@@ -25,16 +25,14 @@ export default function CheckoutPage() {
   const onSubmit = async (data: CheckoutFormValues) => {
     const items = cartState.items.map((item) => ({
       productId: item.id,
+      name: item.name,
       quantity: item.quantity,
       price: item.price,
     }))
 
     try {
-      const res = await createOrder({
-        ...data,
-        items: items,
-      })
-      router.push(`/checkout/success?orderId=${res.orderId}`)
+      const { url } = await createCheckoutSession(items, data)
+      window.location.href = url
     } catch (error) {
       alert('下单失败，请重试')
     }

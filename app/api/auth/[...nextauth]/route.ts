@@ -52,7 +52,7 @@ export const authOptions: AuthOptions = {
   callbacks: {
     async session({ session, token }) {
       if (session.user && token.sub) {
-        ;(session.user as any).id = token.sub
+        session.user.id = token.sub
       }
       return session
     },

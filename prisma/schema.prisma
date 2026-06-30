@@ -44,6 +44,7 @@ model Product {
 
 model Order {
   id          String      @id @default(cuid())
+  stripeSessionId String? @unique
   userId      String      // 关联到购买的用户
   user        User        @relation(fields: [userId], references: [id])
   

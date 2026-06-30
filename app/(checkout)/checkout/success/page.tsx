@@ -3,18 +3,20 @@ import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import { Check, ArrowRight, ShoppingBag } from 'lucide-react'
 import ClearCartHelper from '@/components/ClearCartHelper'
+import { getOrderBySessionId } from '@/api-client/orderApi.server'
 
 interface SuccessPageProps {
-  searchParams: Promise<{ orderId?: string }>
+  searchParams: Promise<{ session_id?: string }>
 }
 
 export default async function CheckoutSuccessPage({
   searchParams,
 }: SuccessPageProps) {
-  const { orderId } = await searchParams
-  if (!orderId) {
+  const { session_id } = await searchParams
+  if (!session_id) {
     redirect('/')
   }
+  const order = await getOrderBySessionId(session_id)
   return (
     <div className="flex min-h-[80vh] items-center justify-center bg-[radial-gradient(ellipse_at_top,var(--tw-gradient-stops))] from-zinc-50 via-zinc-100 to-white px-4 py-16 sm:px-6 lg:px-8">
       {/* Premium Meta-style White Card */}
@@ -34,12 +36,12 @@ export default async function CheckoutSuccessPage({
         </p>
 
         {/* Dynamic Order Info Box */}
-        {orderId && (
+        {session_id && (
           <div className="mt-8 flex flex-col gap-3.5 rounded-2xl border border-zinc-100 bg-zinc-50/50 p-5 text-left">
             <div className="flex items-center justify-between border-b border-zinc-200/40 pb-3 text-sm">
               <span className="font-medium text-zinc-400">订单编号</span>
-              <span className="font-mono font-bold text-zinc-900 select-all">
-                {orderId}
+              <span className="max-w-[200px] truncate font-mono text-xs font-bold text-zinc-900 select-all">
+                {order.id}
               </span>
             </div>
             <div className="flex items-center justify-between text-sm">
@@ -55,11 +57,11 @@ export default async function CheckoutSuccessPage({
         {/* Action Buttons */}
         <div className="mt-10 flex flex-col gap-3">
           <Link
-            href="/"
+            href={`/account/orders`}
             className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-[#0064E0] px-6 text-sm font-bold text-white shadow-[0_4px_14px_rgba(0,100,224,0.3)] transition-all hover:bg-[#0143B5] hover:shadow-[0_6px_20px_rgba(0,100,224,0.4)] active:scale-[0.98]"
           >
             <ShoppingBag size={16} />
-            继续购物
+            查看订单
           </Link>
           <Link
             href="/"
