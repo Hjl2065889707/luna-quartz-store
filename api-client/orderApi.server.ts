@@ -33,12 +33,11 @@ export const getUserOrders = async (): Promise<Order[]> => {
 
 export const getOrderBySessionId = async (
   session_id: string,
-): Promise<Order> => {
+): Promise<Order | null> => {
   const order = await prisma.order.findUnique({
     where: {
       stripeSessionId: session_id,
     },
   })
-
   return order
 }

@@ -42,6 +42,7 @@ export const authOptions: AuthOptions = {
           id: user.id,
           name: user.name,
           email: user.email,
+          role: user.role,
         }
       },
     }),
@@ -50,9 +51,18 @@ export const authOptions: AuthOptions = {
     strategy: 'jwt',
   },
   callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        token.role = user.role
+      }
+      return token
+    },
     async session({ session, token }) {
       if (session.user && token.sub) {
         session.user.id = token.sub
+      }
+      if (session.user && token.role) {
+        session.user.role = token.role as string
       }
       return session
     },

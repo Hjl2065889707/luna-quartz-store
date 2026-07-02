@@ -25,34 +25,48 @@ export async function POST(req: NextRequest) {
     const session = event.data.object // 这就是 Stripe Checkout Session 对象
     console.log('✅ 支付成功！Session ID:', session.id)
 
-    // TODO: 在这里创建订单（下一步做）
     const { userId, shippingInfo, items } = session.metadata!
     const shipping = JSON.parse(shippingInfo)
     const orderItems = JSON.parse(items)
-    const order = await prisma.order.create({
-      data: {
-        userId: userId,
-        stripeSessionId: session.id,
-        firstName: shipping.firstName,
-        lastName: shipping.lastName,
-        address: shipping.address,
-        phone: shipping.phone,
-        totalAmount: orderItems.reduce(
-          (sum: number, item: { price: number; quantity: number }) =>
-            sum + item.price * item.quantity,
-          0,
-        ),
-        items: {
-          create: orderItems.map(
-            (item: { productId: string; quantity: number; price: number }) => ({
-              productId: item.productId,
-              quantity: item.quantity,
-              price: item.price,
-            }),
+
+    await prisma.$transaction(async (tx) => {
+      // 1. 扣库存
+      for (const item of orderItems) {
+        await tx.product.update({
+          where: { id: item.productId },
+          data: { stock: { decrement: item.quantity } },
+        })
+      }
+      // 创建订单
+      await tx.order.create({
+        data: {
+          userId: userId,
+          stripeSessionId: session.id,
+          firstName: shipping.firstName,
+          lastName: shipping.lastName,
+          address: shipping.address,
+          phone: shipping.phone,
+          totalAmount: orderItems.reduce(
+            (sum: number, item: { price: number; quantity: number }) =>
+              sum + item.price * item.quantity,
+            0,
           ),
+          items: {
+            create: orderItems.map(
+              (item: {
+                productId: string
+                quantity: number
+                price: number
+              }) => ({
+                productId: item.productId,
+                quantity: item.quantity,
+                price: item.price,
+              }),
+            ),
+          },
+          status: 'PAID',
         },
-        status: 'PAID',
-      },
+      })
     })
   }
 
