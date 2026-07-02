@@ -12,6 +12,18 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: '用户未登录' }, { status: 401 })
     }
 
+    for (const item of body.items) {
+      const product = await prisma.product.findUnique({
+        where: { id: item.productId },
+      })
+      if (!product || product.stock < item.quantity) {
+        return NextResponse.json(
+          { error: `${product?.name ?? '商品'} 库存不足` },
+          { status: 400 },
+        )
+      }
+    }
+
     const lineItems = body.items.map((item: any) => {
       return {
         price_data: {
@@ -24,18 +36,6 @@ export async function POST(req: NextRequest) {
         quantity: item.quantity,
       }
     })
-
-    for (const item of body.items) {
-      const product = await prisma.product.findUnique({
-        where: { id: item.productId },
-      })
-      if (!product || product.stock < item.quantity) {
-        return NextResponse.json(
-          { error: `${product?.name ?? '商品'} 库存不足` },
-          { status: 400 },
-        )
-      }
-    }
 
     // 调用 Stripe SDK 创建 Checkout Session
     const session = await stripe.checkout.sessions.create({
