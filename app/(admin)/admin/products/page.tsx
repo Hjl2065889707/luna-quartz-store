@@ -2,6 +2,7 @@ import { getAllProducts } from '@/api-client/productApi.server'
 import Image from 'next/image'
 import { Plus, Pencil } from 'lucide-react'
 import ToggleProductButton from '@/components/admin/ToggleProductButton'
+import CreateProductDialog from '@/components/admin/CreateProductDialog'
 
 export default async function AdminProductsPage() {
   const products = await getAllProducts()
@@ -16,10 +17,7 @@ export default async function AdminProductsPage() {
             共 {products.length} 件商品
           </p>
         </div>
-        <button className="flex items-center gap-2 rounded-full bg-[#0064E0] px-5 py-2.5 text-sm font-medium text-white shadow-[0_4px_14px_rgba(0,100,224,0.3)] transition-all hover:bg-[#0143B5] hover:shadow-[0_6px_20px_rgba(0,100,224,0.4)] active:scale-[0.98]">
-          <Plus size={16} />
-          新增商品
-        </button>
+        <CreateProductDialog />
       </div>
 
       {/* Product Table */}
@@ -27,22 +25,22 @@ export default async function AdminProductsPage() {
         <table className="w-full text-left text-sm">
           <thead>
             <tr className="border-b border-[#DEE3E9] bg-[#F7F8FA]">
-              <th className="px-6 py-3.5 text-xs font-bold uppercase tracking-wider text-[#5D6C7B]">
+              <th className="px-6 py-3.5 text-xs font-bold tracking-wider text-[#5D6C7B] uppercase">
                 商品
               </th>
-              <th className="px-6 py-3.5 text-xs font-bold uppercase tracking-wider text-[#5D6C7B]">
+              <th className="px-6 py-3.5 text-xs font-bold tracking-wider text-[#5D6C7B] uppercase">
                 分类
               </th>
-              <th className="px-6 py-3.5 text-xs font-bold uppercase tracking-wider text-[#5D6C7B]">
+              <th className="px-6 py-3.5 text-xs font-bold tracking-wider text-[#5D6C7B] uppercase">
                 价格
               </th>
-              <th className="px-6 py-3.5 text-xs font-bold uppercase tracking-wider text-[#5D6C7B]">
+              <th className="px-6 py-3.5 text-xs font-bold tracking-wider text-[#5D6C7B] uppercase">
                 库存
               </th>
-              <th className="px-6 py-3.5 text-xs font-bold uppercase tracking-wider text-[#5D6C7B]">
+              <th className="px-6 py-3.5 text-xs font-bold tracking-wider text-[#5D6C7B] uppercase">
                 状态
               </th>
-              <th className="px-6 py-3.5 text-xs font-bold uppercase tracking-wider text-[#5D6C7B]">
+              <th className="px-6 py-3.5 text-xs font-bold tracking-wider text-[#5D6C7B] uppercase">
                 操作
               </th>
             </tr>

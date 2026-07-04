@@ -34,7 +34,9 @@ export default function CheckoutPage() {
       const { url } = await createCheckoutSession(items, data)
       window.location.href = url
     } catch (error) {
-      alert('下单失败，请重试')
+      const message =
+        error instanceof Error ? error.message : '下单失败，请重试'
+      alert(message)
     }
   }
 

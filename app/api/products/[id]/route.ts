@@ -24,11 +24,13 @@ export async function GET(req: NextRequest, { params }: RouteParams) {
 }
 
 export async function DELETE(req: NextRequest, { params }: RouteParams) {
-  const { id } = await params
   const session = await getServerSession(authOptions)
   if (!session?.user || session.user.role !== 'ADMIN') {
     return new NextResponse('Unauthorized', { status: 401 })
   }
+
+  const { id } = await params
+
   try {
     const product = await prisma.product.update({
       where: { id },
