@@ -1,8 +1,7 @@
 import { getAllProducts } from '@/api-client/productApi.server'
 import Image from 'next/image'
-import { Plus, Pencil } from 'lucide-react'
 import ToggleProductButton from '@/components/admin/ToggleProductButton'
-import CreateProductDialog from '@/components/admin/CreateProductDialog'
+import ProductDialog from '@/components/admin/ProductDialog'
 
 export default async function AdminProductsPage() {
   const products = await getAllProducts()
@@ -17,7 +16,7 @@ export default async function AdminProductsPage() {
             共 {products.length} 件商品
           </p>
         </div>
-        <CreateProductDialog />
+        <ProductDialog mode="create" />
       </div>
 
       {/* Product Table */}
@@ -97,9 +96,7 @@ export default async function AdminProductsPage() {
                 </td>
                 <td className="px-6 py-4">
                   <div className="flex items-center gap-2">
-                    <button className="rounded-lg p-2 text-[#5D6C7B] transition-colors hover:bg-[#E8F3FF] hover:text-[#0064E0]">
-                      <Pencil size={15} />
-                    </button>
+                    <ProductDialog mode="edit" product={product} />
                     <ToggleProductButton
                       id={product.id}
                       productName={product.name}

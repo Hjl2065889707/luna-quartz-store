@@ -63,3 +63,24 @@ export async function PATCH(req: NextRequest, { params }: RouteParams) {
     return new NextResponse('Product not found', { status: 404 })
   }
 }
+
+export async function PUT(req: NextRequest, { params }: RouteParams) {
+  const session = await getServerSession(authOptions)
+  if (!session?.user || session.user.role !== 'ADMIN') {
+    return new NextResponse('Unauthorized', { status: 401 })
+  }
+
+  const { id } = await params
+  const { name, description, category, price, stock, image } = await req.json()
+
+  try {
+    const product = await prisma.product.update({
+      where: { id },
+      data: { name, description, category, price, stock, image },
+    })
+    return NextResponse.json(product)
+  } catch (error) {
+    console.error('更新商品失败', error)
+    return new NextResponse('更新商品失败', { status: 500 })
+  }
+}

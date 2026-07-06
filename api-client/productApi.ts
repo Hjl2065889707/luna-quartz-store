@@ -44,3 +44,48 @@ export const deleteProductById = async (id: string) => {
   }
   return res.json()
 }
+
+export const uploadImage = async (file: File): Promise<{ url: string }> => {
+  const formData = new FormData()
+  formData.append('file', file)
+  const res = await fetch('/api/upload', {
+    method: 'POST',
+    body: formData,
+  })
+  if (!res.ok) {
+    const data = await res.json()
+    throw new Error(data.error || '图片上传失败')
+  }
+  return res.json()
+}
+
+export const createProduct = async (
+  data: Record<string, unknown>,
+): Promise<Product> => {
+  const res = await fetch('/api/products', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  })
+  if (!res.ok) {
+    const err = await res.json()
+    throw new Error(err.error || '创建商品失败')
+  }
+  return res.json()
+}
+
+export const updateProduct = async (
+  id: string,
+  data: Record<string, unknown>,
+): Promise<Product> => {
+  const res = await fetch(`/api/products/${id}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  })
+  if (!res.ok) {
+    const err = await res.json()
+    throw new Error(err.error || '更新商品失败')
+  }
+  return res.json()
+}
