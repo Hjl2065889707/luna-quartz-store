@@ -1,4 +1,5 @@
 import { prisma } from '@/lib/prisma'
+import OrderStatusButton from '@/components/admin/OrderStatusButton'
 
 export default async function AdminOrdersPage() {
   const orders = await prisma.order.findMany({
@@ -51,6 +52,9 @@ export default async function AdminOrdersPage() {
               <th className="px-6 py-3.5 text-xs font-bold uppercase tracking-wider text-[#5D6C7B]">
                 日期
               </th>
+              <th className="px-6 py-3.5 text-xs font-bold uppercase tracking-wider text-[#5D6C7B]">
+                操作
+              </th>
             </tr>
           </thead>
           <tbody className="divide-y divide-[#DEE3E9]">
@@ -100,6 +104,12 @@ export default async function AdminOrdersPage() {
                       month: '2-digit',
                       day: '2-digit',
                     })}
+                  </td>
+                  <td className="px-6 py-4">
+                    <OrderStatusButton
+                      orderId={order.id}
+                      currentStatus={order.status}
+                    />
                   </td>
                 </tr>
               )

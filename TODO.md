@@ -26,7 +26,7 @@
 
 - [x] **Admin 新增商品** — `POST /api/products` + 表单弹窗 + 图片上传
 - [x] **Admin 编辑商品** — `PUT /api/products/[id]` + 复用 ProductDialog
-- [ ] **Admin 订单状态管理** — 支持修改订单状态（PAID → SHIPPED → DELIVERED）
+- [x] **Admin 订单状态管理** — PAID → SHIPPED → DELIVERED 状态机
 - [ ] **购物车部分支付** — 当前清空整个购物车，应只删除已下单的商品
 
 ## 🟣 UX 优化

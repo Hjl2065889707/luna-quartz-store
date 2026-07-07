@@ -3,6 +3,7 @@
 import { Trash2, AlertTriangle, RotateCcw } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useRef, useState } from 'react'
+import { useToast } from '@/context/ToastContext'
 
 const ToggleProductButton = ({
   id,
@@ -14,6 +15,7 @@ const ToggleProductButton = ({
   isActive: boolean
 }) => {
   const router = useRouter()
+  const { showToast } = useToast()
   const dialogRef = useRef<HTMLDialogElement>(null)
   const [isLoading, setIsLoading] = useState(false)
 
@@ -31,8 +33,9 @@ const ToggleProductButton = ({
       if (!res.ok) throw new Error('操作失败')
       closeDialog()
       router.refresh()
+      showToast(isActive ? `${productName} 已下架` : `${productName} 已上架`, 'success')
     } catch (error) {
-      console.error('操作失败', error)
+      showToast(error instanceof Error ? error.message : '操作失败', 'error')
     } finally {
       setIsLoading(false)
     }

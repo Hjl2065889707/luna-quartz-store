@@ -9,10 +9,12 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
+import { useToast } from '@/context/ToastContext'
 
 export default function CheckoutPage() {
   const { cartState } = useCart()
   const router = useRouter()
+  const { showToast } = useToast()
 
   const {
     register,
@@ -36,7 +38,7 @@ export default function CheckoutPage() {
     } catch (error) {
       const message =
         error instanceof Error ? error.message : '下单失败，请重试'
-      alert(message)
+      showToast(message, 'error')
     }
   }
 

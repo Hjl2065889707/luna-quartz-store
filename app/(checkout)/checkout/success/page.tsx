@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation'
 
 import Link from 'next/link'
-import { Check, ArrowRight, ShoppingBag } from 'lucide-react'
+import { Check, ArrowRight, ShoppingBag, Loader2 } from 'lucide-react'
 import ClearCartHelper from '@/components/ClearCartHelper'
 import { getOrderBySessionId } from '@/api-client/orderApi.server'
 
@@ -17,6 +17,7 @@ export default async function CheckoutSuccessPage({
     redirect('/')
   }
   const order = await getOrderBySessionId(session_id)
+
   return (
     <div className="flex min-h-[80vh] items-center justify-center bg-[radial-gradient(ellipse_at_top,var(--tw-gradient-stops))] from-zinc-50 via-zinc-100 to-white px-4 py-16 sm:px-6 lg:px-8">
       {/* Premium Meta-style White Card */}
@@ -36,23 +37,30 @@ export default async function CheckoutSuccessPage({
         </p>
 
         {/* Dynamic Order Info Box */}
-        {session_id && (
-          <div className="mt-8 flex flex-col gap-3.5 rounded-2xl border border-zinc-100 bg-zinc-50/50 p-5 text-left">
-            <div className="flex items-center justify-between border-b border-zinc-200/40 pb-3 text-sm">
-              <span className="font-medium text-zinc-400">订单编号</span>
-              <span className="max-w-[200px] truncate font-mono text-xs font-bold text-zinc-900 select-all">
-                {order.id}
-              </span>
+        <div className="mt-8 flex flex-col gap-3.5 rounded-2xl border border-zinc-100 bg-zinc-50/50 p-5 text-left">
+          {order ? (
+            <>
+              <div className="flex items-center justify-between border-b border-zinc-200/40 pb-3 text-sm">
+                <span className="font-medium text-zinc-400">订单编号</span>
+                <span className="max-w-[200px] truncate font-mono text-xs font-bold text-zinc-900 select-all">
+                  {order.id}
+                </span>
+              </div>
+              <div className="flex items-center justify-between text-sm">
+                <span className="font-medium text-zinc-400">配送状态</span>
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-bold text-emerald-700">
+                  <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-500"></span>
+                  待发货
+                </span>
+              </div>
+            </>
+          ) : (
+            <div className="flex items-center justify-center gap-2 py-2 text-sm text-zinc-400">
+              <Loader2 size={16} className="animate-spin" />
+              订单处理中，请稍后刷新查看...
             </div>
-            <div className="flex items-center justify-between text-sm">
-              <span className="font-medium text-zinc-400">配送状态</span>
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-bold text-emerald-700">
-                <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-500"></span>
-                待发货
-              </span>
-            </div>
-          </div>
-        )}
+          )}
+        </div>
 
         {/* Action Buttons */}
         <div className="mt-10 flex flex-col gap-3">

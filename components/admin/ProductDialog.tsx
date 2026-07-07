@@ -12,6 +12,7 @@ import {
   updateProduct,
 } from '@/api-client/productApi'
 import { Product } from '@/types'
+import { useToast } from '@/context/ToastContext'
 
 // Discriminated Union：TypeScript 根据 mode 自动推断 product 是否存在
 type ProductDialogProps =
@@ -23,6 +24,7 @@ const ProductDialog = (props: ProductDialogProps) => {
   const dialogRef = useRef<HTMLDialogElement>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const router = useRouter()
+  const { showToast } = useToast()
 
   // 编辑模式下，初始预览使用现有图片
   const [imageFile, setImageFile] = useState<File | null>(null)
@@ -113,9 +115,9 @@ const ProductDialog = (props: ProductDialogProps) => {
 
       closeDialog()
       router.refresh()
+      showToast(isEdit ? '商品已更新' : '商品已创建', 'success')
     } catch (error) {
-      console.error(isEdit ? '编辑商品失败' : '创建商品失败', error)
-      setUploadError(error instanceof Error ? error.message : '操作失败')
+      showToast(error instanceof Error ? error.message : '操作失败', 'error')
     }
   }
 
