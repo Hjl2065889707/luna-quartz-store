@@ -10,7 +10,7 @@ import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useToast } from '@/context/ToastContext'
-import { CheckoutItem } from '@/types'
+import { CheckoutItemSnapshot } from '@/lib/schemas/checkout'
 
 export default function CheckoutPage() {
   const { cartState } = useCart()
@@ -29,7 +29,7 @@ export default function CheckoutPage() {
   const isPaying = isSubmitting || isRedirecting
 
   const onSubmit = async (data: CheckoutFormValues) => {
-    const items: CheckoutItem[] = cartState.items.map((item) => ({
+    const items: CheckoutItemSnapshot[] = cartState.items.map((item) => ({
       productId: item.id,
       name: item.name,
       quantity: item.quantity,

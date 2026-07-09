@@ -1,7 +1,7 @@
-import { CheckoutItem } from '@/types'
+import { CheckoutItemSnapshot } from '@/lib/schemas/checkout'
 
 export const createCheckoutSession = async (
-  items: CheckoutItem[],
+  items: CheckoutItemSnapshot[],
   shippingInfo: {
     firstName: string
     lastName: string
