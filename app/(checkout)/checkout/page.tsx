@@ -11,6 +11,7 @@ import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useToast } from '@/context/ToastContext'
 import { CheckoutItemSnapshot } from '@/lib/schemas/checkout'
+import { formatCurrency } from '@/lib/formatters'
 
 export default function CheckoutPage() {
   const { cartState } = useCart()
@@ -183,7 +184,7 @@ export default function CheckoutPage() {
                       {item.name}
                     </h4>
                     <p className="mt-1 text-sm font-black text-zinc-900">
-                      ¥{item.price}
+                      {formatCurrency(item.price)}
                     </p>
                   </div>
                 </div>
@@ -195,7 +196,7 @@ export default function CheckoutPage() {
               <div className="flex justify-between">
                 <span>商品总计</span>
                 <span className="font-medium text-zinc-900">
-                  ¥{cartState.totalAmount}
+                  {formatCurrency(cartState.totalAmount)}
                 </span>
               </div>
               <div className="flex justify-between">
@@ -205,7 +206,7 @@ export default function CheckoutPage() {
               <div className="flex justify-between border-t border-zinc-200 pt-3 text-base font-black text-zinc-900">
                 <span>应付总额</span>
                 <span className="text-xl text-zinc-900">
-                  ¥{cartState.totalAmount}
+                  {formatCurrency(cartState.totalAmount)}
                 </span>
               </div>
             </div>

@@ -2,6 +2,7 @@ import { getAllProducts } from '@/api-client/productApi.server'
 import Image from 'next/image'
 import ToggleProductButton from '@/components/admin/ToggleProductButton'
 import ProductDialog from '@/components/admin/ProductDialog'
+import { formatCurrency } from '@/lib/formatters'
 
 export default async function AdminProductsPage() {
   const products = await getAllProducts()
@@ -74,7 +75,7 @@ export default async function AdminProductsPage() {
                   </span>
                 </td>
                 <td className="px-6 py-4 font-bold text-[#1C2B33]">
-                  ${product.price}
+                  {formatCurrency(product.price)}
                 </td>
                 <td className="px-6 py-4">
                   <span

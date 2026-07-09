@@ -6,6 +6,7 @@ import React from 'react'
 import { Plus } from 'lucide-react'
 import { useCart } from '@/context/CartContext'
 import Link from 'next/link'
+import { formatCurrency } from '@/lib/formatters'
 
 const ItemCell = ({ item }: { item: Product }) => {
   const { addToCart } = useCart()
@@ -48,7 +49,7 @@ const ItemCell = ({ item }: { item: Product }) => {
         {/* Footer actions */}
         <div className="mt-5 flex items-center justify-between">
           <span className="text-xl font-black text-zinc-900">
-            ¥{item.price}
+            {formatCurrency(item.price)}
           </span>
 
           <button

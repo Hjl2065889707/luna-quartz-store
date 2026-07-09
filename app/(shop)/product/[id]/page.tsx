@@ -4,6 +4,7 @@ import ProductPageLayout from './ProductPageLayout'
 import Image from 'next/image'
 import AddToCartButton from '@/components/AddToCartButton'
 import { Metadata } from 'next'
+import { formatCurrency } from '@/lib/formatters'
 
 interface ProductPageProps {
   params: Promise<{ id: string }>
@@ -53,7 +54,7 @@ const ProductPage = async ({ params }: ProductPageProps) => {
 
           <div className="mt-4">
             <span className="text-3xl font-bold text-zinc-900">
-              ¥{product.price}
+              {formatCurrency(product.price)}
             </span>
           </div>
           <p className="mt-6 text-lg leading-relaxed text-zinc-500">

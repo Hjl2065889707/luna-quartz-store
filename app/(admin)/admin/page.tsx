@@ -8,6 +8,7 @@ import {
 } from 'lucide-react'
 import Link from 'next/link'
 import { getOrderStatusConfig } from '@/lib/orderStatus'
+import { formatCurrency } from '@/lib/formatters'
 
 export default async function AdminDashboardPage() {
   const [productCount, orderCount, userCount, recentOrders] = await Promise.all(
@@ -30,7 +31,7 @@ export default async function AdminDashboardPage() {
   const stats = [
     {
       label: '总收入',
-      value: `$${(totalRevenue._sum.totalAmount ?? 0).toLocaleString()}`,
+      value: formatCurrency(totalRevenue._sum.totalAmount ?? 0),
       icon: DollarSign,
       color: 'bg-emerald-50 text-emerald-600',
     },
@@ -125,7 +126,7 @@ export default async function AdminDashboardPage() {
                   </div>
                   <div className="flex items-center gap-3">
                     <span className="text-sm font-bold text-[#1C2B33]">
-                      ${order.totalAmount}
+                      {formatCurrency(order.totalAmount)}
                     </span>
                     <span
                       className={`rounded-full px-2.5 py-1 text-xs font-bold ${status.style}`}

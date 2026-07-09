@@ -1,6 +1,7 @@
 import { prisma } from '@/lib/prisma'
 import OrderStatusButton from '@/components/admin/OrderStatusButton'
 import { getOrderStatusConfig } from '@/lib/orderStatus'
+import { formatCurrency } from '@/lib/formatters'
 
 export default async function AdminOrdersPage() {
   const orders = await prisma.order.findMany({
@@ -80,7 +81,7 @@ export default async function AdminOrdersPage() {
                     </p>
                   </td>
                   <td className="px-6 py-4 font-bold text-[#1C2B33]">
-                    ${order.totalAmount}
+                    {formatCurrency(order.totalAmount)}
                   </td>
                   <td className="px-6 py-4">
                     <span

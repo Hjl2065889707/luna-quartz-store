@@ -5,6 +5,7 @@ import { Minus, Plus, ShoppingBag, Trash2, ArrowRight } from 'lucide-react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useState, useRef, useEffect } from 'react'
+import { formatCurrency } from '@/lib/formatters'
 
 const Cart = () => {
   const { cartState, updateCartItemQuantity, removeFromCart } = useCart()
@@ -111,7 +112,7 @@ const Cart = () => {
                           {item.name}
                         </span>
                         <span className="text-sm font-black text-zinc-900">
-                          ¥{item.price}
+                          {formatCurrency(item.price)}
                         </span>
                       </div>
 
@@ -164,7 +165,7 @@ const Cart = () => {
                     预估总金额
                   </span>
                   <span className="text-xl font-black text-zinc-900">
-                    ¥{cartState.totalAmount}
+                    {formatCurrency(cartState.totalAmount)}
                   </span>
                 </div>
                 <button
