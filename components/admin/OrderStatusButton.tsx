@@ -26,7 +26,7 @@ const OrderStatusButton = ({
   const [isLoading, setIsLoading] = useState(false)
   const action = NEXT_ACTION[currentStatus]
 
-  // DELIVERED 或 PENDING 状态没有下一步操作
+  // DELIVERED、PENDING、REFUNDED 等状态没有下一步物流操作
   if (!action) return null
 
   const handleClick = async () => {

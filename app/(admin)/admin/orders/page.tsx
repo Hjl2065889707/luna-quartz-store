@@ -1,5 +1,6 @@
 import { prisma } from '@/lib/prisma'
 import OrderStatusButton from '@/components/admin/OrderStatusButton'
+import { getOrderStatusConfig } from '@/lib/orderStatus'
 
 export default async function AdminOrdersPage() {
   const orders = await prisma.order.findMany({
@@ -11,13 +12,6 @@ export default async function AdminOrdersPage() {
       },
     },
   })
-
-  const statusConfig: Record<string, { label: string; style: string }> = {
-    PENDING: { label: '待支付', style: 'bg-amber-50 text-amber-700' },
-    PAID: { label: '已支付', style: 'bg-emerald-50 text-emerald-700' },
-    SHIPPED: { label: '已发货', style: 'bg-blue-50 text-[#0064E0]' },
-    DELIVERED: { label: '已送达', style: 'bg-purple-50 text-purple-700' },
-  }
 
   return (
     <div>
@@ -59,10 +53,7 @@ export default async function AdminOrdersPage() {
           </thead>
           <tbody className="divide-y divide-[#DEE3E9]">
             {orders.map((order) => {
-              const status = statusConfig[order.status] ?? {
-                label: order.status,
-                style: 'bg-gray-50 text-gray-700',
-              }
+              const status = getOrderStatusConfig(order.status)
               return (
                 <tr
                   key={order.id}

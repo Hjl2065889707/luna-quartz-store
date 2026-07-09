@@ -59,7 +59,7 @@ model Order {
   
   // 订单金额与状态
   totalAmount Float
-  status      String      @default("PENDING") // PENDING, PAID, SHIPPED 等
+  status      String      @default("PENDING") // PENDING, PAID, SHIPPED, DELIVERED, REFUNDED
   
   items       OrderItem[] // 一个订单包含多个子项目
   

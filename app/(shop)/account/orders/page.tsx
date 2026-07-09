@@ -3,6 +3,7 @@ import { Prisma } from '@prisma/client'
 import { ShoppingBag, Calendar, MapPin } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { getOrderStatusConfig } from '@/lib/orderStatus'
 
 type OrderWithItems = Prisma.OrderGetPayload<{
   include: { items: { include: { product: true } } }
@@ -58,11 +59,13 @@ const OrderPage = async () => {
       ) : (
         /* Order List */
         <div className="space-y-6">
-          {orders.map((order) => (
-            <div
-              key={order.id}
-              className="overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-[0_2px_12px_rgba(0,0,0,0.02)] transition-all hover:shadow-[0_4px_20px_rgba(0,0,0,0.04)]"
-            >
+          {orders.map((order) => {
+            const status = getOrderStatusConfig(order.status)
+            return (
+              <div
+                key={order.id}
+                className="overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-[0_2px_12px_rgba(0,0,0,0.02)] transition-all hover:shadow-[0_4px_20px_rgba(0,0,0,0.04)]"
+              >
               {/* Order Header */}
               <div className="flex flex-col gap-4 border-b border-zinc-100 bg-zinc-50/50 p-6 sm:flex-row sm:items-center sm:justify-between">
                 <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-xs text-zinc-500">
@@ -80,9 +83,11 @@ const OrderPage = async () => {
                   </div>
                 </div>
 
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-bold text-emerald-700">
-                  <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-500" />
-                  已支付
+                <span
+                  className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-bold ${status.style}`}
+                >
+                  <span className="h-1.5 w-1.5 rounded-full bg-current" />
+                  {status.label}
                 </span>
               </div>
 
@@ -143,8 +148,9 @@ const OrderPage = async () => {
                   </span>
                 </div>
               </div>
-            </div>
-          ))}
+              </div>
+            )
+          })}
         </div>
       )}
     </div>

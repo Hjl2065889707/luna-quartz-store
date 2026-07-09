@@ -7,6 +7,7 @@ import {
   ArrowRight,
 } from 'lucide-react'
 import Link from 'next/link'
+import { getOrderStatusConfig } from '@/lib/orderStatus'
 
 export default async function AdminDashboardPage() {
   const [productCount, orderCount, userCount, recentOrders] = await Promise.all(
@@ -106,38 +107,35 @@ export default async function AdminDashboardPage() {
               暂无订单
             </p>
           ) : (
-            recentOrders.map((order) => (
-              <div
-                key={order.id}
-                className="flex items-center justify-between px-6 py-4 transition-colors hover:bg-[#F7F8FA]"
-              >
-                <div>
-                  <p className="text-sm font-medium text-[#1C2B33]">
-                    {order.firstName} {order.lastName}
-                  </p>
-                  <p className="mt-0.5 text-xs text-[#5D6C7B]">
-                    {order.items.length} 件商品 ·{' '}
-                    {new Date(order.createdAt).toLocaleDateString('zh-CN')}
-                  </p>
+            recentOrders.map((order) => {
+              const status = getOrderStatusConfig(order.status)
+              return (
+                <div
+                  key={order.id}
+                  className="flex items-center justify-between px-6 py-4 transition-colors hover:bg-[#F7F8FA]"
+                >
+                  <div>
+                    <p className="text-sm font-medium text-[#1C2B33]">
+                      {order.firstName} {order.lastName}
+                    </p>
+                    <p className="mt-0.5 text-xs text-[#5D6C7B]">
+                      {order.items.length} 件商品 ·{' '}
+                      {new Date(order.createdAt).toLocaleDateString('zh-CN')}
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <span className="text-sm font-bold text-[#1C2B33]">
+                      ${order.totalAmount}
+                    </span>
+                    <span
+                      className={`rounded-full px-2.5 py-1 text-xs font-bold ${status.style}`}
+                    >
+                      {status.label}
+                    </span>
+                  </div>
                 </div>
-                <div className="flex items-center gap-3">
-                  <span className="text-sm font-bold text-[#1C2B33]">
-                    ${order.totalAmount}
-                  </span>
-                  <span
-                    className={`rounded-full px-2.5 py-1 text-xs font-bold ${
-                      order.status === 'PAID'
-                        ? 'bg-emerald-50 text-emerald-700'
-                        : order.status === 'SHIPPED'
-                          ? 'bg-blue-50 text-[#0064E0]'
-                          : 'bg-amber-50 text-amber-700'
-                    }`}
-                  >
-                    {order.status}
-                  </span>
-                </div>
-              </div>
-            ))
+              )
+            })
           )}
         </div>
       </div>

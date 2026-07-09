@@ -23,19 +23,36 @@ export async function POST(req: NextRequest) {
   // 第二步：只处理 checkout.session.completed 事件
   if (event.type === 'checkout.session.completed') {
     const session = event.data.object // 这就是 Stripe Checkout Session 对象
-    console.log('✅ 支付成功！Session ID:', session.id)
+    console.log('支付成功！Session ID:', session.id)
 
     const { userId, shippingInfo, items } = session.metadata!
     const shipping = JSON.parse(shippingInfo)
     const orderItems = JSON.parse(items)
 
     await prisma.$transaction(async (tx) => {
-      // 1. 扣库存
+      // 去重
+      const existingOrder = await tx.order.findUnique({
+        where: { stripeSessionId: session.id },
+      })
+
+      if (existingOrder) return
+
+      // 扣库存
       for (const item of orderItems) {
-        await tx.product.update({
-          where: { id: item.productId },
-          data: { stock: { decrement: item.quantity } },
+        // 用updateMany的结果获取是否成功的扣减库存（如果为0则扣减失败）
+        const updated = await tx.product.updateMany({
+          where: {
+            id: item.productId,
+            stock: { gte: item.quantity },
+          },
+          data: {
+            stock: { decrement: item.quantity },
+          },
         })
+        if (updated.count !== 1) {
+          // 库存不足创建对应订单，状态为退款
+          throw new Error(`Insufficient stock for product ${item.productId}`)
+        }
       }
       // 创建订单
       await tx.order.create({
