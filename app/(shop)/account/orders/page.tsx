@@ -1,13 +1,9 @@
 import { getUserOrders } from '@/api-client/orderApi.server'
-import { Prisma } from '@prisma/client'
 import { ShoppingBag, Calendar, MapPin } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { getOrderStatusConfig } from '@/lib/orderStatus'
-
-type OrderWithItems = Prisma.OrderGetPayload<{
-  include: { items: { include: { product: true } } }
-}>
+import { getOrderStatusConfig, ORDER_STATUS } from '@/lib/orderStatus'
+import { formatCurrency } from '@/lib/formatters'
 
 function formatDate(date: Date) {
   return new Date(date).toLocaleDateString('zh-CN', {
@@ -20,7 +16,7 @@ function formatDate(date: Date) {
 }
 
 const OrderPage = async () => {
-  const orders = (await getUserOrders()) as OrderWithItems[]
+  const orders = await getUserOrders()
 
   return (
     <div className="mx-auto max-w-4xl px-4 pt-10 pb-24 sm:px-6 lg:px-8">
@@ -61,6 +57,7 @@ const OrderPage = async () => {
         <div className="space-y-6">
           {orders.map((order) => {
             const status = getOrderStatusConfig(order.status)
+            const isRefunded = order.status === ORDER_STATUS.REFUNDED
             return (
               <div
                 key={order.id}
@@ -91,6 +88,12 @@ const OrderPage = async () => {
                 </span>
               </div>
 
+              {isRefunded && (
+                <div className="border-b border-zinc-100 bg-zinc-50 px-6 py-3 text-xs font-medium text-zinc-600">
+                  这笔订单已自动退款。通常是因为支付完成后库存最终确认不足，您可以调整购物车后重新下单。
+                </div>
+              )}
+
               {/* Order Items */}
               <div className="divide-y divide-zinc-100 px-6">
                 {order.items.map((item) => (
@@ -117,7 +120,7 @@ const OrderPage = async () => {
                             {item.product?.name || '未知商品'}
                           </h4>
                           <span className="text-sm font-black text-zinc-900">
-                            ¥{item.price}
+                            {formatCurrency(item.price)}
                           </span>
                         </div>
                         <p className="mt-1 line-clamp-2 text-xs text-zinc-400">
@@ -142,9 +145,9 @@ const OrderPage = async () => {
                 </div>
 
                 <div className="flex items-center justify-end gap-2 text-sm text-zinc-500">
-                  <span>实付款：</span>
+                  <span>{isRefunded ? '退款金额：' : '实付款：'}</span>
                   <span className="text-xl font-black text-zinc-900">
-                    ¥{order.totalAmount}
+                    {formatCurrency(order.totalAmount)}
                   </span>
                 </div>
               </div>

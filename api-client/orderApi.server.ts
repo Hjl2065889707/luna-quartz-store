@@ -1,14 +1,19 @@
 import { authOptions } from '@/app/api/auth/[...nextauth]/route'
 import { prisma } from '@/lib/prisma'
-import { Order } from '@prisma/client'
+import { Prisma, Order } from '@prisma/client'
 import { getServerSession } from 'next-auth'
 
-export const getUserOrders = async (): Promise<Order[]> => {
+export type OrderWithItems = Prisma.OrderGetPayload<{
+  include: { items: { include: { product: true } } }
+}>
+
+export const getUserOrders = async (): Promise<OrderWithItems[]> => {
+  const session = await getServerSession(authOptions)
+  if (!session?.user) {
+    return []
+  }
+
   try {
-    const session = await getServerSession(authOptions)
-    if (!session?.user) {
-      return []
-    }
     const orders = await prisma.order.findMany({
       where: {
         userId: session.user.id,

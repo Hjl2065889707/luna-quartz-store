@@ -8,6 +8,14 @@ export const ORDER_STATUS = {
 
 export type OrderStatus = (typeof ORDER_STATUS)[keyof typeof ORDER_STATUS]
 
+export const ORDER_STATUS_LIST = [
+  ORDER_STATUS.PENDING,
+  ORDER_STATUS.PAID,
+  ORDER_STATUS.SHIPPED,
+  ORDER_STATUS.DELIVERED,
+  ORDER_STATUS.REFUNDED,
+] as const
+
 const ORDER_STATUS_CONFIG: Record<
   OrderStatus,
   {
@@ -30,3 +38,12 @@ export const getOrderStatusConfig = (status: string) => {
     }
   )
 }
+
+export const ORDER_STATUS_TRANSITIONS: Partial<Record<OrderStatus, OrderStatus>> =
+  {
+    PAID: ORDER_STATUS.SHIPPED,
+    SHIPPED: ORDER_STATUS.DELIVERED,
+  }
+
+export const getNextOrderStatus = (status: string) =>
+  ORDER_STATUS_TRANSITIONS[status as OrderStatus] ?? null

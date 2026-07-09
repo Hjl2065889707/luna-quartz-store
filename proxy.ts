@@ -1,7 +1,7 @@
 import { getToken } from 'next-auth/jwt'
 import { NextRequest, NextResponse } from 'next/server'
 
-export async function middleware(req: NextRequest) {
+export async function proxy(req: NextRequest) {
   const token = await getToken({ req })
 
   if (!token) {
@@ -9,6 +9,7 @@ export async function middleware(req: NextRequest) {
     loginUrl.searchParams.set('callbackUrl', req.nextUrl.pathname)
     return NextResponse.redirect(loginUrl)
   }
+
   if (req.nextUrl.pathname.startsWith('/admin')) {
     if (token.role !== 'ADMIN') {
       return NextResponse.redirect(new URL('/', req.url))

@@ -4,14 +4,14 @@ import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { Truck, PackageCheck } from 'lucide-react'
 import { useToast } from '@/context/ToastContext'
+import { getNextOrderStatus, ORDER_STATUS } from '@/lib/orderStatus'
 
-// 状态机：当前状态 → 下一步操作
 const NEXT_ACTION: Record<
   string,
-  { label: string; nextStatus: string; icon: typeof Truck }
+  { label: string; icon: typeof Truck }
 > = {
-  PAID: { label: '发货', nextStatus: 'SHIPPED', icon: Truck },
-  SHIPPED: { label: '确认送达', nextStatus: 'DELIVERED', icon: PackageCheck },
+  [ORDER_STATUS.PAID]: { label: '发货', icon: Truck },
+  [ORDER_STATUS.SHIPPED]: { label: '确认送达', icon: PackageCheck },
 }
 
 const OrderStatusButton = ({
@@ -25,9 +25,10 @@ const OrderStatusButton = ({
   const { showToast } = useToast()
   const [isLoading, setIsLoading] = useState(false)
   const action = NEXT_ACTION[currentStatus]
+  const nextStatus = getNextOrderStatus(currentStatus)
 
   // DELIVERED、PENDING、REFUNDED 等状态没有下一步物流操作
-  if (!action) return null
+  if (!action || !nextStatus) return null
 
   const handleClick = async () => {
     setIsLoading(true)
@@ -35,7 +36,7 @@ const OrderStatusButton = ({
       const res = await fetch(`/api/orders/${orderId}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ status: action.nextStatus }),
+        body: JSON.stringify({ status: nextStatus }),
       })
       if (!res.ok) {
         const data = await res.json()

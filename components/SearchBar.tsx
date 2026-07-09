@@ -8,6 +8,7 @@ import { Plus, Search, X } from 'lucide-react'
 import Image from 'next/image'
 import { useEffect, useRef, useState } from 'react'
 import useSWR from 'swr'
+import { formatCurrency } from '@/lib/formatters'
 
 const SearchBar = () => {
   const { addToCart } = useCart()
@@ -120,7 +121,7 @@ const SearchBar = () => {
                         {product.name}
                       </span>
                       <span className="mt-0.5 text-xs font-black text-zinc-500">
-                        ¥{product.price}
+                        {formatCurrency(product.price)}
                       </span>
                     </div>
                   </div>
