@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { Country, State } from 'country-state-city'
 import { signIn } from 'next-auth/react'
 import { SignupFormValues, signupSchema } from '@/lib/schemas/auth'
-import { useForm } from 'react-hook-form'
+import { useForm, useWatch } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 
 const MAX_STEP = 3
@@ -17,7 +17,7 @@ const SignupPage = () => {
     trigger,
     handleSubmit,
     formState: { errors },
-    watch,
+    control,
     setValue,
     setError,
     getValues,
@@ -32,24 +32,32 @@ const SignupPage = () => {
     },
   })
 
-  const selectedCountry = watch('country')
+  const selectedCountry = useWatch({
+    control,
+    name: 'country',
+  })
 
   const nextStep = async () => {
     let isStepValid = false
-    
+
     if (step === 1) {
       isStepValid = await trigger(['name', 'email'])
-      
+
       // 核心魔改：只有 Zod 点头放行了，我们才舍得花网络开销去查数据库
       if (isStepValid) {
         const emailToTest = getValues('email')
         try {
-          const res = await fetch(`/api/auth/check-email?email=${encodeURIComponent(emailToTest)}`)
+          const res = await fetch(
+            `/api/auth/check-email?email=${encodeURIComponent(emailToTest)}`,
+          )
           const data = await res.json()
-          
+
           if (data.exists) {
             // 发现重复邮箱，用警员身份开出罚单！
-            setError('email', { type: 'manual', message: 'This email is already registered' })
+            setError('email', {
+              type: 'manual',
+              message: 'This email is already registered',
+            })
             isStepValid = false // 直接拉下红灯电闸！
           }
         } catch (err) {
@@ -57,7 +65,7 @@ const SignupPage = () => {
         }
       }
     }
-    
+
     if (step === 2) {
       isStepValid = await trigger(['country', 'state'])
     }
@@ -93,7 +101,7 @@ const SignupPage = () => {
         console.error(errorData)
       }
     } catch (error) {
-      console.error('程序有问题')
+      console.error(error, '系统开小差了...')
     }
   }
 

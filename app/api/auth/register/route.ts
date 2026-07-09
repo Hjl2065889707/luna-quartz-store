@@ -32,11 +32,19 @@ export async function POST(request: Request) {
         country,
         state,
       },
+      select: {
+        id: true,
+        email: true,
+        name: true,
+        country: true,
+        state: true,
+        role: true,
+        createdAt: true,
+        updatedAt: true,
+      },
     })
 
-    const { password: _, ...userWithoutPassword } = user
-
-    return NextResponse.json(userWithoutPassword, { status: 201 }) // 201 表示 Created 创建成功
+    return NextResponse.json(user, { status: 201 })
   } catch (error) {
     console.error('注册过程中发生了意料外的崩溃:', error)
 

@@ -1,11 +1,5 @@
 import Link from 'next/link'
-import {
-  Package,
-  ShoppingCart,
-  LayoutDashboard,
-  LogOut,
-  Store,
-} from 'lucide-react'
+import { LogOut, Store } from 'lucide-react'
 import { AdminSidebarNav } from '@/components/admin/AdminSidebarNav'
 
 export default function AdminLayout({
@@ -16,7 +10,7 @@ export default function AdminLayout({
   return (
     <div className="flex min-h-screen bg-[#F1F4F7]">
       {/* Sidebar */}
-      <aside className="fixed left-0 top-0 z-40 flex h-screen w-64 flex-col border-r border-[#DEE3E9] bg-white">
+      <aside className="fixed top-0 left-0 z-40 flex h-screen w-64 flex-col border-r border-[#DEE3E9] bg-white">
         {/* Logo */}
         <div className="flex h-16 items-center gap-3 border-b border-[#DEE3E9] px-6">
           <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#0064E0] text-white shadow-[0_4px_14px_rgba(0,100,224,0.3)]">

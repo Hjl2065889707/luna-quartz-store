@@ -4,7 +4,6 @@ import {
   ShoppingCart,
   DollarSign,
   Users,
-  TrendingUp,
   ArrowRight,
 } from 'lucide-react'
 import Link from 'next/link'

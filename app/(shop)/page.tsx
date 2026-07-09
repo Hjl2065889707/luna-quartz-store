@@ -1,8 +1,8 @@
-import { getProducts } from '@/api-client/productApi'
+import { getActiveProducts } from '@/api-client/productApi.server'
 import ItemCell from '@/components/ItemCell'
 
 export default async function Home() {
-  const products = await getProducts()
+  const products = await getActiveProducts()
   return (
     // Beautiful subtle gradient background
     <div className="min-h-screen bg-[radial-gradient(ellipse_at_top,var(--tw-gradient-stops))] from-zinc-100 via-zinc-50 to-white pt-10 pb-20">

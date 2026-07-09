@@ -42,6 +42,6 @@ export async function POST(req: NextRequest) {
     })
     return NextResponse.json(product)
   } catch (error) {
-    return new NextResponse('创建商品失败', { status: 500 })
+    return new NextResponse('创建商品失败' + error, { status: 500 })
   }
 }

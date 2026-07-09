@@ -8,39 +8,17 @@ import { Product } from '@/types'
  * 未来切换 C# .NET 后端时，只需修改此文件中的 URL 即可。
  */
 
-export const getProducts = async (): Promise<Product[]> => {
-  // 必须使用绝对路径，假装它是一个外部的 C# 服务器
-  const res = await fetch(`http://localhost:3000/api/products`)
-  if (!res.ok) {
-    throw new Error('Failed to fetch products')
-  }
-  return res.json()
-}
+const API_BASE_URL = (process.env.NEXT_PUBLIC_API_BASE_URL ?? '').replace(
+  /\/$/,
+  '',
+)
+
+const apiUrl = (path: string) => `${API_BASE_URL}${path}`
 
 export const searchProducts = async (query: string): Promise<Product[]> => {
-  const res = await fetch(`/api/products?q=${encodeURIComponent(query)}`)
+  const res = await fetch(apiUrl(`/api/products?q=${encodeURIComponent(query)}`))
   if (!res.ok) {
     throw new Error('Failed to fetch products')
-  }
-  return res.json()
-}
-
-export const getProductById = async (id: string): Promise<Product | null> => {
-  const res = await fetch(`http://localhost:3000/api/products/${id}`)
-
-  if (!res.ok) {
-    if (res.status === 404) return null
-    throw new Error('Failed to fetch product details')
-  }
-  return res.json()
-}
-
-export const deleteProductById = async (id: string) => {
-  const res = await fetch(`/api/products/${id}`, {
-    method: 'DELETE',
-  })
-  if (!res.ok) {
-    throw new Error('Failed to delete product')
   }
   return res.json()
 }
@@ -48,7 +26,7 @@ export const deleteProductById = async (id: string) => {
 export const uploadImage = async (file: File): Promise<{ url: string }> => {
   const formData = new FormData()
   formData.append('file', file)
-  const res = await fetch('/api/upload', {
+  const res = await fetch(apiUrl('/api/upload'), {
     method: 'POST',
     body: formData,
   })
@@ -62,7 +40,7 @@ export const uploadImage = async (file: File): Promise<{ url: string }> => {
 export const createProduct = async (
   data: Record<string, unknown>,
 ): Promise<Product> => {
-  const res = await fetch('/api/products', {
+  const res = await fetch(apiUrl('/api/products'), {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
@@ -78,7 +56,7 @@ export const updateProduct = async (
   id: string,
   data: Record<string, unknown>,
 ): Promise<Product> => {
-  const res = await fetch(`/api/products/${id}`, {
+  const res = await fetch(apiUrl(`/api/products/${id}`), {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),

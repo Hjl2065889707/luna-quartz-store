@@ -1,4 +1,4 @@
-import { getProductById } from '@/api-client/productApi'
+import { getActiveProductById } from '@/api-client/productApi.server'
 import { notFound } from 'next/navigation'
 import ProductPageLayout from './ProductPageLayout'
 import Image from 'next/image'
@@ -13,7 +13,7 @@ export async function generateMetadata({
   params,
 }: ProductPageProps): Promise<Metadata> {
   const { id } = await params
-  const product = await getProductById(id)
+  const product = await getActiveProductById(id)
   if (!product) {
     return { title: '商品未找到 | Antigravity Store' }
   }
@@ -25,7 +25,7 @@ export async function generateMetadata({
 
 const ProductPage = async ({ params }: ProductPageProps) => {
   const { id } = await params
-  const product = await getProductById(id)
+  const product = await getActiveProductById(id)
 
   if (!product) {
     notFound()
