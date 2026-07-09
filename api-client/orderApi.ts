@@ -1,5 +1,7 @@
+import { CheckoutItem } from '@/types'
+
 export const createCheckoutSession = async (
-  items: { productId: string; name: string; price: number; quantity: number }[],
+  items: CheckoutItem[],
   shippingInfo: {
     firstName: string
     lastName: string

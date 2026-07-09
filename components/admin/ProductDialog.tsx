@@ -161,7 +161,10 @@ const ProductDialog = (props: ProductDialogProps) => {
           </div>
 
           {/* Form */}
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          <form
+            onSubmit={(e) => handleSubmit(onSubmit)(e)}
+            className="space-y-4"
+          >
             {/* Image Upload */}
             <div>
               <label className="mb-1.5 block text-sm font-medium text-[#1C2B33]">
@@ -180,7 +183,7 @@ const ProductDialog = (props: ProductDialogProps) => {
                   <button
                     type="button"
                     onClick={removeImage}
-                    className="absolute -right-2 -top-2 rounded-full bg-red-600 p-1 text-white shadow-md transition-transform hover:scale-110"
+                    className="absolute -top-2 -right-2 rounded-full bg-red-600 p-1 text-white shadow-md transition-transform hover:scale-110"
                   >
                     <X size={12} />
                   </button>

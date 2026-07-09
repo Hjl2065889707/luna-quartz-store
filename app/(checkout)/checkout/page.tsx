@@ -7,14 +7,16 @@ import { CheckoutFormValues, checkoutSchema } from '@/lib/schemas/checkout'
 import { zodResolver } from '@hookform/resolvers/zod'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useToast } from '@/context/ToastContext'
+import { CheckoutItem } from '@/types'
 
 export default function CheckoutPage() {
   const { cartState } = useCart()
   const router = useRouter()
   const { showToast } = useToast()
+  const [isRedirecting, setIsRedirecting] = useState(false)
 
   const {
     register,
@@ -24,8 +26,10 @@ export default function CheckoutPage() {
     resolver: zodResolver(checkoutSchema),
   })
 
+  const isPaying = isSubmitting || isRedirecting
+
   const onSubmit = async (data: CheckoutFormValues) => {
-    const items = cartState.items.map((item) => ({
+    const items: CheckoutItem[] = cartState.items.map((item) => ({
       productId: item.id,
       name: item.name,
       quantity: item.quantity,
@@ -34,7 +38,8 @@ export default function CheckoutPage() {
 
     try {
       const { url } = await createCheckoutSession(items, data)
-      window.location.href = url
+      setIsRedirecting(true)
+      window.location.assign(url)
     } catch (error) {
       const message =
         error instanceof Error ? error.message : '下单失败，请重试'
@@ -206,11 +211,12 @@ export default function CheckoutPage() {
             </div>
 
             <button
-              className="mt-8 w-full rounded-xl bg-zinc-900 py-4 text-base font-bold text-white shadow-lg transition-all hover:bg-zinc-800 active:scale-[0.98]"
+              className="mt-8 w-full rounded-xl bg-zinc-900 py-4 text-base font-bold text-white shadow-lg transition-all hover:bg-zinc-800 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50"
               form="checkout-form"
               type="submit"
+              disabled={isPaying}
             >
-              确认并支付
+              {isPaying ? '订单创建中...' : '确认并支付'}
             </button>
           </div>
         </div>

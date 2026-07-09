@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '../auth/[...nextauth]/route'
 import { prisma } from '@/lib/prisma'
+import { CheckoutItem } from '@/types'
 
 export async function POST(req: NextRequest) {
   try {
@@ -24,7 +25,7 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    const lineItems = body.items.map((item: any) => {
+    const lineItems = body.items.map((item: CheckoutItem) => {
       return {
         price_data: {
           currency: 'aud',
