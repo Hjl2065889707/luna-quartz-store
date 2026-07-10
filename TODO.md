@@ -1,35 +1,161 @@
 # 技术债务 & 后续优化 TODO
 
-> 记录当前已知的需要优化但暂不影响功能的问题。
+> 更新日期：2026-07-10
+>
+> 这份清单记录项目当前真实状态。已完成项保留在“已完成”区域，方便回顾项目是如何从学习 demo 逐步收尾成作品集项目的。
 
-## 🔴 类型安全
+## 当前阶段结论
 
-- [ ] **`checkout/route.ts`** — `req.json()` 返回 `any`，`body` 缺少类型定义。应定义 `CheckoutRequestBody` 接口。
-- [ ] **`checkout/route.ts` L15** — `item: any` 应替换为具体类型。
-- [ ] **`webhooks/stripe/route.ts`** — `orderItems` 里的 `item` 使用了多次内联类型断言（`item: { productId: string; quantity: number }`），应抽取为统一接口。
-- [ ] **统一请求/响应类型** — 所有 API Route 的请求体和响应体都应定义 interface，放在 `types/` 目录下。
-- [ ] **引入 Zod** — 对所有 API Route 的请求体做运行时校验（编译时类型检查无法防御恶意/错误请求）。
+项目已经完成第一轮工程质量收尾：
 
-## 🟡 数据完整性
+- `pnpm lint` 通过。
+- `pnpm exec tsc --noEmit --pretty false` 通过。
+- `pnpm build` 通过。
+- Google Fonts 构建依赖已移除。
+- Next 16 `middleware` 已迁移为 `proxy`。
+- Checkout / webhook / order status 的关键业务链路已做运行时校验和幂等处理。
 
-- [ ] **OrderItem 快照** — `OrderItem` 应存储下单时的 `productName` 和 `productImage`，而非仅存 `productId`。否则商品更新后历史订单数据不准确。
-- [ ] **Webhook 库存不足兜底** — 当前 `$transaction` 内未检查 `stock >= quantity`。极端并发场景下可能扣成负数。应加校验，库存不足时自动调用 `stripe.refunds.create()` 退款。
-- [ ] **前端库存限制** — 商品详情页和购物车的数量选择器应限制最大值为当前库存。
+下一阶段建议进入：
 
-## 🟢 代码质量
+```text
+水晶独立站产品化
+  -> 24 个英文水晶商品
+  -> 首页 landing page
+  -> 分类页面
+  -> 商品列表分页
+  -> 前台英文化
+  -> 首页和商品页视觉升级
+  -> 技术 SEO
+```
 
-- [ ] **`seed.ts` 删除顺序** — `deleteMany` 需先删 `OrderItem` → `Order` → `Product`，否则外键约束报错。
-- [ ] **`productApi.ts` 服务端/客户端混用** — `getProductById` 用了硬编码 `http://localhost:3000` 的绝对路径，部署后会失败。
-- [ ] **`authOptions` 导出方式** — 从 `route.ts` 导出 `authOptions` 可能导致 Next.js 打包问题，最佳实践是抽到单独的 `lib/auth.ts`。
+阶段计划详见：[Phase 2：水晶独立站前台重构计划](docs/phase-2-crystal-store-frontend-restructure.md)。
 
-## 🔵 功能缺失
+---
 
-- [x] **Admin 新增商品** — `POST /api/products` + 表单弹窗 + 图片上传
-- [x] **Admin 编辑商品** — `PUT /api/products/[id]` + 复用 ProductDialog
-- [x] **Admin 订单状态管理** — PAID → SHIPPED → DELIVERED 状态机
-- [ ] **购物车部分支付** — 当前清空整个购物车，应只删除已下单的商品
+## 已完成
 
-## 🟣 UX 优化
+### 工程质量
 
-- [ ] **Toast 通知组件** — 替换所有 `alert()` 调用（如库存不足提示），改用页面内 Toast 通知，提升用户体验。
-- [ ] **商品详情页库存显示** — 展示当前库存数量，缺货时禁用"加入购物车"按钮。
+- [x] 修复 `pnpm lint` error 和 warning。
+- [x] 修复 TypeScript 类型检查问题。
+- [x] 删除废弃的 `data/product.ts`。
+- [x] 移除 `next/font/google`，改用系统字体，避免腾讯云构建访问 Google Fonts。
+- [x] 配置 `turbopack.root`，消除 Next.js workspace root 推断警告。
+- [x] 将 `middleware.ts` 迁移为 `proxy.ts`，消除 Next 16 deprecated warning。
+
+### Checkout 和支付安全
+
+- [x] `checkout/route.ts` 使用 Zod 校验请求体。
+- [x] 定义并统一使用 `CheckoutItemSnapshot`。
+- [x] 后端重新校验商品是否存在、是否上架、库存、价格和名称。
+- [x] Stripe line items 使用后端确认过的商品快照。
+- [x] webhook 使用 Stripe 签名验证。
+- [x] webhook 根据 `stripeSessionId` 做幂等检查。
+- [x] webhook 中使用 `updateMany + stock: { gte: quantity }` 做原子库存扣减。
+- [x] 库存不足时自动调用 Stripe refund。
+- [x] 库存不足退款后创建 `REFUNDED` 订单。
+- [x] success page 根据数据库订单状态显示 `PAID` / `REFUNDED` / processing。
+- [x] `REFUNDED` 订单不清空购物车。
+
+### 订单和后台
+
+- [x] Admin 订单状态管理：`PAID -> SHIPPED -> DELIVERED`。
+- [x] 订单状态样式、状态列表、状态流转规则集中到 `lib/orderStatus.ts`。
+- [x] `PATCH /api/orders/[id]` 使用 Zod 校验订单状态。
+- [x] 用户订单页显示退款说明。
+- [x] `getUserOrders` 返回准确的 Prisma include 类型，移除页面里的强制类型断言。
+
+### 商品和部署边界
+
+- [x] Admin 新增商品：`POST /api/products` + 表单弹窗 + 图片上传。
+- [x] Admin 编辑商品：`PATCH /api/products/[id]` + 复用 ProductDialog。
+- [x] Admin 商品上下架使用软删除思路：`isActive`。
+- [x] 前台只展示 `isActive: true` 的商品。
+- [x] 客户端 API base URL 改成环境变量驱动，移除硬编码 `localhost:3000`。
+- [x] 全站金额显示统一为 `AUD`，使用 `formatCurrency()`。
+- [x] 准备 24 个水晶商品数据。
+- [x] 为 mock 商品配置公开 placeholder 图片 URL。
+
+---
+
+## 高优先级 TODO
+
+### 1. 作品集产品化
+
+- [x] 新增 `docs/phase-2-crystal-store-frontend-restructure.md`，持久化 Phase 2 前台重构计划。
+- [x] 新增 `lib/site.ts`，集中维护英文水晶独立站品牌信息。
+- [x] 新增 `lib/categories.ts`，集中维护商品分类 slug、数据库值和 SEO 文案。
+- [x] 前台 Navbar 从旧的 `Antigravity Store` / `Electronics` / `Lifestyle` 切换为水晶店导航。
+- [x] 新增 Footer。
+- [x] 新增 About / Crystal Guide / Shipping & Returns / FAQ / Contact 信息页骨架。
+- [x] 将 `/` 从商品列表改为 landing page 初版。
+- [x] 新增 `/shop` 临时全部商品页，后续升级为分页版本。
+- [x] 新增 `/collections/[slug]` 临时分类页，后续升级为分页版本。
+- [x] 将 `prisma/seed.ts` 切换为使用 `crystalProductsForSeed`。
+- [ ] 前台页面文案英文化。
+- [ ] 统一澳洲电商语境：AUD、shipping、returns、contact、FAQ 等。
+
+### 2. 商品列表分页
+
+- [ ] 设计分页参数：`page`、`pageSize`、`totalItems`、`totalPages`。
+- [ ] 服务端查询改为 `skip` / `take`。
+- [ ] 前台商品列表增加分页 UI。
+- [ ] 搜索、分类、分页之间保持 URL 状态一致。
+
+### 3. 技术 SEO
+
+- [ ] 首页 metadata。
+- [ ] 商品详情页动态 metadata。
+- [ ] Open Graph metadata。
+- [ ] `robots.txt`。
+- [ ] `sitemap.xml`。
+- [ ] Product JSON-LD。
+- [ ] 图片 alt 文案。
+
+### 4. 部署准备
+
+- [ ] 确认腾讯云子域名、HTTPS、Nginx 反向代理方案。
+- [ ] 部署后测试 Stripe API 出站访问。
+- [ ] 部署后测试 Stripe webhook 入站访问。
+- [ ] 决定最终公开 demo 是腾讯云还是 Vercel。
+- [ ] 准备生产环境变量清单。
+
+---
+
+## 中优先级 TODO
+
+### 数据模型和订单快照
+
+- [ ] `OrderItem` 存储下单时的 `productName` 和 `productImage`，避免商品后续修改影响历史订单展示。
+- [ ] 保存 Stripe `paymentIntentId`。
+- [ ] 保存 Stripe `refundId`。
+- [ ] 增加 `refundReason`、`refundedAt` 字段。
+- [ ] 将订单状态从普通字符串升级为更严格的 enum 或共享 schema。
+
+### 测试
+
+- [ ] 给 checkout API 增加测试。
+- [ ] 给 Stripe webhook 增加测试。
+- [ ] 测试重复 webhook 不会重复扣库存或重复创建订单。
+- [ ] 测试库存不足退款路径。
+- [ ] 测试订单状态非法流转。
+
+### 用户体验
+
+- [ ] 商品详情页和购物车数量选择器限制最大库存。
+- [ ] 缺货时禁用“加入购物车”按钮。
+- [ ] 购物车清空逻辑从“清空全部”升级为“只移除已支付商品”。
+- [ ] 替换残留的 `alert()` 为 Toast。
+- [ ] checkout 页面地址表单英文化并优化澳洲地址字段。
+
+---
+
+## 低优先级 TODO
+
+- [ ] 将 `authOptions` 从 route 文件抽到 `lib/auth.ts`。
+- [ ] 收紧 `next.config.ts` 里的图片 `remotePatterns`，不要长期使用 `hostname: '**'`。
+- [ ] 根据未来部署方案，把 SQLite 迁移到 PostgreSQL。
+- [ ] 将支付和订单逻辑拆成 service 层，方便未来迁移到 C# / ASP.NET Core。
+- [ ] 增加邮件通知，例如订单成功和退款通知。
+- [ ] 评估 Google OAuth 是否放到海外部署版本实现。
+- [ ] Apple OAuth 暂缓，除非后续有明确作品集需求。

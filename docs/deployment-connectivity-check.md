@@ -23,6 +23,39 @@
 
 中国大陆服务器访问 Stripe、Google 等海外服务时可能不稳定。Stripe 如果不能稳定访问，就会直接影响 checkout 流程。
 
+## 当前结论更新：2026-07-09
+
+初步连通性测试结果：
+
+- 腾讯云服务器访问 Stripe API 成功：`HTTP 200 in 0.666203s`。
+- 腾讯云服务器无法访问 Google OAuth 相关地址。
+- 腾讯云服务器可以访问 Apple OAuth 相关地址，但 Apple 登录配置成本较高。
+
+当前项目工程状态：
+
+- `pnpm lint` 通过。
+- `pnpm exec tsc --noEmit --pretty false` 通过。
+- `pnpm build` 通过。
+- `next/font/google` 已移除，不再依赖 Google Fonts 构建。
+- `middleware.ts` 已迁移为 `proxy.ts`，符合 Next 16 新约定。
+- Turbopack workspace root 警告已通过 `next.config.ts` 配置消除。
+
+当前部署建议：
+
+```text
+可以继续用腾讯云练习部署。
+Stripe API 初步可访问，因此 test mode checkout 有继续验证价值。
+Google OAuth 不建议放进腾讯云部署版本的核心功能。
+Apple OAuth 暂缓。
+```
+
+下一次部署前还需要确认：
+
+- 子域名是否已备案或符合腾讯云公开访问要求。
+- HTTPS 证书是否配置完成。
+- Stripe webhook 是否能从 Stripe Dashboard 打到腾讯云公网地址。
+- 澳洲访问速度是否能接受。
+
 ## 需要测试什么
 
 | 测试项 | 为什么重要 | demo 是否必须 |
@@ -191,11 +224,21 @@ https://shop.example.com/api/webhooks/stripe
 
 ## 推荐项目路线
 
-Phase 1：Code review 和作品集差距分析。
+Phase 1：Code review 和作品集差距分析。（已完成）
 
-Phase 2：把项目改造成英文水晶独立站 demo。
+Phase 1.5：工程质量和支付链路收尾。（已完成）
 
-Phase 3：准备 24 个商品，实现商品列表分页。
+- lint / typecheck / build 通过
+- Checkout API 运行时校验
+- Stripe webhook 幂等
+- 原子库存扣减
+- 库存不足自动退款
+- success page 根据订单状态展示结果
+- 订单状态流转集中管理
+
+Phase 2：把项目改造成英文水晶独立站 demo。（下一阶段）
+
+Phase 3：准备 24 个商品，实现商品列表分页。（下一阶段重点学习）
 
 Phase 4：加入技术 SEO：
 
@@ -207,9 +250,9 @@ Phase 4：加入技术 SEO：
 - Product JSON-LD
 - 图片 alt 文案
 
-Phase 5：测试腾讯云连通性。
+Phase 5：腾讯云部署。
 
-Phase 6：决定最终部署方案：
+Phase 6：根据线上测试决定最终公开 demo 方案：
 
 - 如果 Stripe 和 HTTPS 都稳定，就部署到腾讯云。
 - 如果腾讯云影响支付流程，就用 Vercel 做最终公开 demo。

@@ -9,6 +9,18 @@ export const getActiveProducts = async () => {
   return products
 }
 
+export const getActiveProductsByCategory = async (category: string) => {
+  const products = await prisma.product.findMany({
+    where: {
+      isActive: true,
+      category,
+    },
+    orderBy: { createdAt: 'desc' },
+  })
+
+  return products
+}
+
 export const getActiveProductById = async (id: string) => {
   const product = await prisma.product.findFirst({
     where: {

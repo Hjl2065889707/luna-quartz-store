@@ -21,6 +21,35 @@
 - `lib/orderStatus.ts`
 - `prisma/schema.prisma`
 
+## 当前实现状态：2026-07-09
+
+已完成：
+
+- 正常支付路径已联调通过。
+- 库存不足自动退款路径已联调通过。
+- success page 已根据数据库订单状态展示不同结果。
+- `PAID` 订单会清空购物车。
+- `REFUNDED` 订单不会清空购物车。
+- 用户订单页会显示退款说明。
+- Admin 和用户端订单状态样式已统一。
+- 订单状态流转规则集中在 `lib/orderStatus.ts`。
+- `PATCH /api/orders/[id]` 已使用 Zod 校验请求体。
+- 全站金额显示已统一为 `AUD`。
+
+暂未做：
+
+- 重放重复 webhook 的测试暂时跳过。
+- 订单表暂未保存 `paymentIntentId`、`refundId`、`refundReason`、`refundedAt`。
+- webhook 自动化测试暂未补。
+
+当前学习重点：
+
+```text
+理解 checkout 和 webhook 是两条链路；
+理解为什么支付成功跳转不等于订单最终成功；
+理解 webhook 幂等、库存复查、事务和退款边界。
+```
+
 ---
 
 ## 一、完整支付流程

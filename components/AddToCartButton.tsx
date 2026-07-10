@@ -8,10 +8,10 @@ const AddToCartButton = ({ product }: { product: Product }) => {
   return (
     <button
       disabled={product.stock <= 0}
-      className="w-full rounded-full bg-zinc-900 px-8 py-4 text-base font-bold text-white transition-all hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
+      className="w-full rounded-full bg-stone-900 px-8 py-4 text-base font-bold text-white transition-all hover:bg-stone-800 disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
       onClick={() => addToCart(product)}
     >
-      加入购物车
+      Add to cart
     </button>
   )
 }

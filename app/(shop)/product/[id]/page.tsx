@@ -5,6 +5,7 @@ import Image from 'next/image'
 import AddToCartButton from '@/components/AddToCartButton'
 import { Metadata } from 'next'
 import { formatCurrency } from '@/lib/formatters'
+import { siteConfig } from '@/lib/site'
 
 interface ProductPageProps {
   params: Promise<{ id: string }>
@@ -16,10 +17,10 @@ export async function generateMetadata({
   const { id } = await params
   const product = await getActiveProductById(id)
   if (!product) {
-    return { title: '商品未找到 | Antigravity Store' }
+    return { title: `Product not found | ${siteConfig.name}` }
   }
   return {
-    title: `${product.name} | Antigravity Store`,
+    title: `${product.name} | ${siteConfig.name}`,
     description: product.description,
   }
 }
@@ -62,8 +63,8 @@ const ProductPage = async ({ params }: ProductPageProps) => {
           </p>
           <div className="mt-8 border-t border-zinc-100 pt-8">
             <p className="mb-4 text-sm text-zinc-500">
-              库存状态：
-              {product.stock > 0 ? `有货 (${product.stock}件)` : '缺货'}
+              Availability:{' '}
+              {product.stock > 0 ? `${product.stock} in stock` : 'Out of stock'}
             </p>
             <AddToCartButton product={product} />
           </div>

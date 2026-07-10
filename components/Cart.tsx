@@ -52,7 +52,7 @@ const Cart = () => {
       <button
         className="relative flex cursor-pointer items-center justify-center rounded-full p-2 text-zinc-700 transition-colors hover:bg-zinc-100 hover:text-zinc-900"
         onClick={() => setIsOpenDropdown(!isOpenDropdown)}
-        aria-label="购物车"
+        aria-label="Cart"
       >
         <ShoppingBag size={22} strokeWidth={2} />
 
@@ -68,9 +68,9 @@ const Cart = () => {
         <div className="animate-in fade-in slide-in-from-top-4 absolute top-full right-0 z-50 mt-4 w-[360px] origin-top-right overflow-hidden rounded-2xl bg-white shadow-[0_10px_40px_-10px_rgba(0,0,0,0.15)] ring-1 ring-black/5 duration-200">
           {/* Header */}
           <div className="flex items-center justify-between border-b border-zinc-100 bg-zinc-50/50 p-4">
-            <h3 className="font-semibold text-zinc-900">购物袋</h3>
+            <h3 className="font-semibold text-zinc-900">Shopping bag</h3>
             <div className="rounded-full bg-zinc-200 px-2 py-0.5 text-xs font-bold text-zinc-600">
-              {totalItemCount} 件商品
+              {totalItemCount} items
             </div>
           </div>
 
@@ -81,9 +81,11 @@ const Cart = () => {
                 <ShoppingBag size={32} />
               </div>
               <p className="text-sm font-medium text-zinc-900">
-                你的购物车空空如也
+                Your cart is empty
               </p>
-              <p className="mt-1 text-xs text-zinc-500">挑选一些喜欢的单品吧</p>
+              <p className="mt-1 text-xs text-zinc-500">
+                Find a crystal you love
+              </p>
             </div>
           ) : (
             /* Condition B: Filled State */
@@ -148,7 +150,7 @@ const Cart = () => {
                         <button
                           onClick={() => removeFromCart(item.id)}
                           className="flex cursor-pointer items-center text-zinc-300 opacity-0 transition-opacity group-hover:opacity-100 hover:text-red-500"
-                          title="移除商品"
+                          title="Remove item"
                         >
                           <Trash2 size={16} />
                         </button>
@@ -162,7 +164,7 @@ const Cart = () => {
               <div className="border-t border-zinc-100 bg-zinc-50 p-4">
                 <div className="mb-4 flex items-center justify-between">
                   <span className="text-sm font-semibold text-zinc-500">
-                    预估总金额
+                    Estimated total
                   </span>
                   <span className="text-xl font-black text-zinc-900">
                     {formatCurrency(cartState.totalAmount)}
@@ -172,7 +174,7 @@ const Cart = () => {
                   onClick={() => handleCheckoutButtonClick()}
                   className="flex w-full items-center justify-center gap-2 rounded-xl bg-zinc-900 px-4 py-3.5 text-sm font-bold text-white shadow-md transition-all hover:bg-zinc-800 active:scale-[0.98]"
                 >
-                  去结算
+                  Checkout
                   <ArrowRight size={16} />
                 </button>
               </div>

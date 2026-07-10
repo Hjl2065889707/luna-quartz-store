@@ -3,11 +3,11 @@ import './globals.css'
 import AuthProvider from '@/components/AuthProvider'
 import { CartProvider } from '@/context/CartContext'
 import { ToastProvider } from '@/context/ToastContext'
+import { siteConfig } from '@/lib/site'
 
 export const metadata: Metadata = {
-  title: 'Antigravity Store | Premium Tech & Lifestyle',
-  description:
-    'Discover curated premium tech gadgets and lifestyle essentials at Antigravity Store.',
+  title: `${siteConfig.name} | Crystal Store Demo`,
+  description: siteConfig.description,
 }
 
 export default function RootLayout({

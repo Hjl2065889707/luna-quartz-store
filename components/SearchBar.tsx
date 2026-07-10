@@ -55,7 +55,7 @@ const SearchBar = () => {
         <input
           className="flex-1 bg-transparent px-3 text-sm font-medium text-zinc-900 outline-none placeholder:font-normal placeholder:text-zinc-400"
           type="text"
-          placeholder="搜索单品、系列..."
+          placeholder="Search crystals..."
           value={searchText}
           onChange={(e) => {
             setSearchText(e.target.value)
@@ -88,7 +88,7 @@ const SearchBar = () => {
           {isLoading && (
             <div className="flex h-20 items-center justify-center">
               <span className="text-sm font-medium text-zinc-400">
-                正在搜索...
+                Searching...
               </span>
             </div>
           )}
@@ -97,7 +97,7 @@ const SearchBar = () => {
           {!isLoading && searchedProduct.length > 0 && (
             <div className="custom-scrollbar flex max-h-[60vh] flex-col gap-1 overflow-y-auto pt-1">
               <div className="px-3 pt-1 pb-2 text-xs font-bold tracking-wider text-zinc-400">
-                商品结果 ({searchedProduct.length})
+                Results ({searchedProduct.length})
               </div>
 
               {searchedProduct.map((product: Product) => (
@@ -133,8 +133,8 @@ const SearchBar = () => {
                       // No explicit close here, matching the industrial standard!
                     }}
                     className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-zinc-600 transition-all group-hover:bg-zinc-900 group-hover:text-white group-hover:shadow-md active:scale-90"
-                    aria-label="加入购物车"
-                    title="加入购物车"
+                    aria-label="Add to cart"
+                    title="Add to cart"
                   >
                     <Plus size={16} strokeWidth={2.5} />
                   </button>
@@ -146,8 +146,8 @@ const SearchBar = () => {
           {/* Empty State */}
           {!isLoading && searchedProduct.length === 0 && (
             <div className="flex h-32 flex-col items-center justify-center text-center">
-              <p className="text-sm font-bold text-zinc-900">暂无匹配商品 😢</p>
-              <p className="mt-1 text-xs text-zinc-500">换个关键词试试吧</p>
+              <p className="text-sm font-bold text-zinc-900">No products found</p>
+              <p className="mt-1 text-xs text-zinc-500">Try another keyword</p>
             </div>
           )}
         </div>
