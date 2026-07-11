@@ -10,8 +10,8 @@ const NEXT_ACTION: Record<
   string,
   { label: string; icon: typeof Truck }
 > = {
-  [ORDER_STATUS.PAID]: { label: '发货', icon: Truck },
-  [ORDER_STATUS.SHIPPED]: { label: '确认送达', icon: PackageCheck },
+  [ORDER_STATUS.PAID]: { label: 'Mark shipped', icon: Truck },
+  [ORDER_STATUS.SHIPPED]: { label: 'Mark delivered', icon: PackageCheck },
 }
 
 const OrderStatusButton = ({
@@ -27,7 +27,6 @@ const OrderStatusButton = ({
   const action = NEXT_ACTION[currentStatus]
   const nextStatus = getNextOrderStatus(currentStatus)
 
-  // DELIVERED、PENDING、REFUNDED 等状态没有下一步物流操作
   if (!action || !nextStatus) return null
 
   const handleClick = async () => {
@@ -40,12 +39,12 @@ const OrderStatusButton = ({
       })
       if (!res.ok) {
         const data = await res.json()
-        throw new Error(data.error || '操作失败')
+        throw new Error(data.error || 'Action failed')
       }
       router.refresh()
-      showToast(`${action.label}成功`, 'success')
+      showToast(`${action.label} successfully`, 'success')
     } catch (error) {
-      showToast(error instanceof Error ? error.message : '操作失败', 'error')
+      showToast(error instanceof Error ? error.message : 'Action failed', 'error')
     } finally {
       setIsLoading(false)
     }
@@ -57,10 +56,10 @@ const OrderStatusButton = ({
     <button
       onClick={handleClick}
       disabled={isLoading}
-      className="flex items-center gap-1.5 rounded-full bg-[#0064E0] px-3.5 py-1.5 text-xs font-medium text-white shadow-[0_2px_8px_rgba(0,100,224,0.25)] transition-all hover:bg-[#0143B5] active:scale-[0.97] disabled:cursor-not-allowed disabled:opacity-50"
+      className="flex items-center gap-1.5 rounded-full bg-[#2F2523] px-3.5 py-1.5 text-xs font-medium text-white shadow-[0_8px_18px_rgba(74,50,39,0.18)] transition-all hover:bg-[#4A3732] active:scale-[0.97] disabled:cursor-not-allowed disabled:opacity-50"
     >
       <Icon size={14} />
-      {isLoading ? '处理中...' : action.label}
+      {isLoading ? 'Updating...' : action.label}
     </button>
   )
 }

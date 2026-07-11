@@ -43,12 +43,11 @@ export default function CheckoutPage() {
       window.location.assign(url)
     } catch (error) {
       const message =
-        error instanceof Error ? error.message : '下单失败，请重试'
+        error instanceof Error ? error.message : 'Checkout failed. Please try again.'
       showToast(message, 'error')
     }
   }
 
-  // 如果用户清空了购物车还强行手敲 URL 进这个页面，就跳转回首页
   useEffect(() => {
     if (cartState.items.length === 0) {
       router.push('/')
@@ -58,14 +57,27 @@ export default function CheckoutPage() {
   if (cartState.items.length === 0) return null
 
   return (
-    <div className="mx-auto max-w-7xl px-4 pt-10 pb-24 sm:px-6 lg:px-8">
-      <h1 className="mb-10 text-3xl font-black text-zinc-900">安全结算</h1>
+    <div className="bg-[#FBF7F1]">
+      <div className="mx-auto max-w-7xl px-4 pb-24 pt-10 sm:px-6 lg:px-8">
+      <div className="mb-10">
+        <p className="text-sm font-semibold uppercase tracking-[0.14em] text-[#B76E79]">
+          Secure checkout
+        </p>
+        <h1 className="mt-3 text-4xl font-black text-[#2F2523]">
+          Complete your test order
+        </h1>
+        <p className="mt-3 max-w-2xl text-sm leading-6 text-[#7B6D66]">
+          Stripe runs in test mode for this portfolio demo. No real fulfilment
+          will be processed.
+        </p>
+      </div>
 
       <div className="grid grid-cols-1 gap-12 lg:grid-cols-12">
-        {/* 左侧：配送信息表单 (占 7 列) */}
         <div className="lg:col-span-7">
-          <div className="rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm sm:p-8">
-            <h2 className="mb-6 text-xl font-bold text-zinc-900">配送地址</h2>
+          <div className="rounded-[2rem] border border-[#E8E1D8] bg-white p-6 shadow-[0_12px_30px_rgba(74,50,39,0.05)] sm:p-8">
+            <h2 className="mb-6 text-xl font-bold text-[#2F2523]">
+              Shipping details
+            </h2>
 
             <form
               id="checkout-form"
@@ -74,15 +86,15 @@ export default function CheckoutPage() {
             >
               <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
                 <div>
-                  <label className="mb-2 block text-sm font-medium text-zinc-700">
-                    First Name
+                  <label className="mb-2 block text-sm font-medium text-[#2F2523]">
+                    First name
                   </label>
                   <input
                     type="text"
                     placeholder="Enter your First Name"
                     {...register('firstName')}
                     className={cn(
-                      'w-full rounded-xl border border-zinc-300 px-4 py-3 transition-all outline-none focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900',
+                      'w-full rounded-2xl border border-[#E8E1D8] px-4 py-3 text-[#2F2523] transition-all outline-none focus:border-[#B76E79] focus:ring-2 focus:ring-[#E9D8DC]',
                       errors.firstName &&
                         'border-red-500 focus:border-red-500 focus:ring-red-500',
                     )}
@@ -94,15 +106,15 @@ export default function CheckoutPage() {
                   )}
                 </div>
                 <div>
-                  <label className="mb-2 block text-sm font-medium text-zinc-700">
-                    Last Name
+                  <label className="mb-2 block text-sm font-medium text-[#2F2523]">
+                    Last name
                   </label>
                   <input
                     type="text"
                     placeholder="Enter your Last Name"
                     {...register('lastName')}
                     className={cn(
-                      'w-full rounded-xl border border-zinc-300 px-4 py-3 transition-all outline-none focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900',
+                      'w-full rounded-2xl border border-[#E8E1D8] px-4 py-3 text-[#2F2523] transition-all outline-none focus:border-[#B76E79] focus:ring-2 focus:ring-[#E9D8DC]',
                       errors.lastName &&
                         'border-red-500 focus:border-red-500 focus:ring-red-500',
                     )}
@@ -116,13 +128,13 @@ export default function CheckoutPage() {
               </div>
 
               <div>
-                <label className="mb-2 block text-sm font-medium text-zinc-700">
-                  详细地址
+                <label className="mb-2 block text-sm font-medium text-[#2F2523]">
+                  Address
                 </label>
                 <input
                   type="text"
                   className={cn(
-                    'w-full rounded-xl border border-zinc-300 px-4 py-3 transition-all outline-none focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900',
+                    'w-full rounded-2xl border border-[#E8E1D8] px-4 py-3 text-[#2F2523] transition-all outline-none focus:border-[#B76E79] focus:ring-2 focus:ring-[#E9D8DC]',
                     errors.address &&
                       'border-red-500 focus:border-red-500 focus:ring-red-500',
                   )}
@@ -136,13 +148,13 @@ export default function CheckoutPage() {
               </div>
 
               <div>
-                <label className="mb-2 block text-sm font-medium text-zinc-700">
-                  联系电话
+                <label className="mb-2 block text-sm font-medium text-[#2F2523]">
+                  Phone
                 </label>
                 <input
                   type="tel"
                   className={cn(
-                    'w-full rounded-xl border border-zinc-300 px-4 py-3 transition-all outline-none focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900',
+                    'w-full rounded-2xl border border-[#E8E1D8] px-4 py-3 text-[#2F2523] transition-all outline-none focus:border-[#B76E79] focus:ring-2 focus:ring-[#E9D8DC]',
                     errors.phone &&
                       'border-red-500 focus:border-red-500 focus:ring-red-500',
                   )}
@@ -158,32 +170,29 @@ export default function CheckoutPage() {
           </div>
         </div>
 
-        {/* 右侧：订单摘要 (占 5 列) */}
         <div className="lg:col-span-5">
-          <div className="sticky top-24 rounded-2xl border border-zinc-200 bg-zinc-50 p-6 sm:p-8">
-            <h2 className="mb-6 text-xl font-bold text-zinc-900">订单摘要</h2>
+          <div className="sticky top-28 rounded-[2rem] border border-[#E8E1D8] bg-white p-6 shadow-[0_12px_30px_rgba(74,50,39,0.06)] sm:p-8">
+            <h2 className="mb-6 text-xl font-bold text-[#2F2523]">Order summary</h2>
 
-            {/* 商品列表 */}
             <div className="custom-scrollbar mb-6 max-h-[40vh] space-y-4 overflow-y-auto pr-2">
               {cartState.items.map((item) => (
                 <div key={item.id} className="flex gap-4">
-                  <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-xl border border-zinc-200 bg-white">
+                  <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-2xl border border-[#E8E1D8] bg-[#F4EEE6]">
                     <Image
                       src={item.image}
                       alt={item.name}
                       fill
                       className="object-cover"
                     />
-                    {/* 右上角数量角标 */}
-                    <span className="absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full bg-zinc-900 text-[10px] font-bold text-white ring-2 ring-white">
+                    <span className="absolute -right-2 -top-2 flex h-5 w-5 items-center justify-center rounded-full bg-[#B76E79] text-[10px] font-bold text-white ring-2 ring-white">
                       {item.quantity}
                     </span>
                   </div>
                   <div className="flex flex-1 flex-col justify-center">
-                    <h4 className="line-clamp-2 text-sm font-bold text-zinc-900">
+                    <h4 className="line-clamp-2 text-sm font-bold text-[#2F2523]">
                       {item.name}
                     </h4>
-                    <p className="mt-1 text-sm font-black text-zinc-900">
+                    <p className="mt-1 text-sm font-black text-[#2F2523]">
                       {formatCurrency(item.price)}
                     </p>
                   </div>
@@ -191,36 +200,36 @@ export default function CheckoutPage() {
               ))}
             </div>
 
-            {/* 价格统计 */}
-            <div className="space-y-3 border-t border-zinc-200 pt-6 text-sm text-zinc-500">
+            <div className="space-y-3 border-t border-[#E8E1D8] pt-6 text-sm text-[#7B6D66]">
               <div className="flex justify-between">
-                <span>商品总计</span>
-                <span className="font-medium text-zinc-900">
+                <span>Subtotal</span>
+                <span className="font-medium text-[#2F2523]">
                   {formatCurrency(cartState.totalAmount)}
                 </span>
               </div>
               <div className="flex justify-between">
-                <span>预计运费</span>
-                <span className="font-medium text-zinc-900">免运费</span>
+                <span>Estimated shipping</span>
+                <span className="font-medium text-[#2F2523]">Free</span>
               </div>
-              <div className="flex justify-between border-t border-zinc-200 pt-3 text-base font-black text-zinc-900">
-                <span>应付总额</span>
-                <span className="text-xl text-zinc-900">
+              <div className="flex justify-between border-t border-[#E8E1D8] pt-3 text-base font-black text-[#2F2523]">
+                <span>Total</span>
+                <span className="text-xl text-[#2F2523]">
                   {formatCurrency(cartState.totalAmount)}
                 </span>
               </div>
             </div>
 
             <button
-              className="mt-8 w-full rounded-xl bg-zinc-900 py-4 text-base font-bold text-white shadow-lg transition-all hover:bg-zinc-800 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50"
+              className="mt-8 w-full rounded-full bg-[#2F2523] py-4 text-base font-bold text-white shadow-[0_12px_28px_rgba(74,50,39,0.18)] transition-all hover:bg-[#4A3732] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50"
               form="checkout-form"
               type="submit"
               disabled={isPaying}
             >
-              {isPaying ? '订单创建中...' : '确认并支付'}
+              {isPaying ? 'Creating order...' : 'Continue to payment'}
             </button>
           </div>
         </div>
+      </div>
       </div>
     </div>
   )

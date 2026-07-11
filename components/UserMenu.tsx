@@ -14,7 +14,6 @@ export default function UserMenu({ name, email }: UserMenuProps) {
   const [isOpen, setIsOpen] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
 
-  // 极简的点外面关闭下拉菜单的逻辑
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
@@ -27,38 +26,36 @@ export default function UserMenu({ name, email }: UserMenuProps) {
 
   return (
     <div className="relative" ref={menuRef}>
-      {/* 头像触发器 */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex h-10 w-10 items-center justify-center rounded-full bg-[#F1F4F7] text-[#1C2B33] transition-colors hover:bg-[#DEE3E9] focus:outline-none focus:ring-2 focus:ring-[#0064E0]"
+        className="flex h-10 w-10 items-center justify-center rounded-full bg-[#F4EEE6] text-[#2F2523] transition-colors hover:bg-[#E9D8DC] focus:outline-none focus:ring-2 focus:ring-[#B76E79]"
       >
         <span className="text-[16px] font-bold tracking-tight">
           {name.charAt(0).toUpperCase()}
         </span>
       </button>
 
-      {/* 下拉面板 */}
       {isOpen && (
-        <div className="absolute right-0 mt-3 w-56 origin-top-right rounded-[16px] bg-white shadow-[0_12px_28px_0_rgba(0,0,0,0.2),0_2px_4px_0_rgba(0,0,0,0.1)] ring-1 ring-black ring-opacity-5 focus:outline-none z-50">
-          <div className="px-4 py-4 border-b border-[#DEE3E9]">
-            <p className="text-[16px] font-medium text-[#1C2B33] truncate">
+        <div className="absolute right-0 z-50 mt-3 w-56 origin-top-right rounded-3xl bg-white shadow-[0_24px_70px_rgba(74,50,39,0.16)] ring-1 ring-[#E8E1D8] focus:outline-none">
+          <div className="border-b border-[#E8E1D8] px-4 py-4">
+            <p className="truncate text-[16px] font-medium text-[#2F2523]">
               {name}
             </p>
-            <p className="text-[14px] text-[#65676B] truncate">{email}</p>
+            <p className="truncate text-[14px] text-[#7B6D66]">{email}</p>
           </div>
-          
+
           <div className="p-2">
             <Link
               href="/account/orders"
               onClick={() => setIsOpen(false)}
-              className="flex w-full items-center gap-3 rounded-[8px] px-3 py-2 text-left text-[14px] font-medium text-[#1C2B33] transition-colors hover:bg-[#F1F4F7]"
+              className="flex w-full items-center gap-3 rounded-2xl px-3 py-2 text-left text-[14px] font-medium text-[#2F2523] transition-colors hover:bg-[#F4EEE6]"
             >
               <ShoppingBag size={16} />
-              我的订单
+              My orders
             </Link>
             <button
               onClick={() => signOut({ callbackUrl: '/' })}
-              className="flex w-full items-center gap-3 rounded-[8px] px-3 py-2 text-left text-[14px] font-medium text-[#E41E3F] transition-colors hover:bg-[#F1F4F7]"
+              className="flex w-full items-center gap-3 rounded-2xl px-3 py-2 text-left text-[14px] font-medium text-[#C80A28] transition-colors hover:bg-[#F4EEE6]"
             >
               <LogOut size={16} />
               Sign Out

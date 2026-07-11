@@ -8,10 +8,8 @@ interface RouteParams {
 }
 
 export async function GET(req: NextRequest, { params }: RouteParams) {
-  // Next.js 15+ 中，params 是一个 Promise
   const { id } = await params
 
-  // 这里是真正的后端，可以直接查库
   const product = await prisma.product.findUnique({
     where: { id },
   })
@@ -37,7 +35,7 @@ export async function PATCH(req: NextRequest, { params }: RouteParams) {
     })
     return NextResponse.json(product)
   } catch (error) {
-    console.error('更新商品失败', error)
+    console.error('Failed to update product status', error)
     return new NextResponse('Product not found', { status: 404 })
   }
 }
@@ -58,7 +56,7 @@ export async function PUT(req: NextRequest, { params }: RouteParams) {
     })
     return NextResponse.json(product)
   } catch (error) {
-    console.error('更新商品失败', error)
-    return new NextResponse('更新商品失败', { status: 500 })
+    console.error('Failed to update product', error)
+    return new NextResponse('Failed to update product', { status: 500 })
   }
 }

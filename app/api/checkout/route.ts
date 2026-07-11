@@ -25,7 +25,7 @@ export async function POST(req: NextRequest) {
 
     const userSession = await getServerSession(authOptions)
     if (!userSession?.user) {
-      return NextResponse.json({ error: '用户未登录' }, { status: 401 })
+      return NextResponse.json({ error: 'Please sign in first' }, { status: 401 })
     }
 
     // 商品信息校验（金额/库存/名称等）
@@ -46,19 +46,19 @@ export async function POST(req: NextRequest) {
       }
       if (product.stock < item.quantity) {
         return NextResponse.json(
-          { error: `${product.name} 库存不足` },
+          { error: `${product.name} does not have enough stock` },
           { status: 409 },
         )
       }
       if (product.price !== item.price) {
         return NextResponse.json(
-          { error: `${product.name} 的价格已更新，请重新下单` },
+          { error: `${product.name} price has changed. Please review your cart.` },
           { status: 409 },
         )
       }
       if (product.name !== item.name) {
         return NextResponse.json(
-          { error: `${product.name} 的内容可能已更新，请重新下单` },
+          { error: `${product.name} details have changed. Please review your cart.` },
           { status: 409 },
         )
       }
@@ -98,7 +98,10 @@ export async function POST(req: NextRequest) {
     // 把 Stripe 生成的支付页面 URL 返回给前端
     return NextResponse.json({ url: session.url })
   } catch (error) {
-    console.error('创建支付失败：', error)
-    return NextResponse.json({ error: '创建支付失败' }, { status: 500 })
+    console.error('Failed to create checkout session:', error)
+    return NextResponse.json(
+      { error: 'Failed to create checkout session' },
+      { status: 500 },
+    )
   }
 }

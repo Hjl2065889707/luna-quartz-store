@@ -1,92 +1,97 @@
-'use client' // 因为我们在这个页面上要收集用户的点击和输入事件，所以必须是客户端组件
+'use client'
 
 import { useState } from 'react'
-import { signIn } from 'next-auth/react' // 这是 NextAuth 专门为前端提供的一键登录方法
+import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
+import { Gem } from 'lucide-react'
+import { siteConfig } from '@/lib/site'
 
 export default function LoginPage() {
   const router = useRouter()
-  // 两个用于收集输入框文字的箱子
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [errorText, setErrorText] = useState('') // 如果密码错了，用来显示红字的箱子
+  const [errorText, setErrorText] = useState('')
 
-  // 重点！当用户点击“登录按钮”时触发的函数
-  const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
-    e.preventDefault() // 阻止网页傻乎乎地自动刷新
+  const handleSubmit = async (event: React.SyntheticEvent<HTMLFormElement>) => {
+    event.preventDefault()
 
-    // signIn 就等同于之前去敲保安大门的动作
-    const res = await signIn('credentials', {
-      redirect: false, // 告诉系统：万一登出了错也别乱跳页，我自己在这处理
-      email: email,
-      password: password,
+    const result = await signIn('credentials', {
+      redirect: false,
+      email,
+      password,
     })
 
-    if (res?.error) {
-      // 如果保安 return null 了，就会走到这里
-      setErrorText('邮箱或密码不正确，请重新输入！')
-    } else {
-      // 登录成功了！强行把用户引航重定向回商城主页！
-      router.push('/')
+    if (result?.error) {
+      setErrorText('Invalid email or password. Please try again.')
+      return
     }
+
+    router.push('/')
   }
 
   return (
-    // 用极美的背景渐变和居中对齐包裹
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-indigo-50 to-purple-50">
-      {/* 玻璃拟态高雅白底卡片 */}
-      <div className="relative w-full max-w-md overflow-hidden rounded-2xl border border-white/50 bg-white/80 p-8 shadow-2xl backdrop-blur-xl">
-        <h2 className="mt-4 mb-2 text-center text-3xl font-extrabold tracking-tight text-gray-800">
-          Welcome Back
-        </h2>
-        <p className="mb-8 text-center text-sm text-gray-500">
-          Please enter your details to sign in.
+    <div className="flex min-h-screen items-center justify-center bg-[#FBF7F1] px-4 py-12">
+      <div className="w-full max-w-md rounded-[2rem] border border-[#E8E1D8] bg-white p-8 shadow-[0_24px_70px_rgba(74,50,39,0.12)]">
+        <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#B76E79] text-white">
+          <Gem size={22} />
+        </div>
+        <h1 className="mt-6 text-center text-3xl font-black tracking-tight text-[#2F2523]">
+          Welcome back
+        </h1>
+        <p className="mt-3 text-center text-sm leading-6 text-[#7B6D66]">
+          Sign in to manage your {siteConfig.name} demo account.
         </p>
 
-        {/* 表单一定要套在 form 里，这样按回车键也能触发表单的 onSubmit */}
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="mt-8 space-y-5">
           <div>
-            <label className="mb-2 block text-sm font-semibold text-gray-700">
-              Email Address
+            <label className="mb-2 block text-sm font-semibold text-[#2F2523]">
+              Email address
             </label>
             <input
               type="email"
               required
               value={email}
-              onChange={(e) => setEmail(e.target.value)} // 只要一打字，就把字装进 email 箱子里
-              className="w-full rounded-xl border border-gray-200 bg-gray-50/50 px-4 py-3 transition-all duration-200 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"
+              onChange={(event) => setEmail(event.target.value)}
+              className="w-full rounded-2xl border border-[#E8E1D8] bg-white px-4 py-3 text-[#2F2523] outline-none transition focus:border-[#B76E79] focus:ring-2 focus:ring-[#E9D8DC]"
               placeholder="you@example.com"
             />
           </div>
 
           <div>
-            <label className="mb-2 block text-sm font-semibold text-gray-700">
+            <label className="mb-2 block text-sm font-semibold text-[#2F2523]">
               Password
             </label>
             <input
               type="password"
               required
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full rounded-xl border border-gray-200 bg-gray-50/50 px-4 py-3 transition-all duration-200 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"
-              placeholder="••••••••"
+              onChange={(event) => setPassword(event.target.value)}
+              className="w-full rounded-2xl border border-[#E8E1D8] bg-white px-4 py-3 text-[#2F2523] outline-none transition focus:border-[#B76E79] focus:ring-2 focus:ring-[#E9D8DC]"
+              placeholder="Enter your password"
             />
           </div>
 
-          {/* 如果报错箱子里有文字，就立刻爆出红色警报区 */}
           {errorText && (
-            <div className="flex items-center rounded-lg border border-red-100 bg-red-50 p-3 text-sm text-red-600">
-              ⚠️ {errorText}
+            <div className="rounded-2xl border border-red-100 bg-red-50 p-3 text-sm text-red-700">
+              {errorText}
             </div>
           )}
 
           <button
             type="submit"
-            className="w-full rounded-xl bg-gray-900 px-4 py-3 font-semibold text-white shadow-lg shadow-gray-900/20 transition-all duration-200 hover:-translate-y-0.5 hover:bg-black hover:shadow-gray-900/40 active:translate-y-0"
+            className="w-full rounded-full bg-[#2F2523] px-4 py-3 font-semibold text-white shadow-[0_12px_28px_rgba(74,50,39,0.18)] transition hover:bg-[#4A3732] active:scale-[0.98]"
           >
-            Sign In
+            Sign in
           </button>
         </form>
+
+        <p className="mt-6 text-center text-sm text-[#7B6D66]">
+          New here?{' '}
+          <Link href="/signup" className="font-semibold text-[#8F4F5B]">
+            Create an account
+          </Link>
+        </p>
       </div>
     </div>
   )

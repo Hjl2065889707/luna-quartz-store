@@ -16,14 +16,14 @@ const updateOrderStatusSchema = z.object({
 export async function PATCH(req: NextRequest, { params }: RouteParams) {
   const session = await getServerSession(authOptions)
   if (!session?.user || session.user.role !== 'ADMIN') {
-    return NextResponse.json({ error: '无权限' }, { status: 401 })
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
   const { id } = await params
   const validationResult = updateOrderStatusSchema.safeParse(await req.json())
 
   if (!validationResult.success) {
-    return NextResponse.json({ error: '订单状态无效' }, { status: 400 })
+    return NextResponse.json({ error: 'Invalid order status' }, { status: 400 })
   }
 
   const { status } = validationResult.data
@@ -31,13 +31,13 @@ export async function PATCH(req: NextRequest, { params }: RouteParams) {
   // 查询当前订单
   const order = await prisma.order.findUnique({ where: { id } })
   if (!order) {
-    return NextResponse.json({ error: '订单不存在' }, { status: 404 })
+    return NextResponse.json({ error: 'Order not found' }, { status: 404 })
   }
 
   // 校验状态转换是否合法
   if (getNextOrderStatus(order.status) !== status) {
     return NextResponse.json(
-      { error: `不能从 ${order.status} 变为 ${status}` },
+      { error: `Cannot change status from ${order.status} to ${status}` },
       { status: 400 },
     )
   }

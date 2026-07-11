@@ -32,7 +32,7 @@ export const uploadImage = async (file: File): Promise<{ url: string }> => {
   })
   if (!res.ok) {
     const data = await res.json()
-    throw new Error(data.error || '图片上传失败')
+    throw new Error(data.error || 'Image upload failed')
   }
   return res.json()
 }
@@ -47,7 +47,7 @@ export const createProduct = async (
   })
   if (!res.ok) {
     const err = await res.json()
-    throw new Error(err.error || '创建商品失败')
+    throw new Error(err.error || 'Failed to create product')
   }
   return res.json()
 }
@@ -63,7 +63,7 @@ export const updateProduct = async (
   })
   if (!res.ok) {
     const err = await res.json()
-    throw new Error(err.error || '更新商品失败')
+    throw new Error(err.error || 'Failed to update product')
   }
   return res.json()
 }

@@ -49,9 +49,9 @@ export default async function Home() {
           </div>
         </div>
 
-        <div className="relative min-h-[480px]">
+        <div className="grid gap-4 sm:grid-cols-[1fr_0.72fr] lg:relative lg:block lg:min-h-[480px]">
           {heroProduct && (
-            <div className="absolute right-0 top-0 h-[78%] w-[72%] overflow-hidden rounded-[2rem] bg-white shadow-[0_24px_70px_rgba(74,50,39,0.16)]">
+            <div className="relative aspect-[4/5] overflow-hidden rounded-[2rem] bg-white shadow-[0_24px_70px_rgba(74,50,39,0.16)] lg:absolute lg:right-0 lg:top-0 lg:h-[78%] lg:w-[72%]">
               <Image
                 src={heroProduct.image}
                 alt={heroProduct.name}
@@ -63,7 +63,7 @@ export default async function Home() {
             </div>
           )}
           {secondaryProduct && (
-            <div className="absolute bottom-0 left-0 w-[52%] rounded-[1.5rem] border border-[#E8E1D8] bg-white p-4 shadow-[0_18px_50px_rgba(74,50,39,0.12)]">
+            <div className="rounded-[1.5rem] border border-[#E8E1D8] bg-white p-4 shadow-[0_18px_50px_rgba(74,50,39,0.12)] sm:self-end lg:absolute lg:bottom-0 lg:left-0 lg:w-[52%]">
               <div className="relative aspect-square overflow-hidden rounded-[1rem] bg-[#F4EEE6]">
                 <Image
                   src={secondaryProduct.image}

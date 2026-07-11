@@ -74,11 +74,11 @@ const ProductDialog = (props: ProductDialogProps) => {
 
     const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/avif']
     if (!allowedTypes.includes(file.type)) {
-      setUploadError('仅支持 JPG、PNG、WebP、AVIF 格式')
+      setUploadError('Only JPG, PNG, WebP and AVIF files are supported')
       return
     }
     if (file.size > 5 * 1024 * 1024) {
-      setUploadError('文件大小不能超过 5MB')
+      setUploadError('File size must be under 5MB')
       return
     }
 
@@ -95,7 +95,7 @@ const ProductDialog = (props: ProductDialogProps) => {
   const onSubmit = async (data: ProductFormValues) => {
     // 无论创建还是编辑，都必须有图片
     if (!previewUrl && !imageFile) {
-      setUploadError('请上传商品图片')
+      setUploadError('Please upload a product image')
       return
     }
 
@@ -115,14 +115,14 @@ const ProductDialog = (props: ProductDialogProps) => {
 
       closeDialog()
       router.refresh()
-      showToast(isEdit ? '商品已更新' : '商品已创建', 'success')
+      showToast(isEdit ? 'Product updated' : 'Product created', 'success')
     } catch (error) {
-      showToast(error instanceof Error ? error.message : '操作失败', 'error')
+      showToast(error instanceof Error ? error.message : 'Action failed', 'error')
     }
   }
 
   const inputClassName =
-    'w-full rounded-xl border-2 border-[rgba(10,19,23,0.12)] bg-white px-4 py-2.5 text-sm text-[#1C2B33] outline-none transition-all placeholder:text-[#A0ABB5] focus:border-[#0064E0] focus:shadow-[0_0_0_3px_rgba(0,100,224,0.15)]'
+    'w-full rounded-2xl border border-[#E8E1D8] bg-white px-4 py-2.5 text-sm text-[#2F2523] outline-none transition-all placeholder:text-[#B9AAA2] focus:border-[#B76E79] focus:shadow-[0_0_0_3px_rgba(183,110,121,0.16)]'
 
   return (
     <>
@@ -130,33 +130,33 @@ const ProductDialog = (props: ProductDialogProps) => {
       {isEdit ? (
         <button
           onClick={openDialog}
-          className="rounded-lg p-2 text-[#5D6C7B] transition-colors hover:bg-[#E8F3FF] hover:text-[#0064E0]"
+          className="rounded-lg p-2 text-[#7B6D66] transition-colors hover:bg-[#F4EEE6] hover:text-[#8F4F5B]"
         >
           <Pencil size={15} />
         </button>
       ) : (
         <button
           onClick={openDialog}
-          className="flex items-center gap-2 rounded-full bg-[#0064E0] px-5 py-2.5 text-sm font-medium text-white shadow-[0_4px_14px_rgba(0,100,224,0.3)] transition-all hover:bg-[#0143B5] hover:shadow-[0_6px_20px_rgba(0,100,224,0.4)] active:scale-[0.98]"
+          className="flex items-center gap-2 rounded-full bg-[#2F2523] px-5 py-2.5 text-sm font-medium text-white shadow-[0_10px_22px_rgba(74,50,39,0.18)] transition-all hover:bg-[#4A3732] active:scale-[0.98]"
         >
           <Plus size={16} />
-          新增商品
+          Add product
         </button>
       )}
 
       {/* Dialog */}
       <dialog
         ref={dialogRef}
-        className="fixed inset-0 m-auto w-full max-w-lg rounded-2xl border border-[#DEE3E9] bg-white p-0 shadow-[0_12px_28px_0_rgba(0,0,0,0.2),0_2px_4px_0_rgba(0,0,0,0.1)] backdrop:bg-black/60"
+        className="fixed inset-x-4 inset-y-6 m-auto w-auto max-w-lg rounded-3xl border border-[#E8E1D8] bg-white p-0 shadow-[0_24px_70px_rgba(74,50,39,0.20)] backdrop:bg-black/60 sm:inset-0 sm:w-full"
       >
         <div className="max-h-[85vh] overflow-y-auto p-6">
           {/* Header */}
           <div className="mb-6 flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#E8F3FF]">
-              <Package size={20} className="text-[#0064E0]" />
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#E9D8DC]">
+              <Package size={20} className="text-[#8F4F5B]" />
             </div>
-            <h3 className="text-lg font-bold text-[#1C2B33]">
-              {isEdit ? '编辑商品' : '新增商品'}
+            <h3 className="text-lg font-bold text-[#2F2523]">
+              {isEdit ? 'Edit product' : 'Add product'}
             </h3>
           </div>
 
@@ -167,14 +167,14 @@ const ProductDialog = (props: ProductDialogProps) => {
           >
             {/* Image Upload */}
             <div>
-              <label className="mb-1.5 block text-sm font-medium text-[#1C2B33]">
-                商品图片
+              <label className="mb-1.5 block text-sm font-medium text-[#2F2523]">
+                Product image
               </label>
               {previewUrl ? (
                 <div className="relative inline-block">
                   <Image
                     src={previewUrl}
-                    alt="预览"
+                    alt="Preview"
                     width={120}
                     height={120}
                     className="h-28 w-28 rounded-xl border border-[#DEE3E9] object-cover"
@@ -192,10 +192,10 @@ const ProductDialog = (props: ProductDialogProps) => {
                 <button
                   type="button"
                   onClick={() => fileInputRef.current?.click()}
-                  className="flex h-28 w-full items-center justify-center gap-2 rounded-xl border-2 border-dashed border-[rgba(10,19,23,0.2)] text-sm text-[#5D6C7B] transition-all hover:border-[#0064E0] hover:bg-[#E8F3FF]/30 hover:text-[#0064E0]"
+                  className="flex h-28 w-full items-center justify-center gap-2 rounded-2xl border border-dashed border-[#D8CBBF] text-sm text-[#7B6D66] transition-all hover:border-[#B76E79] hover:bg-[#FBF7F1] hover:text-[#8F4F5B]"
                 >
                   <Upload size={18} />
-                  点击上传图片
+                  Upload image
                 </button>
               )}
               <input
@@ -212,12 +212,12 @@ const ProductDialog = (props: ProductDialogProps) => {
 
             {/* Name */}
             <div>
-              <label className="mb-1.5 block text-sm font-medium text-[#1C2B33]">
-                商品名称
+              <label className="mb-1.5 block text-sm font-medium text-[#2F2523]">
+                Product name
               </label>
               <input
                 {...register('name')}
-                placeholder="输入商品名称"
+                placeholder="Enter product name"
                 className={inputClassName}
               />
               {errors.name && (
@@ -229,12 +229,12 @@ const ProductDialog = (props: ProductDialogProps) => {
 
             {/* Description */}
             <div>
-              <label className="mb-1.5 block text-sm font-medium text-[#1C2B33]">
-                商品描述
+              <label className="mb-1.5 block text-sm font-medium text-[#2F2523]">
+                Description
               </label>
               <input
                 {...register('description')}
-                placeholder="输入商品描述"
+                placeholder="Enter product description"
                 className={inputClassName}
               />
               {errors.description && (
@@ -245,14 +245,14 @@ const ProductDialog = (props: ProductDialogProps) => {
             </div>
 
             {/* Category & Price Row */}
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid gap-4 sm:grid-cols-2">
               <div>
-                <label className="mb-1.5 block text-sm font-medium text-[#1C2B33]">
-                  分类
+                <label className="mb-1.5 block text-sm font-medium text-[#2F2523]">
+                  Category
                 </label>
                 <input
                   {...register('category')}
-                  placeholder="如: Headphones"
+                  placeholder="e.g. Bracelets"
                   className={inputClassName}
                 />
                 {errors.category && (
@@ -262,8 +262,8 @@ const ProductDialog = (props: ProductDialogProps) => {
                 )}
               </div>
               <div>
-                <label className="mb-1.5 block text-sm font-medium text-[#1C2B33]">
-                  价格
+                <label className="mb-1.5 block text-sm font-medium text-[#2F2523]">
+                  Price
                 </label>
                 <input
                   {...register('price')}
@@ -282,8 +282,8 @@ const ProductDialog = (props: ProductDialogProps) => {
 
             {/* Stock */}
             <div>
-              <label className="mb-1.5 block text-sm font-medium text-[#1C2B33]">
-                库存
+              <label className="mb-1.5 block text-sm font-medium text-[#2F2523]">
+                Stock
               </label>
               <input
                 {...register('stock')}
@@ -299,26 +299,26 @@ const ProductDialog = (props: ProductDialogProps) => {
             </div>
 
             {/* Buttons */}
-            <div className="flex gap-3 pt-2">
+            <div className="flex flex-col gap-3 pt-2 sm:flex-row">
               <button
                 type="button"
                 onClick={closeDialog}
-                className="flex-1 rounded-full border-2 border-[rgba(10,19,23,0.12)] px-5 py-2.5 text-sm font-medium text-[#1C2B33] transition-all hover:bg-[#F1F4F7] active:scale-[0.98]"
+                className="flex-1 rounded-full border border-[#E8E1D8] px-5 py-2.5 text-sm font-medium text-[#2F2523] transition-all hover:bg-[#F4EEE6] active:scale-[0.98]"
               >
-                取消
+                Cancel
               </button>
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="flex-1 rounded-full bg-[#0064E0] px-5 py-2.5 text-sm font-medium text-white shadow-[0_4px_14px_rgba(0,100,224,0.3)] transition-all hover:bg-[#0143B5] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50"
+                className="flex-1 rounded-full bg-[#2F2523] px-5 py-2.5 text-sm font-medium text-white shadow-[0_10px_22px_rgba(74,50,39,0.18)] transition-all hover:bg-[#4A3732] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50"
               >
                 {isSubmitting
                   ? isEdit
-                    ? '保存中...'
-                    : '创建中...'
+                    ? 'Saving...'
+                    : 'Creating...'
                   : isEdit
-                    ? '保存修改'
-                    : '确认创建'}
+                    ? 'Save changes'
+                    : 'Create product'}
               </button>
             </div>
           </form>

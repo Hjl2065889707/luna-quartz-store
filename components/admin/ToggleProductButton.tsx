@@ -30,12 +30,15 @@ const ToggleProductButton = ({
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ isActive: !isActive }),
       })
-      if (!res.ok) throw new Error('操作失败')
+      if (!res.ok) throw new Error('Action failed')
       closeDialog()
       router.refresh()
-      showToast(isActive ? `${productName} 已下架` : `${productName} 已上架`, 'success')
+      showToast(
+        isActive ? `${productName} is now inactive` : `${productName} is now active`,
+        'success',
+      )
     } catch (error) {
-      showToast(error instanceof Error ? error.message : '操作失败', 'error')
+      showToast(error instanceof Error ? error.message : 'Action failed', 'error')
     } finally {
       setIsLoading(false)
     }
@@ -50,17 +53,16 @@ const ToggleProductButton = ({
             ? 'text-[#5D6C7B] hover:bg-red-50 hover:text-red-600'
             : 'text-[#5D6C7B] hover:bg-emerald-50 hover:text-emerald-600'
         }`}
-        title={isActive ? '下架' : '上架'}
+        title={isActive ? 'Deactivate' : 'Reactivate'}
       >
         {isActive ? <Trash2 size={15} /> : <RotateCcw size={15} />}
       </button>
 
       <dialog
         ref={dialogRef}
-        className="fixed inset-0 m-auto w-full max-w-sm rounded-2xl border border-[#DEE3E9] bg-white p-0 shadow-[0_12px_28px_0_rgba(0,0,0,0.2),0_2px_4px_0_rgba(0,0,0,0.1)] backdrop:bg-black/60"
+        className="fixed inset-x-4 inset-y-6 m-auto w-auto max-w-sm rounded-3xl border border-[#E8E1D8] bg-white p-0 shadow-[0_24px_70px_rgba(74,50,39,0.20)] backdrop:bg-black/60 sm:inset-0 sm:w-full"
       >
         <div className="p-6">
-          {/* Icon */}
           <div
             className={`mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full ${
               isActive ? 'bg-red-50' : 'bg-emerald-50'
@@ -73,24 +75,23 @@ const ToggleProductButton = ({
             )}
           </div>
 
-          {/* Text */}
-          <h3 className="text-center text-lg font-bold text-[#1C2B33]">
-            {isActive ? '确认下架' : '确认上架'}
+          <h3 className="text-center text-lg font-bold text-[#2F2523]">
+            {isActive ? 'Deactivate product?' : 'Reactivate product?'}
           </h3>
-          <p className="mt-2 text-center text-sm text-[#5D6C7B]">
-            确定要{isActive ? '下架' : '重新上架'}{' '}
-            <span className="font-medium text-[#1C2B33]">{productName}</span>{' '}
-            吗？
-            {isActive && '下架后前台不再展示该商品。'}
+          <p className="mt-2 text-center text-sm text-[#7B6D66]">
+            {isActive ? 'This will hide ' : 'This will restore '}
+            <span className="font-medium text-[#2F2523]">{productName}</span>
+            {isActive
+              ? ' from the public storefront.'
+              : ' to the public storefront.'}
           </p>
 
-          {/* Buttons */}
-          <div className="mt-6 flex gap-3">
+          <div className="mt-6 flex flex-col gap-3 sm:flex-row">
             <button
               onClick={closeDialog}
-              className="flex-1 rounded-full border-2 border-[rgba(10,19,23,0.12)] px-5 py-2.5 text-sm font-medium text-[#1C2B33] transition-all hover:bg-[#F1F4F7] active:scale-[0.98]"
+              className="flex-1 rounded-full border border-[#E8E1D8] px-5 py-2.5 text-sm font-medium text-[#2F2523] transition-all hover:bg-[#F4EEE6] active:scale-[0.98]"
             >
-              取消
+              Cancel
             </button>
             <button
               onClick={handleToggle}
@@ -102,10 +103,10 @@ const ToggleProductButton = ({
               }`}
             >
               {isLoading
-                ? '处理中...'
+                ? 'Updating...'
                 : isActive
-                  ? '确认下架'
-                  : '确认上架'}
+                  ? 'Deactivate'
+                  : 'Reactivate'}
             </button>
           </div>
         </div>

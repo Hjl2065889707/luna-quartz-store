@@ -34,12 +34,12 @@ export default async function CheckoutSuccessPage({
     if (isRefunded) {
       return {
         icon: (
-          <RotateCcw size={38} strokeWidth={2.8} className="text-zinc-600" />
+          <RotateCcw size={38} strokeWidth={2.8} className="text-stone-600" />
         ),
-        iconStyle: 'bg-zinc-100 text-zinc-600 shadow-inner',
-        title: '支付已退款',
+        iconStyle: 'bg-stone-100 text-stone-600 shadow-inner',
+        title: 'Payment refunded',
         description:
-          '您的付款已完成，但商品库存在最终确认时不足。我们已经自动发起退款，测试模式下可以在 Stripe Dashboard 查看退款记录。',
+          'Your payment completed, but final stock confirmation failed. A test-mode refund has been created.',
       }
     }
 
@@ -47,52 +47,48 @@ export default async function CheckoutSuccessPage({
       return {
         icon: <Check size={40} strokeWidth={3} className="animate-pulse" />,
         iconStyle: 'animate-bounce bg-emerald-50 text-emerald-500 shadow-inner',
-        title: '支付成功！',
+        title: 'Payment successful',
         description:
-          '我们已收到您的付款，您的订单正在火速备货中。感谢您在 Antigravity Store 购物！',
+          'Your test payment was confirmed and the order has been recorded.',
       }
     }
 
     return {
       icon: <Clock size={38} strokeWidth={2.8} className="text-amber-600" />,
       iconStyle: 'bg-amber-50 text-amber-600 shadow-inner',
-      title: '订单处理中',
+      title: 'Order processing',
       description:
-        'Stripe 已完成支付跳转，我们正在等待 webhook 确认订单状态。页面会自动刷新几次，请稍候。',
+        'Stripe has redirected back to the store. We are waiting for the webhook to confirm the order status.',
     }
   })()
 
   return (
-    <div className="flex min-h-[80vh] items-center justify-center bg-[radial-gradient(ellipse_at_top,var(--tw-gradient-stops))] from-zinc-50 via-zinc-100 to-white px-4 py-16 sm:px-6 lg:px-8">
-      {/* Premium Meta-style White Card */}
-      <div className="relative w-full max-w-lg overflow-hidden rounded-3xl border border-zinc-200/80 bg-white p-8 text-center shadow-[0_20px_50px_rgba(0,0,0,0.04)] sm:p-10">
-        {/* Animated Green Badge */}
+    <div className="flex min-h-[80vh] items-center justify-center bg-[#FBF7F1] px-4 py-16 sm:px-6 lg:px-8">
+      <div className="relative w-full max-w-lg overflow-hidden rounded-[2rem] border border-[#E8E1D8] bg-white p-8 text-center shadow-[0_24px_70px_rgba(74,50,39,0.12)] sm:p-10">
         <div
           className={`mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full ${pageContent.iconStyle}`}
         >
           {pageContent.icon}
         </div>
 
-        {/* Text Area */}
-        <h1 className="text-3xl font-black tracking-tight text-zinc-900 sm:text-4xl">
+        <h1 className="text-3xl font-black tracking-tight text-[#2F2523] sm:text-4xl">
           {pageContent.title}
         </h1>
-        <p className="mx-auto mt-4 max-w-xs text-sm leading-relaxed text-zinc-500">
+        <p className="mx-auto mt-4 max-w-xs text-sm leading-relaxed text-[#7B6D66]">
           {pageContent.description}
         </p>
 
-        {/* Dynamic Order Info Box */}
-        <div className="mt-8 flex flex-col gap-3.5 rounded-2xl border border-zinc-100 bg-zinc-50/50 p-5 text-left">
+        <div className="mt-8 flex flex-col gap-3.5 rounded-3xl border border-[#E8E1D8] bg-[#FBF7F1] p-5 text-left">
           {order ? (
             <>
-              <div className="flex items-center justify-between border-b border-zinc-200/40 pb-3 text-sm">
-                <span className="font-medium text-zinc-400">订单编号</span>
-                <span className="max-w-[200px] truncate font-mono text-xs font-bold text-zinc-900 select-all">
+              <div className="flex items-center justify-between border-b border-[#E8E1D8] pb-3 text-sm">
+                <span className="font-medium text-[#7B6D66]">Order ID</span>
+                <span className="max-w-[200px] truncate font-mono text-xs font-bold text-[#2F2523] select-all">
                   {order.id}
                 </span>
               </div>
               <div className="flex items-center justify-between text-sm">
-                <span className="font-medium text-zinc-400">订单状态</span>
+                <span className="font-medium text-[#7B6D66]">Order status</span>
                 <span
                   className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-bold ${statusConfig?.style}`}
                 >
@@ -102,27 +98,26 @@ export default async function CheckoutSuccessPage({
               </div>
             </>
           ) : (
-            <div className="flex items-center justify-center gap-2 py-2 text-sm text-zinc-400">
+            <div className="flex items-center justify-center gap-2 py-2 text-sm text-[#7B6D66]">
               <Loader2 size={16} className="animate-spin" />
-              订单处理中，请稍后刷新查看...
+              Order processing. Please wait...
             </div>
           )}
         </div>
 
-        {/* Action Buttons */}
         <div className="mt-10 flex flex-col gap-3">
           <Link
             href={`/account/orders`}
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-[#0064E0] px-6 text-sm font-bold text-white shadow-[0_4px_14px_rgba(0,100,224,0.3)] transition-all hover:bg-[#0143B5] hover:shadow-[0_6px_20px_rgba(0,100,224,0.4)] active:scale-[0.98]"
+            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-[#2F2523] px-6 text-sm font-bold text-white shadow-[0_12px_28px_rgba(74,50,39,0.18)] transition-all hover:bg-[#4A3732] active:scale-[0.98]"
           >
             <ShoppingBag size={16} />
-            查看订单
+            View orders
           </Link>
           <Link
             href="/"
-            className="flex h-12 w-full items-center justify-center gap-1.5 rounded-full border border-zinc-200 bg-white px-6 text-sm font-bold text-zinc-600 transition-all hover:bg-zinc-50 active:scale-[0.98]"
+            className="flex h-12 w-full items-center justify-center gap-1.5 rounded-full border border-[#E8E1D8] bg-white px-6 text-sm font-bold text-[#2F2523] transition-all hover:bg-[#F4EEE6] active:scale-[0.98]"
           >
-            返回首页
+            Back home
             <ArrowRight size={16} />
           </Link>
         </div>

@@ -12,7 +12,7 @@ export async function POST(req: NextRequest) {
   // 1. 权限校验
   const session = await getServerSession(authOptions)
   if (!session?.user || session.user.role !== 'ADMIN') {
-    return NextResponse.json({ error: '无权限' }, { status: 401 })
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
   // 2. 解析 FormData
@@ -20,20 +20,20 @@ export async function POST(req: NextRequest) {
   const file = formData.get('file') as File | null
 
   if (!file) {
-    return NextResponse.json({ error: '请选择文件' }, { status: 400 })
+    return NextResponse.json({ error: 'Please choose a file' }, { status: 400 })
   }
 
   // 3. 校验文件类型和大小
   if (!ALLOWED_TYPES.includes(file.type)) {
     return NextResponse.json(
-      { error: '仅支持 JPG、PNG、WebP、AVIF 格式' },
+      { error: 'Only JPG, PNG, WebP and AVIF files are supported' },
       { status: 400 },
     )
   }
 
   if (file.size > MAX_SIZE) {
     return NextResponse.json(
-      { error: '文件大小不能超过 5MB' },
+      { error: 'File size must be under 5MB' },
       { status: 400 },
     )
   }

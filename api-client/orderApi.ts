@@ -16,7 +16,7 @@ export const createCheckoutSession = async (
   })
   if (!res.ok) {
     const data = await res.json()
-    throw new Error(data.error || '创建支付失败')
+    throw new Error(data.error || 'Failed to create checkout session')
   }
   return res.json()
 }

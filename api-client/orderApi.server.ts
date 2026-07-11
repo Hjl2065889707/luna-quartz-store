@@ -31,7 +31,7 @@ export const getUserOrders = async (): Promise<OrderWithItems[]> => {
     })
     return orders
   } catch (error) {
-    console.error('获取订单失败', error)
+    console.error('Failed to fetch user orders', error)
     return []
   }
 }

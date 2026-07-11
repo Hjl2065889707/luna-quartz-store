@@ -89,6 +89,16 @@ clear ecommerce usability
 - Brand mark 从纯黑改为 Rose Clay。
 - Footer 改为深色 Charcoal Cocoa，提高品牌完成度。
 
+### 全站英文化和后台统一
+
+- Auth 页面统一为英文，并切换到 Moon Ivory / Charcoal Cocoa / Rose Clay 视觉系统。
+- Checkout 页面和 success 页面统一为英文，并补充 test-mode checkout 说明。
+- Account orders 页面统一为英文。
+- SearchBar、Cart、UserMenu 统一为水晶独立站视觉风格。
+- Admin layout、Dashboard、Products、Orders、ProductDialog、ToggleProductButton、OrderStatusButton 全部改为英文。
+- Admin 页面使用同一套 warm boutique 色彩，但保持表格和操作区的后台可读性。
+- 用户可见的表单校验、上传、checkout、注册和订单状态错误信息已改为英文。
+
 ## Code Review 发现
 
 ### 已处理
@@ -100,24 +110,22 @@ clear ecommerce usability
 
 ### 仍待处理
 
-- `SearchBar` 和 `Cart` 仍保留较多早期 zinc/tech UI 风格。
 - `ItemCell` 命名仍偏练习项目，后续可以逐步改所有引用为 `ProductCard`。
 - 首页和商品卡片仍受 placeholder 图片质量限制，真实部署前建议换成统一风格图片。
 - 商品详情页还没有 related products。
 - 信息页内容还是骨架，后续可以补更真实的品牌文案。
+- 内部代码注释仍有部分中文，但用户可见页面和主要错误信息已经英文化。
 
 ## 后续建议
 
 下一步建议处理：
 
 ```text
-SearchBar / Cart / Checkout 页面视觉统一
+Product detail related products + 商品图片资源优化
 ```
 
 或者：
 
 ```text
-Product detail related products + 商品图片资源优化
+信息页品牌文案深化 + SEO metadata
 ```
-
-如果目标是“作品集第一眼观感”，优先做 SearchBar、Cart、Checkout 的视觉统一。

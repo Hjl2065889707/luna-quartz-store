@@ -30,25 +30,25 @@ export default async function AdminDashboardPage() {
 
   const stats = [
     {
-      label: '总收入',
+      label: 'Revenue',
       value: formatCurrency(totalRevenue._sum.totalAmount ?? 0),
       icon: DollarSign,
-      color: 'bg-emerald-50 text-emerald-600',
+      color: 'bg-emerald-50 text-emerald-700',
     },
     {
-      label: '订单数',
+      label: 'Orders',
       value: orderCount,
       icon: ShoppingCart,
-      color: 'bg-blue-50 text-[#0064E0]',
+      color: 'bg-[#E9D8DC] text-[#8F4F5B]',
     },
     {
-      label: '商品数',
+      label: 'Products',
       value: productCount,
       icon: Package,
-      color: 'bg-amber-50 text-amber-600',
+      color: 'bg-amber-50 text-amber-700',
     },
     {
-      label: '用户数',
+      label: 'Customers',
       value: userCount,
       icon: Users,
       color: 'bg-purple-50 text-purple-600',
@@ -57,27 +57,25 @@ export default async function AdminDashboardPage() {
 
   return (
     <div>
-      {/* Header */}
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-[#1C2B33]">Dashboard</h1>
-        <p className="mt-1 text-sm text-[#5D6C7B]">
-          欢迎回来，这里是你的商城运营概览。
+        <h1 className="text-3xl font-black text-[#2F2523]">Dashboard</h1>
+        <p className="mt-2 text-sm text-[#7B6D66]">
+          Store operations overview for the Luna & Quartz demo.
         </p>
       </div>
 
-      {/* Stats Grid */}
       <div className="mb-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
         {stats.map((stat) => (
           <div
             key={stat.label}
-            className="rounded-2xl border border-[#DEE3E9] bg-white p-5 shadow-[0_2px_4px_0_rgba(0,0,0,0.04)] transition-all hover:shadow-[0_12px_28px_0_rgba(0,0,0,0.08)]"
+            className="rounded-3xl border border-[#E8E1D8] bg-white p-5 shadow-[0_12px_30px_rgba(74,50,39,0.05)] transition-all hover:shadow-[0_18px_45px_rgba(74,50,39,0.08)]"
           >
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-xs font-medium text-[#5D6C7B]">
+                <p className="text-xs font-medium text-[#7B6D66]">
                   {stat.label}
                 </p>
-                <p className="mt-2 text-2xl font-bold text-[#1C2B33]">
+                <p className="mt-2 text-2xl font-bold text-[#2F2523]">
                   {stat.value}
                 </p>
               </div>
@@ -91,21 +89,20 @@ export default async function AdminDashboardPage() {
         ))}
       </div>
 
-      {/* Recent Orders */}
-      <div className="rounded-2xl border border-[#DEE3E9] bg-white shadow-[0_2px_4px_0_rgba(0,0,0,0.04)]">
-        <div className="flex items-center justify-between border-b border-[#DEE3E9] px-6 py-4">
-          <h2 className="text-base font-bold text-[#1C2B33]">最近订单</h2>
+      <div className="rounded-3xl border border-[#E8E1D8] bg-white shadow-[0_12px_30px_rgba(74,50,39,0.05)]">
+        <div className="flex items-center justify-between gap-4 border-b border-[#E8E1D8] px-4 py-4 sm:px-6">
+          <h2 className="text-base font-bold text-[#2F2523]">Recent orders</h2>
           <Link
             href="/admin/orders"
-            className="flex items-center gap-1 text-sm font-medium text-[#0064E0] hover:text-[#0143B5]"
+            className="flex items-center gap-1 text-sm font-medium text-[#8F4F5B] hover:text-[#B76E79]"
           >
-            查看全部 <ArrowRight size={14} />
+            View all <ArrowRight size={14} />
           </Link>
         </div>
-        <div className="divide-y divide-[#DEE3E9]">
+        <div className="divide-y divide-[#E8E1D8]">
           {recentOrders.length === 0 ? (
-            <p className="px-6 py-8 text-center text-sm text-[#5D6C7B]">
-              暂无订单
+            <p className="px-6 py-8 text-center text-sm text-[#7B6D66]">
+              No orders yet
             </p>
           ) : (
             recentOrders.map((order) => {
@@ -113,19 +110,19 @@ export default async function AdminDashboardPage() {
               return (
                 <div
                   key={order.id}
-                  className="flex items-center justify-between px-6 py-4 transition-colors hover:bg-[#F7F8FA]"
+                  className="flex flex-col gap-3 px-4 py-4 transition-colors hover:bg-[#FBF7F1] sm:flex-row sm:items-center sm:justify-between sm:px-6"
                 >
                   <div>
-                    <p className="text-sm font-medium text-[#1C2B33]">
+                    <p className="text-sm font-medium text-[#2F2523]">
                       {order.firstName} {order.lastName}
                     </p>
-                    <p className="mt-0.5 text-xs text-[#5D6C7B]">
-                      {order.items.length} 件商品 ·{' '}
-                      {new Date(order.createdAt).toLocaleDateString('zh-CN')}
+                    <p className="mt-0.5 text-xs text-[#7B6D66]">
+                      {order.items.length} items ·{' '}
+                      {new Date(order.createdAt).toLocaleDateString('en-AU')}
                     </p>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <span className="text-sm font-bold text-[#1C2B33]">
+                  <div className="flex flex-wrap items-center gap-3">
+                    <span className="text-sm font-bold text-[#2F2523]">
                       {formatCurrency(order.totalAmount)}
                     </span>
                     <span

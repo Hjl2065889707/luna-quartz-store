@@ -7,7 +7,6 @@ import { authOptions } from '../auth/[...nextauth]/route'
 
 export async function GET(req: NextRequest) {
   const query = req.nextUrl.searchParams.get('q')
-  // 核心思想：条件对象先空着，有 query 才往里面塞过滤规则
   const whereCondition: Prisma.ProductWhereInput = { isActive: true }
 
   if (query) {
@@ -42,6 +41,8 @@ export async function POST(req: NextRequest) {
     })
     return NextResponse.json(product)
   } catch (error) {
-    return new NextResponse('创建商品失败' + error, { status: 500 })
+    return new NextResponse(`Failed to create product: ${error}`, {
+      status: 500,
+    })
   }
 }

@@ -15,6 +15,7 @@
 - Next 16 `middleware` 已迁移为 `proxy`。
 - Checkout / webhook / order status 的关键业务链路已做运行时校验和幂等处理。
 - `/shop` 和 `/collections/[slug]` 已支持服务端分页。
+- 用户可见页面已统一为英文，并应用 Luna & Quartz 水晶独立站视觉系统。
 
 下一阶段建议进入：
 
@@ -89,6 +90,8 @@
 - [x] 新增 `components/shop/ProductCard.tsx` 并升级商品卡片视觉。
 - [x] 升级 `/shop` 和 `/collections/[slug]` 页面头部视觉。
 - [x] 升级商品详情页信息层级和视觉。
+- [x] 统一 SearchBar、Cart、Checkout、Auth、Account、Admin 的英文 UI 和水晶独立站视觉风格。
+- [x] 用户可见表单校验、上传、checkout、注册和订单状态错误信息英文化。
 - [x] 新增 `docs/phase-2-crystal-store-frontend-restructure.md`，持久化 Phase 2 前台重构计划。
 - [x] 新增 `lib/site.ts`，集中维护英文水晶独立站品牌信息。
 - [x] 新增 `lib/categories.ts`，集中维护商品分类 slug、数据库值和 SEO 文案。
@@ -99,8 +102,8 @@
 - [x] 新增 `/shop` 全部商品页，并支持分页。
 - [x] 新增 `/collections/[slug]` 分类页，并支持分页。
 - [x] 将 `prisma/seed.ts` 切换为使用 `crystalProductsForSeed`。
-- [ ] 前台页面文案英文化。
-- [ ] 统一澳洲电商语境：AUD、shipping、returns、contact、FAQ 等。
+- [x] 前台页面文案英文化。
+- [x] 统一澳洲电商语境：AUD、shipping、returns、contact、FAQ 等。
 
 ### 2. 商品列表分页
 
@@ -154,7 +157,7 @@
 
 ### 用户体验
 
-- [ ] 统一 SearchBar、Cart、Checkout 的水晶独立站视觉风格。
+- [x] 统一 SearchBar、Cart、Checkout 的水晶独立站视觉风格。
 - [ ] 替换商品 placeholder 图片为统一风格的真实/生成商品图。
 - [ ] 商品详情页增加 related products。
 - [ ] 商品详情页和购物车数量选择器限制最大库存。
