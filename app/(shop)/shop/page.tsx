@@ -27,18 +27,18 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
   })
 
   return (
-    <div className="bg-stone-50 py-12 sm:py-16">
+    <div className="bg-[#FBF7F1] py-14 sm:py-18">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="max-w-2xl">
-          <p className="text-sm font-bold tracking-[0.18em] text-stone-500 uppercase">
+        <div className="rounded-[2rem] border border-[#E8E1D8] bg-white px-6 py-8 sm:px-10">
+          <p className="text-sm font-semibold uppercase tracking-[0.14em] text-[#B76E79]">
             Shop all
           </p>
-          <h1 className="mt-3 text-4xl font-black tracking-tight text-stone-950 sm:text-5xl">
+          <h1 className="mt-3 max-w-3xl text-4xl font-black tracking-tight text-[#2F2523] sm:text-5xl">
             Crystals for daily rituals and thoughtful gifting
           </h1>
-          <p className="mt-5 text-base leading-7 text-stone-600">
-            Browse the full demo catalogue. Pagination will be added in the next
-            learning step so this page can handle larger catalogues cleanly.
+          <p className="mt-5 max-w-2xl text-base leading-7 text-[#7B6D66]">
+            Browse bracelets, tumbled stones, crystal points, sets and
+            suncatchers in a focused demo catalogue.
           </p>
         </div>
 
@@ -48,7 +48,7 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
           ))}
         </div>
 
-        <p className="mt-8 text-center text-sm text-[#65676B]">
+        <p className="mt-8 text-center text-sm text-[#7B6D66]">
           Showing {products.length} of {pagination.totalItems} products
         </p>
 

@@ -7,12 +7,12 @@ const ProductPageLayout = ({
   infoSlot: React.ReactNode
 }) => {
   return (
-    <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-      <div className="grid grid-cols-1 gap-12 lg:grid-cols-2">
-        {/* 左侧 */}
+    <div className="bg-[#FBF7F1]">
+      <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-18 lg:px-8">
+      <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1fr_0.9fr]">
         {imageSlot}
-        {/* 右侧 */}
         {infoSlot}
+      </div>
       </div>
     </div>
   )

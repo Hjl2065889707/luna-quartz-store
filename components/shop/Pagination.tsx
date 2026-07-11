@@ -33,7 +33,7 @@ const PageNumber = ({
     return (
       <span
         aria-current="page"
-        className="flex h-10 min-w-10 items-center justify-center rounded-full bg-[#0064E0] px-3 text-sm font-medium text-white"
+        className="flex h-10 min-w-10 items-center justify-center rounded-full bg-[#B76E79] px-3 text-sm font-medium text-white"
       >
         {page}
       </span>
@@ -44,7 +44,7 @@ const PageNumber = ({
     <Link
       href={getPageHref(basePath, page)}
       aria-label={`Go to page ${page}`}
-      className="flex h-10 min-w-10 items-center justify-center rounded-full px-3 text-sm font-medium text-[#1C2B33] transition-colors hover:bg-[#F1F4F7]"
+      className="flex h-10 min-w-10 items-center justify-center rounded-full px-3 text-sm font-medium text-[#2F2523] transition-colors hover:bg-[#F4EEE6]"
     >
       {page}
     </Link>
@@ -67,20 +67,20 @@ const Pagination = ({
   return (
     <nav
       aria-label="Pagination"
-      className="mt-14 flex flex-col items-center gap-4 border-t border-[#DEE3E9] pt-8"
+      className="mt-14 flex flex-col items-center gap-4 border-t border-[#E8E1D8] pt-8"
     >
-      <div className="flex items-center gap-2 rounded-full bg-white p-1 shadow-[0_1px_3px_rgba(0,0,0,0.08)] ring-1 ring-[#DEE3E9]">
+      <div className="flex items-center gap-2 rounded-full bg-white p-1 shadow-[0_12px_30px_rgba(74,50,39,0.08)] ring-1 ring-[#E8E1D8]">
         {hasPreviousPage ? (
           <Link
             href={getPageHref(basePath, currentPage - 1)}
             aria-label="Go to previous page"
-            className="flex h-10 items-center gap-1 rounded-full px-3 text-sm font-medium text-[#1C2B33] transition-colors hover:bg-[#F1F4F7]"
+            className="flex h-10 items-center gap-1 rounded-full px-3 text-sm font-medium text-[#2F2523] transition-colors hover:bg-[#F4EEE6]"
           >
             <ChevronLeft size={16} aria-hidden="true" />
             <span className="hidden sm:inline">Previous</span>
           </Link>
         ) : (
-          <span className="flex h-10 cursor-not-allowed items-center gap-1 rounded-full px-3 text-sm font-medium text-[#BCC0C4]">
+          <span className="flex h-10 cursor-not-allowed items-center gap-1 rounded-full px-3 text-sm font-medium text-[#B9AAA2]">
             <ChevronLeft size={16} aria-hidden="true" />
             <span className="hidden sm:inline">Previous</span>
           </span>
@@ -90,7 +90,7 @@ const Pagination = ({
           <>
             <PageNumber page={1} currentPage={currentPage} basePath={basePath} />
             {visiblePages[0] > 2 && (
-              <span className="px-1 text-sm font-medium text-[#65676B]">
+              <span className="px-1 text-sm font-medium text-[#7B6D66]">
                 ...
               </span>
             )}
@@ -109,7 +109,7 @@ const Pagination = ({
         {visiblePages[visiblePages.length - 1] < totalPages && (
           <>
             {visiblePages[visiblePages.length - 1] < totalPages - 1 && (
-              <span className="px-1 text-sm font-medium text-[#65676B]">
+              <span className="px-1 text-sm font-medium text-[#7B6D66]">
                 ...
               </span>
             )}
@@ -125,23 +125,23 @@ const Pagination = ({
           <Link
             href={getPageHref(basePath, currentPage + 1)}
             aria-label="Go to next page"
-            className="flex h-10 items-center gap-1 rounded-full px-3 text-sm font-medium text-[#1C2B33] transition-colors hover:bg-[#F1F4F7]"
+            className="flex h-10 items-center gap-1 rounded-full px-3 text-sm font-medium text-[#2F2523] transition-colors hover:bg-[#F4EEE6]"
           >
             <span className="hidden sm:inline">Next</span>
             <ChevronRight size={16} aria-hidden="true" />
           </Link>
         ) : (
-          <span className="flex h-10 cursor-not-allowed items-center gap-1 rounded-full px-3 text-sm font-medium text-[#BCC0C4]">
+          <span className="flex h-10 cursor-not-allowed items-center gap-1 rounded-full px-3 text-sm font-medium text-[#B9AAA2]">
             <span className="hidden sm:inline">Next</span>
             <ChevronRight size={16} aria-hidden="true" />
           </span>
         )}
       </div>
 
-      <p className="text-sm text-[#65676B]">
+      <p className="text-sm text-[#7B6D66]">
         Page{' '}
-        <span className="font-medium text-[#1C2B33]">{currentPage}</span> of{' '}
-        <span className="font-medium text-[#1C2B33]">{totalPages}</span>
+        <span className="font-medium text-[#2F2523]">{currentPage}</span> of{' '}
+        <span className="font-medium text-[#2F2523]">{totalPages}</span>
       </p>
     </nav>
   )

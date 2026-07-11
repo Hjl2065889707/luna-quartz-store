@@ -9,18 +9,6 @@ export const getActiveProducts = async () => {
   return products
 }
 
-export const getActiveProductsByCategory = async (category: string) => {
-  const products = await prisma.product.findMany({
-    where: {
-      isActive: true,
-      category,
-    },
-    orderBy: { createdAt: 'desc' },
-  })
-
-  return products
-}
-
 export const getActiveProductById = async (id: string) => {
   const product = await prisma.product.findFirst({
     where: {
@@ -49,8 +37,10 @@ export const getPaginatedProducts = async ({
   page,
   pageSize,
 }: GetPaginatedProductsParams) => {
+  const where = { isActive: true }
+
   const totalItems = await prisma.product.count({
-    where: { isActive: true },
+    where,
   })
 
   const totalPages = Math.max(1, Math.ceil(totalItems / pageSize))
@@ -58,7 +48,46 @@ export const getPaginatedProducts = async ({
   const skip = (currentPage - 1) * pageSize
 
   const products = await prisma.product.findMany({
-    where: { isActive: true },
+    where,
+    take: pageSize,
+    skip,
+    orderBy: { createdAt: 'desc' },
+  })
+
+  return {
+    products,
+    pagination: {
+      page: currentPage,
+      pageSize,
+      totalItems,
+      totalPages,
+    },
+  }
+}
+
+type GetPaginatedProductsByCategoryParams = {
+  page: number
+  pageSize: number
+  category: string
+}
+
+export const getPaginatedProductsByCategory = async ({
+  page,
+  pageSize,
+  category,
+}: GetPaginatedProductsByCategoryParams) => {
+  const where = { isActive: true, category }
+
+  const totalItems = await prisma.product.count({
+    where,
+  })
+
+  const totalPages = Math.max(1, Math.ceil(totalItems / pageSize))
+  const currentPage = Math.min(page, totalPages)
+  const skip = (currentPage - 1) * pageSize
+
+  const products = await prisma.product.findMany({
+    where,
     take: pageSize,
     skip,
     orderBy: { createdAt: 'desc' },

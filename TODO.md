@@ -1,6 +1,6 @@
 # 技术债务 & 后续优化 TODO
 
-> 更新日期：2026-07-10
+> 更新日期：2026-07-11
 >
 > 这份清单记录项目当前真实状态。已完成项保留在“已完成”区域，方便回顾项目是如何从学习 demo 逐步收尾成作品集项目的。
 
@@ -14,6 +14,7 @@
 - Google Fonts 构建依赖已移除。
 - Next 16 `middleware` 已迁移为 `proxy`。
 - Checkout / webhook / order status 的关键业务链路已做运行时校验和幂等处理。
+- `/shop` 和 `/collections/[slug]` 已支持服务端分页。
 
 下一阶段建议进入：
 
@@ -82,6 +83,12 @@
 
 ### 1. 作品集产品化
 
+- [x] 重写 `DESIGN.md`，从 Meta Store 科技零售方向调整为水晶独立站精品生活方式方向。
+- [x] 新增 `docs/ui-review-and-refactor-notes.md`，记录 UI review 和重构取舍。
+- [x] 重构首页视觉：Hero、trust strip、collections、featured products、crystal guide。
+- [x] 新增 `components/shop/ProductCard.tsx` 并升级商品卡片视觉。
+- [x] 升级 `/shop` 和 `/collections/[slug]` 页面头部视觉。
+- [x] 升级商品详情页信息层级和视觉。
 - [x] 新增 `docs/phase-2-crystal-store-frontend-restructure.md`，持久化 Phase 2 前台重构计划。
 - [x] 新增 `lib/site.ts`，集中维护英文水晶独立站品牌信息。
 - [x] 新增 `lib/categories.ts`，集中维护商品分类 slug、数据库值和 SEO 文案。
@@ -89,17 +96,22 @@
 - [x] 新增 Footer。
 - [x] 新增 About / Crystal Guide / Shipping & Returns / FAQ / Contact 信息页骨架。
 - [x] 将 `/` 从商品列表改为 landing page 初版。
-- [x] 新增 `/shop` 临时全部商品页，后续升级为分页版本。
-- [x] 新增 `/collections/[slug]` 临时分类页，后续升级为分页版本。
+- [x] 新增 `/shop` 全部商品页，并支持分页。
+- [x] 新增 `/collections/[slug]` 分类页，并支持分页。
 - [x] 将 `prisma/seed.ts` 切换为使用 `crystalProductsForSeed`。
 - [ ] 前台页面文案英文化。
 - [ ] 统一澳洲电商语境：AUD、shipping、returns、contact、FAQ 等。
 
 ### 2. 商品列表分页
 
-- [ ] 设计分页参数：`page`、`pageSize`、`totalItems`、`totalPages`。
-- [ ] 服务端查询改为 `skip` / `take`。
-- [ ] 前台商品列表增加分页 UI。
+- [x] 设计分页参数：`page`、`pageSize`、`totalItems`、`totalPages`。
+- [x] 服务端查询改为 `skip` / `take`。
+- [x] `/shop` 支持 `?page=` URL 状态。
+- [x] `/collections/[slug]` 支持 `?page=` URL 状态。
+- [x] 新增可复用 `Pagination` 组件。
+- [x] 分页组件支持当前页、Previous / Next、页码、`aria-current` 和禁用态。
+- [x] 非法页码通过 `parsePageParam()` 回退到第一页。
+- [x] 超过最大页数时返回最后一页数据。
 - [ ] 搜索、分类、分页之间保持 URL 状态一致。
 
 ### 3. 技术 SEO
@@ -142,6 +154,9 @@
 
 ### 用户体验
 
+- [ ] 统一 SearchBar、Cart、Checkout 的水晶独立站视觉风格。
+- [ ] 替换商品 placeholder 图片为统一风格的真实/生成商品图。
+- [ ] 商品详情页增加 related products。
 - [ ] 商品详情页和购物车数量选择器限制最大库存。
 - [ ] 缺货时禁用“加入购物车”按钮。
 - [ ] 购物车清空逻辑从“清空全部”升级为“只移除已支付商品”。

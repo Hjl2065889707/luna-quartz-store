@@ -1,12 +1,15 @@
-import { getActiveProductsByCategory } from '@/api-client/productApi.server'
+import { getPaginatedProductsByCategory } from '@/api-client/productApi.server'
 import { getCategoryBySlug, productCategories } from '@/lib/categories'
 import { siteConfig } from '@/lib/site'
 import ItemCell from '@/components/ItemCell'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
+import { parsePageParam } from '@/lib/pagination'
+import Pagination from '@/components/shop/Pagination'
 
 type CollectionPageProps = {
   params: Promise<{ slug: string }>
+  searchParams: Promise<{ page?: string }>
 }
 
 export function generateStaticParams() {
@@ -31,27 +34,36 @@ export async function generateMetadata({
   }
 }
 
-export default async function CollectionPage({ params }: CollectionPageProps) {
+export default async function CollectionPage({
+  params,
+  searchParams,
+}: CollectionPageProps) {
   const { slug } = await params
+  const { page } = await searchParams
+  const currentPage = parsePageParam(page)
   const category = getCategoryBySlug(slug)
 
   if (!category) {
     notFound()
   }
 
-  const products = await getActiveProductsByCategory(category.dbValue)
+  const { products, pagination } = await getPaginatedProductsByCategory({
+    page: currentPage,
+    pageSize: 8,
+    category: category.dbValue,
+  })
 
   return (
-    <div className="bg-stone-50 py-12 sm:py-16">
+    <div className="bg-[#FBF7F1] py-14 sm:py-18">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="max-w-2xl">
-          <p className="text-sm font-bold uppercase tracking-[0.18em] text-stone-500">
+        <div className="rounded-[2rem] border border-[#E8E1D8] bg-white px-6 py-8 sm:px-10">
+          <p className="text-sm font-semibold uppercase tracking-[0.14em] text-[#B76E79]">
             Collection
           </p>
-          <h1 className="mt-3 text-4xl font-black tracking-tight text-stone-950 sm:text-5xl">
+          <h1 className="mt-3 text-4xl font-black tracking-tight text-[#2F2523] sm:text-5xl">
             {category.name}
           </h1>
-          <p className="mt-5 text-base leading-7 text-stone-600">
+          <p className="mt-5 max-w-2xl text-base leading-7 text-[#7B6D66]">
             {category.description}
           </p>
         </div>
@@ -61,6 +73,11 @@ export default async function CollectionPage({ params }: CollectionPageProps) {
             <ItemCell item={product} key={product.id} />
           ))}
         </div>
+        <Pagination
+          currentPage={pagination.page}
+          totalPages={pagination.totalPages}
+          basePath={`/collections/${slug}`}
+        />
       </div>
     </div>
   )
