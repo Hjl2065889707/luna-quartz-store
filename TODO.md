@@ -81,6 +81,8 @@ SEO 学习和实施计划详见：[技术 SEO 学习与实施计划](docs/seo-fo
 - [x] 全站金额显示统一为 `AUD`，使用 `formatCurrency()`。
 - [x] 准备 24 个水晶商品数据。
 - [x] 为 mock 商品配置公开 placeholder 图片 URL。
+- [x] 将商品 PNG 图压缩为 1000px WebP，总体积从约 55MB 降到约 2.2MB。
+- [x] 新增 `pnpm update-product-images`，线上可只更新商品图片路径，不清空订单数据。
 
 ### 移动端体验和视觉验收
 

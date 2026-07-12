@@ -587,6 +587,24 @@ NEXT_PUBLIC_SITE_URL 没有正确配置
 - 使用对象存储，例如 R2 / S3 / COS。
 - 或将 uploads 目录放到独立持久化路径。
 
+### 16.5 商品图片加载慢
+
+如果商品列表加载很慢，先检查图片体积：
+
+```bash
+du -sh public/products public/products/*
+```
+
+电商商品图不应该直接使用几 MB 的 PNG。当前项目的 mock 商品图已经从 1254px PNG 转成 1000px WebP，总体积从约 55MB 降到约 2.2MB。
+
+线上更新图片路径时，不要为了改图片路径直接跑 `pnpm seed`，因为当前 seed 会清空订单和订单明细。应该使用：
+
+```bash
+pnpm update-product-images
+```
+
+这个脚本只根据商品名更新 `Product.image`，不会删除订单。
+
 ## 17. 回滚和更新
 
 更新代码：
@@ -597,6 +615,7 @@ git pull
 pnpm install
 pnpm prisma generate
 pnpm prisma db push
+pnpm update-product-images
 pnpm build
 pm2 restart luna-quartz
 ```
