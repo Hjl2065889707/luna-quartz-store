@@ -4,6 +4,8 @@ import ToggleProductButton from '@/components/admin/ToggleProductButton'
 import ProductDialog from '@/components/admin/ProductDialog'
 import { formatCurrency } from '@/lib/formatters'
 
+export const dynamic = 'force-dynamic'
+
 export default async function AdminProductsPage() {
   const products = await getAllProducts()
 

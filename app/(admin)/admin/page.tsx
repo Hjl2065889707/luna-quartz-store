@@ -10,6 +10,8 @@ import Link from 'next/link'
 import { getOrderStatusConfig } from '@/lib/orderStatus'
 import { formatCurrency } from '@/lib/formatters'
 
+export const dynamic = 'force-dynamic'
+
 export default async function AdminDashboardPage() {
   const [productCount, orderCount, userCount, recentOrders] = await Promise.all(
     [

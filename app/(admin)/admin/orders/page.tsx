@@ -3,6 +3,8 @@ import OrderStatusButton from '@/components/admin/OrderStatusButton'
 import { getOrderStatusConfig } from '@/lib/orderStatus'
 import { formatCurrency } from '@/lib/formatters'
 
+export const dynamic = 'force-dynamic'
+
 export default async function AdminOrdersPage() {
   const orders = await prisma.order.findMany({
     orderBy: { createdAt: 'desc' },
