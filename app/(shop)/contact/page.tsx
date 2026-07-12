@@ -1,10 +1,12 @@
 import { siteConfig } from '@/lib/site'
 import type { Metadata } from 'next'
+import { createPageMetadata } from '@/lib/seo'
 
-export const metadata: Metadata = {
-  title: `Contact | ${siteConfig.name}`,
+export const metadata: Metadata = createPageMetadata({
+  title: 'Contact',
   description: 'Contact information for the Luna & Quartz demo store.',
-}
+  path: '/contact',
+})
 
 export default function ContactPage() {
   return (

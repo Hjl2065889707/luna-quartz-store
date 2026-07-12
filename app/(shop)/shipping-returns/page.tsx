@@ -1,11 +1,12 @@
-import { siteConfig } from '@/lib/site'
 import type { Metadata } from 'next'
+import { createPageMetadata } from '@/lib/seo'
 
-export const metadata: Metadata = {
-  title: `Shipping & Returns | ${siteConfig.name}`,
+export const metadata: Metadata = createPageMetadata({
+  title: 'Shipping & Returns',
   description:
     'Shipping, returns and demo checkout information for Luna & Quartz.',
-}
+  path: '/shipping-returns',
+})
 
 const policies = [
   {

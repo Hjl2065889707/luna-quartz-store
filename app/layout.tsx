@@ -4,10 +4,20 @@ import AuthProvider from '@/components/AuthProvider'
 import { CartProvider } from '@/context/CartContext'
 import { ToastProvider } from '@/context/ToastContext'
 import { siteConfig } from '@/lib/site'
+import { createPageMetadata } from '@/lib/seo'
 
 export const metadata: Metadata = {
-  title: `${siteConfig.name} | Crystal Store Demo`,
-  description: siteConfig.description,
+  ...createPageMetadata({
+    title: `${siteConfig.name} | Crystal Store Demo`,
+    description: siteConfig.description,
+    path: '/',
+  }),
+  metadataBase: new URL(siteConfig.url),
+  title: {
+    default: `${siteConfig.name} | Crystal Store Demo`,
+    template: `%s | ${siteConfig.name}`,
+  },
+  applicationName: siteConfig.name,
 }
 
 export default function RootLayout({

@@ -1,11 +1,11 @@
 import { getPaginatedProductsByCategory } from '@/api-client/productApi.server'
 import { getCategoryBySlug, productCategories } from '@/lib/categories'
-import { siteConfig } from '@/lib/site'
 import ItemCell from '@/components/ItemCell'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { parsePageParam } from '@/lib/pagination'
 import Pagination from '@/components/shop/Pagination'
+import { createPageMetadata } from '@/lib/seo'
 
 type CollectionPageProps = {
   params: Promise<{ slug: string }>
@@ -23,15 +23,19 @@ export async function generateMetadata({
   const category = getCategoryBySlug(slug)
 
   if (!category) {
-    return {
-      title: `Collection not found | ${siteConfig.name}`,
-    }
+    return createPageMetadata({
+      title: 'Collection not found',
+      description: 'The requested crystal collection could not be found.',
+      path: `/collections/${slug}`,
+      noIndex: true,
+    })
   }
 
-  return {
-    title: `${category.name} | ${siteConfig.name}`,
+  return createPageMetadata({
+    title: category.name,
     description: category.seoDescription,
-  }
+    path: `/collections/${category.slug}`,
+  })
 }
 
 export default async function CollectionPage({

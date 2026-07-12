@@ -2,14 +2,15 @@ import { getPaginatedProducts } from '@/api-client/productApi.server'
 import ItemCell from '@/components/ItemCell'
 import Pagination from '@/components/shop/Pagination'
 import { parsePageParam } from '@/lib/pagination'
-import { siteConfig } from '@/lib/site'
 import type { Metadata } from 'next'
+import { createPageMetadata } from '@/lib/seo'
 
-export const metadata: Metadata = {
-  title: `Shop Crystals | ${siteConfig.name}`,
+export const metadata: Metadata = createPageMetadata({
+  title: 'Shop Crystals',
   description:
     'Browse all crystal bracelets, tumbled stones, crystal points, ritual sets and suncatchers.',
-}
+  path: '/shop',
+})
 
 type ShopPageProps = {
   searchParams: Promise<{

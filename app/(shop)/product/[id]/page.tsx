@@ -5,8 +5,8 @@ import Image from 'next/image'
 import AddToCartButton from '@/components/AddToCartButton'
 import { Metadata } from 'next'
 import { formatCurrency } from '@/lib/formatters'
-import { siteConfig } from '@/lib/site'
 import Link from 'next/link'
+import { createPageMetadata } from '@/lib/seo'
 
 interface ProductPageProps {
   params: Promise<{ id: string }>
@@ -18,12 +18,19 @@ export async function generateMetadata({
   const { id } = await params
   const product = await getActiveProductById(id)
   if (!product) {
-    return { title: `Product not found | ${siteConfig.name}` }
+    return createPageMetadata({
+      title: 'Product not found',
+      description: 'The requested crystal product could not be found.',
+      path: `/product/${id}`,
+      noIndex: true,
+    })
   }
-  return {
-    title: `${product.name} | ${siteConfig.name}`,
+  return createPageMetadata({
+    title: product.name,
     description: product.description,
-  }
+    path: `/product/${product.id}`,
+    image: product.image,
+  })
 }
 
 const ProductPage = async ({ params }: ProductPageProps) => {

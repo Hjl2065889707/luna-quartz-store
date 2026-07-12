@@ -6,6 +6,13 @@ import { ArrowRight, Gift, HeartHandshake, PackageCheck } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Button } from '@/components/ui/Button'
+import { createPageMetadata } from '@/lib/seo'
+
+export const metadata = createPageMetadata({
+  title: `${siteConfig.name} | Crystal Store Demo`,
+  description: siteConfig.description,
+  path: '/',
+})
 
 export default async function Home() {
   const products = await getActiveProducts()

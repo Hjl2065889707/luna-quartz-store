@@ -132,13 +132,13 @@ SEO 学习和实施计划详见：[技术 SEO 学习与实施计划](docs/seo-fo
 
 ### 3. 技术 SEO
 
-- [ ] 统一站点 canonical base URL 配置，例如 `NEXT_PUBLIC_SITE_URL`。
-- [ ] 根布局设置 `metadataBase`、title template、默认 description、Open Graph 和 Twitter card。
-- [ ] 首页 metadata。
-- [ ] `/shop` metadata。
-- [ ] `/collections/[slug]` 动态 metadata 和 canonical。
-- [ ] `/product/[id]` 动态 metadata 和 canonical。
-- [ ] Open Graph metadata，至少覆盖首页、分类页、商品详情页。
+- [x] 统一站点 canonical base URL 配置，例如 `NEXT_PUBLIC_SITE_URL`。
+- [x] 根布局设置 `metadataBase`、title template、默认 description、Open Graph 和 Twitter card。
+- [x] 首页 metadata。
+- [x] `/shop` metadata。
+- [x] `/collections/[slug]` 动态 metadata 和 canonical。
+- [x] `/product/[id]` 动态 metadata 和 canonical。
+- [x] Open Graph metadata，至少覆盖首页、分类页、商品详情页。
 - [ ] `robots.txt`，允许公开页面，屏蔽 admin、checkout、account、API 等不适合索引的路径。
 - [ ] `sitemap.xml`，包含首页、信息页、shop、collections、active products。
 - [ ] Product JSON-LD，包含 name、description、image、sku/id、offers、priceCurrency、availability。

@@ -1,13 +1,14 @@
 import { productCategories } from '@/lib/categories'
-import { siteConfig } from '@/lib/site'
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { createPageMetadata } from '@/lib/seo'
 
-export const metadata: Metadata = {
-  title: `Crystal Guide | ${siteConfig.name}`,
+export const metadata: Metadata = createPageMetadata({
+  title: 'Crystal Guide',
   description:
     'A beginner-friendly guide to browsing crystal bracelets, tumbled stones, points, sets and suncatchers.',
-}
+  path: '/crystal-guide',
+})
 
 export default function CrystalGuidePage() {
   return (
