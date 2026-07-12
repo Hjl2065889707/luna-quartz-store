@@ -12,7 +12,7 @@ type CreatePageMetadataParams = {
 
 const defaultOgImage = '/products/rose-quartz-heart-bracelet.webp'
 
-const toAbsoluteUrl = (pathOrUrl: string) => {
+export const toAbsoluteUrl = (pathOrUrl: string) => {
   if (pathOrUrl.startsWith('http://') || pathOrUrl.startsWith('https://')) {
     return pathOrUrl
   }
@@ -69,4 +69,48 @@ export function createPageMetadata({
         }
       : undefined,
   }
+}
+
+type ProductJsonLdProduct = {
+  id: string
+  name: string
+  description: string
+  image: string
+  price: number
+  category: string
+  stock: number
+}
+
+export function createProductJsonLd(product: ProductJsonLdProduct) {
+  const productUrl = toAbsoluteUrl(`/product/${product.id}`)
+  const imageUrl = toAbsoluteUrl(product.image)
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: product.name,
+    description: product.description,
+    image: [imageUrl],
+    sku: product.id,
+    category: product.category,
+    brand: {
+      '@type': 'Brand',
+      name: siteConfig.name,
+    },
+    offers: {
+      '@type': 'Offer',
+      url: productUrl,
+      priceCurrency: siteConfig.currency,
+      price: product.price.toFixed(2),
+      availability:
+        product.stock > 0
+          ? 'https://schema.org/InStock'
+          : 'https://schema.org/OutOfStock',
+      itemCondition: 'https://schema.org/NewCondition',
+    },
+  }
+}
+
+export function stringifyJsonLd(data: unknown) {
+  return JSON.stringify(data).replace(/</g, '\\u003c')
 }
