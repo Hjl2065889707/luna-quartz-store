@@ -58,7 +58,7 @@ export default async function Home() {
             <div className="bg-warm-white relative aspect-[4/5] overflow-hidden rounded-[2rem] shadow-[var(--shadow-boutique-heavy)] transition-transform duration-700 hover:scale-[1.02] lg:absolute lg:top-0 lg:right-0 lg:h-[78%] lg:w-[72%]">
               <Image
                 src={heroProduct.image}
-                alt={heroProduct.name}
+                alt={`${heroProduct.name} featured crystal product`}
                 fill
                 className="object-cover"
                 sizes="(max-width: 1024px) 100vw, 48vw"
@@ -71,7 +71,7 @@ export default async function Home() {
               <div className="bg-mist-gray/30 relative aspect-square overflow-hidden rounded-[1rem]">
                 <Image
                   src={secondaryProduct.image}
-                  alt={secondaryProduct.name}
+                  alt={`${secondaryProduct.name} featured crystal product`}
                   fill
                   className="object-cover transition-transform duration-700 hover:scale-105"
                   sizes="260px"

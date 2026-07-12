@@ -23,17 +23,18 @@
 下一阶段建议进入：
 
 ```text
-技术 SEO 和上线前包装
-  -> metadata / Open Graph
-  -> robots.txt / sitemap.xml
-  -> Product JSON-LD
-  -> 图片 alt 和页面可索引性检查
-  -> README / 环境变量 / 部署说明
-  -> 关键业务测试
+腾讯云部署执行
+  -> 子域名 / HTTPS / Nginx
+  -> Node.js / pnpm / PM2
+  -> 生产环境变量
+  -> Prisma / SQLite 初始化
+  -> Stripe test checkout
+  -> Stripe webhook 入站验收
 ```
 
 阶段计划详见：[Phase 2：水晶独立站前台重构计划](docs/phase-2-crystal-store-frontend-restructure.md)。
 SEO 学习和实施计划详见：[技术 SEO 学习与实施计划](docs/seo-foundation-plan.md)。
+腾讯云部署 checklist 详见：[腾讯云部署 Checklist](docs/tencent-cloud-deployment-checklist.md)。
 
 ---
 
@@ -142,11 +143,13 @@ SEO 学习和实施计划详见：[技术 SEO 学习与实施计划](docs/seo-fo
 - [x] `robots.txt`，允许公开页面，屏蔽 admin、checkout、account、API 等不适合索引的路径。
 - [x] `sitemap.xml`，包含首页、信息页、shop、collections、active products。
 - [x] Product JSON-LD，包含 name、description、image、sku/id、offers、priceCurrency、availability。
-- [ ] 图片 alt 文案检查，避免空泛或重复。
+- [x] 图片 alt 文案检查，避免空泛或重复。
 - [ ] 检查分页页的 canonical / robots 策略，避免无意义重复索引。
 
 ### 4. 部署准备
 
+- [x] 重写 README，记录项目定位、技术栈、SEO、支付链路、环境变量和部署注意事项。
+- [x] 新增腾讯云部署 checklist，覆盖 Nginx、HTTPS、PM2、SQLite、Stripe webhook、SEO 验收和回滚。
 - [ ] 确认腾讯云子域名、HTTPS、Nginx 反向代理方案。
 - [ ] 部署后测试 Stripe API 出站访问。
 - [ ] 部署后测试 Stripe webhook 入站访问。

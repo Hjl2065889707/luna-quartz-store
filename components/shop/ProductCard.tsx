@@ -21,7 +21,7 @@ const ProductCard = ({ product }: { product: Product }) => {
       <div className="relative aspect-[4/5] overflow-hidden bg-moon-ivory">
         <Image
           src={product.image}
-          alt={product.name}
+          alt={`${product.name} product photo`}
           fill
           className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"

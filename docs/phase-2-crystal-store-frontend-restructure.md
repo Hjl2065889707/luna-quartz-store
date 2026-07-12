@@ -167,18 +167,20 @@
 - [x] 移动端搜索从常驻输入框改为点击 search icon 后进入搜索模式。
 - [x] 搜索结果改为点击进入商品详情页。
 - [x] 修复移动端右侧白边和 checkout success 底部白边。
-- [ ] 基础 SEO metadata。
-- [ ] sitemap、robots、Product JSON-LD。
+- [x] 基础 SEO metadata。
+- [x] sitemap、robots、Product JSON-LD。
 
 ### Step 6：技术 SEO 和上线前包装
 
-- [ ] 统一站点 URL 配置。
-- [ ] 根布局 metadataBase、title template、默认 Open Graph。
-- [ ] 首页、shop、collection、product、信息页 metadata。
-- [ ] `robots.txt`。
-- [ ] `sitemap.xml`。
-- [ ] Product JSON-LD。
-- [ ] README、环境变量、部署说明。
+- [x] 统一站点 URL 配置。
+- [x] 根布局 metadataBase、title template、默认 Open Graph。
+- [x] 首页、shop、collection、product、信息页 metadata。
+- [x] `robots.txt`。
+- [x] `sitemap.xml`。
+- [x] Product JSON-LD。
+- [x] README、环境变量、部署说明。
+- [x] 图片 alt 文案检查。
+- [ ] 分页页 canonical / robots 策略。
 - [ ] 核心 checkout / webhook 测试。
 
 ## 简历表达方向

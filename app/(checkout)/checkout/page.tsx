@@ -180,7 +180,7 @@ export default function CheckoutPage() {
                   <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-2xl border border-[#E8E1D8] bg-[#F4EEE6]">
                     <Image
                       src={item.image}
-                      alt={item.name}
+                      alt={`${item.name} order summary thumbnail`}
                       fill
                       className="object-cover"
                     />

@@ -91,7 +91,7 @@ const Cart = () => {
                       <Image
                         src={item.image}
                         fill
-                        alt={item.name}
+                        alt={`${item.name} cart item thumbnail`}
                         className="object-cover"
                       />
                     </div>

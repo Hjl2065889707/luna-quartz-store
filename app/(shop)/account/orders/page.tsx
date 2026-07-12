@@ -99,7 +99,7 @@ const OrderPage = async () => {
                       {item.product?.image ? (
                         <Image
                           src={item.product.image}
-                          alt={item.product.name}
+                          alt={`${item.product.name} ordered product thumbnail`}
                           fill
                           className="object-cover"
                         />

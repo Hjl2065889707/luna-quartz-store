@@ -122,14 +122,17 @@ clear ecommerce usability
 - 商品详情页还没有 related products。
 - 信息页内容还是骨架，后续可以补更真实的品牌文案。
 - 内部代码注释仍有部分中文，但用户可见页面和主要错误信息已经英文化。
-- 技术 SEO 仍待补齐：metadata、Open Graph、robots、sitemap、Product JSON-LD。
+- 技术 SEO 基础已补齐：metadata、canonical、Open Graph、robots、sitemap、Product JSON-LD。
+- README 已从 create-next-app 默认模板重写为作品集项目说明。
+- 图片 alt 文案已做基础检查和语义增强。
+- 分页页 canonical / robots 策略仍待最终确认。
 
 ## 后续建议
 
 下一步建议处理：
 
 ```text
-技术 SEO：metadata + robots + sitemap + Product JSON-LD
+分页页 canonical / robots 策略 + 关键支付测试
 ```
 
 或者：

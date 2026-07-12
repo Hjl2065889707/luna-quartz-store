@@ -123,7 +123,7 @@ const SearchBar = ({
                   <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-xl bg-moon-ivory border border-mist-gray/50">
                     <Image
                       src={product.image}
-                      alt={product.name}
+                      alt={`${product.name} search result thumbnail`}
                       fill
                       className="object-cover transition-transform group-hover:scale-105"
                     />

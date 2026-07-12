@@ -57,7 +57,7 @@ export default async function AdminProductsPage() {
                       <div className="h-10 w-10 overflow-hidden rounded-xl bg-[#F4EEE6]">
                         <Image
                           src={product.image}
-                          alt={product.name}
+                          alt={`${product.name} admin product thumbnail`}
                           width={40}
                           height={40}
                           className="h-full w-full object-cover"

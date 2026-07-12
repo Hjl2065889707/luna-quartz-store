@@ -174,7 +174,7 @@ const ProductDialog = (props: ProductDialogProps) => {
                 <div className="relative inline-block">
                   <Image
                     src={previewUrl}
-                    alt="Preview"
+                    alt="Product image preview"
                     width={120}
                     height={120}
                     className="h-28 w-28 rounded-xl border border-[#DEE3E9] object-cover"

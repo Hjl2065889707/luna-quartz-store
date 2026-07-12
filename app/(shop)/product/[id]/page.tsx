@@ -60,7 +60,7 @@ const ProductPage = async ({ params }: ProductPageProps) => {
           <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[2rem] border border-[#E8E1D8] bg-white shadow-[0_24px_70px_rgba(74,50,39,0.12)]">
             <Image
               src={product.image}
-              alt={product.name}
+              alt={`${product.name} product photo`}
               fill
               className="object-cover"
               sizes="(max-width: 1024px) 100vw, 50vw"
