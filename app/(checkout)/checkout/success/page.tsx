@@ -63,7 +63,7 @@ export default async function CheckoutSuccessPage({
   })()
 
   return (
-    <div className="flex min-h-[80vh] items-center justify-center bg-[#FBF7F1] px-4 py-16 sm:px-6 lg:px-8">
+    <div className="flex min-h-dvh items-center justify-center bg-[#FBF7F1] px-4 py-16 sm:px-6 lg:px-8">
       <div className="relative w-full max-w-lg overflow-hidden rounded-[2rem] border border-[#E8E1D8] bg-white p-8 text-center shadow-[0_24px_70px_rgba(74,50,39,0.12)] sm:p-10">
         <div
           className={`mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full ${pageContent.iconStyle}`}
