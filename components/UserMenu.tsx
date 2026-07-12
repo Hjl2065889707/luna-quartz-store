@@ -28,7 +28,7 @@ export default function UserMenu({ name, email }: UserMenuProps) {
     <div className="relative" ref={menuRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex h-10 w-10 items-center justify-center rounded-full bg-[#F4EEE6] text-[#2F2523] transition-colors hover:bg-[#E9D8DC] focus:outline-none focus:ring-2 focus:ring-[#B76E79]"
+        className="flex h-10 w-10 items-center justify-center rounded-full bg-mist-gray/40 text-charcoal-cocoa transition-colors hover:bg-mist-gray/80 focus:outline-none focus:ring-2 focus:ring-rose-clay focus:ring-offset-2 focus:ring-offset-warm-white"
       >
         <span className="text-[16px] font-bold tracking-tight">
           {name.charAt(0).toUpperCase()}
@@ -36,28 +36,28 @@ export default function UserMenu({ name, email }: UserMenuProps) {
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 z-50 mt-3 w-56 origin-top-right rounded-3xl bg-white shadow-[0_24px_70px_rgba(74,50,39,0.16)] ring-1 ring-[#E8E1D8] focus:outline-none">
-          <div className="border-b border-[#E8E1D8] px-4 py-4">
-            <p className="truncate text-[16px] font-medium text-[#2F2523]">
+        <div className="absolute right-0 z-50 mt-3 w-64 origin-top-right rounded-3xl bg-warm-white shadow-[var(--shadow-boutique-heavy)] border border-mist-gray focus:outline-none animate-in fade-in slide-in-from-top-2 duration-200">
+          <div className="border-b border-mist-gray bg-moon-ivory px-5 py-4 rounded-t-3xl">
+            <p className="truncate text-base font-bold text-charcoal-cocoa">
               {name}
             </p>
-            <p className="truncate text-[14px] text-[#7B6D66]">{email}</p>
+            <p className="truncate text-sm text-soft-taupe mt-0.5">{email}</p>
           </div>
 
           <div className="p-2">
             <Link
               href="/account/orders"
               onClick={() => setIsOpen(false)}
-              className="flex w-full items-center gap-3 rounded-2xl px-3 py-2 text-left text-[14px] font-medium text-[#2F2523] transition-colors hover:bg-[#F4EEE6]"
+              className="flex w-full items-center gap-3 rounded-2xl px-4 py-3 text-left text-sm font-bold text-charcoal-cocoa transition-colors hover:bg-moon-ivory hover:text-rose-clay"
             >
-              <ShoppingBag size={16} />
+              <ShoppingBag size={18} className="text-soft-taupe" />
               My orders
             </Link>
             <button
               onClick={() => signOut({ callbackUrl: '/' })}
-              className="flex w-full items-center gap-3 rounded-2xl px-3 py-2 text-left text-[14px] font-medium text-[#C80A28] transition-colors hover:bg-[#F4EEE6]"
+              className="flex w-full items-center gap-3 rounded-2xl px-4 py-3 text-left text-sm font-bold text-deep-rose transition-colors hover:bg-rose-clay/10 mt-1"
             >
-              <LogOut size={16} />
+              <LogOut size={18} className="text-deep-rose" />
               Sign Out
             </button>
           </div>

@@ -64,12 +64,12 @@ const SearchBar = ({
       className={`relative w-full lg:max-w-md ${className}`}
       ref={searchContainerRef}
     >
-      <div className="flex h-10 w-full items-center justify-between rounded-full border border-[#E8E1D8] bg-white/70 px-4 transition-all focus-within:bg-white focus-within:ring-2 focus-within:ring-[#E9D8DC] hover:bg-white">
-        <Search size={16} className="text-[#B9AAA2]" />
+      <div className="flex h-11 w-full items-center justify-between rounded-full border border-mist-gray bg-moon-ivory/50 px-4 transition-all focus-within:bg-warm-white focus-within:ring-2 focus-within:ring-mist-gray hover:bg-warm-white">
+        <Search size={16} className="text-soft-taupe shrink-0" />
 
         <input
           ref={inputRef}
-          className="flex-1 bg-transparent px-3 text-sm font-medium text-[#2F2523] outline-none placeholder:font-normal placeholder:text-[#B9AAA2]"
+          className="flex-1 bg-transparent px-3 text-sm font-medium text-charcoal-cocoa outline-none placeholder:font-normal placeholder:text-soft-taupe/70"
           type="text"
           placeholder="Search crystals..."
           value={searchText}
@@ -85,7 +85,7 @@ const SearchBar = ({
         {searchText.length > 0 && (
           <X
             size={16}
-            className="cursor-pointer text-[#B9AAA2] transition-colors hover:text-[#2F2523]"
+            className="cursor-pointer text-soft-taupe transition-colors hover:text-charcoal-cocoa shrink-0"
             onClick={() => {
               setSearchText('')
               setIsDropdownOpen(false)
@@ -95,10 +95,10 @@ const SearchBar = ({
       </div>
 
       {isDropdownOpen && searchText.length > 0 && (
-        <div className="animate-in fade-in slide-in-from-top-2 absolute left-0 top-full z-50 mt-2 w-full overflow-hidden rounded-3xl border border-[#E8E1D8] bg-white p-2 shadow-[0_24px_70px_rgba(74,50,39,0.16)] duration-200">
+        <div className="animate-in fade-in slide-in-from-top-2 absolute left-0 top-full z-50 mt-3 w-full overflow-hidden rounded-3xl border border-mist-gray bg-warm-white p-2 shadow-[var(--shadow-boutique-heavy)] duration-300">
           {isLoading && (
-            <div className="flex h-20 items-center justify-center">
-              <span className="text-sm font-medium text-[#7B6D66]">
+            <div className="flex h-24 items-center justify-center">
+              <span className="text-sm font-medium text-soft-taupe animate-pulse">
                 Searching...
               </span>
             </div>
@@ -106,7 +106,7 @@ const SearchBar = ({
 
           {!isLoading && searchedProduct.length > 0 && (
             <div className="custom-scrollbar flex max-h-[60vh] flex-col gap-1 overflow-y-auto pt-1">
-              <div className="px-3 pb-2 pt-1 text-xs font-bold tracking-wider text-[#7B6D66]">
+              <div className="px-4 pb-2 pt-2 text-xs font-bold tracking-widest uppercase text-soft-taupe">
                 Results ({searchedProduct.length})
               </div>
 
@@ -118,23 +118,23 @@ const SearchBar = ({
                     setIsDropdownOpen(false)
                     onResultSelect?.()
                   }}
-                  className="group flex items-center gap-4 rounded-2xl px-3 py-2 transition-colors hover:bg-[#FBF7F1]"
+                  className="group flex items-center gap-4 rounded-2xl px-3 py-2.5 transition-colors hover:bg-moon-ivory"
                 >
-                  <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-xl bg-[#F4EEE6] ring-1 ring-[#E8E1D8]">
+                  <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-xl bg-moon-ivory border border-mist-gray/50">
                     <Image
                       src={product.image}
                       alt={product.name}
                       fill
-                      className="object-cover"
+                      className="object-cover transition-transform group-hover:scale-105"
                     />
                   </div>
 
                   <div className="min-w-0 flex-1">
-                    <span className="line-clamp-1 text-sm font-bold text-[#2F2523]">
+                    <span className="line-clamp-1 text-sm font-bold text-charcoal-cocoa group-hover:text-rose-clay transition-colors">
                       {product.name}
                     </span>
-                    <span className="mt-0.5 block truncate text-xs font-medium text-[#7B6D66]">
-                      {product.category} · {formatCurrency(product.price)}
+                    <span className="mt-1 block truncate text-xs font-medium text-soft-taupe">
+                      {product.category} &middot; {formatCurrency(product.price)}
                     </span>
                   </div>
                 </Link>
@@ -143,11 +143,11 @@ const SearchBar = ({
           )}
 
           {!isLoading && searchedProduct.length === 0 && (
-            <div className="flex h-32 flex-col items-center justify-center text-center">
-              <p className="text-sm font-bold text-[#2F2523]">
+            <div className="flex h-36 flex-col items-center justify-center text-center">
+              <p className="text-sm font-bold text-charcoal-cocoa">
                 No products found
               </p>
-              <p className="mt-1 text-xs text-[#7B6D66]">Try another keyword</p>
+              <p className="mt-1.5 text-xs text-soft-taupe">Try another keyword</p>
             </div>
           )}
         </div>

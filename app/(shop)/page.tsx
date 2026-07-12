@@ -5,6 +5,8 @@ import { siteConfig } from '@/lib/site'
 import { ArrowRight, Gift, HeartHandshake, PackageCheck } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { Button } from '@/components/ui/Button'
+import { Badge } from '@/components/ui/Badge'
 
 export default async function Home() {
   const products = await getActiveProducts()
@@ -13,45 +15,41 @@ export default async function Home() {
   const secondaryProduct = products[1]
 
   return (
-    <div className="bg-[#FBF7F1]">
-      <section className="mx-auto grid min-h-[calc(100vh-6rem)] max-w-7xl items-center gap-12 px-4 py-14 sm:px-6 lg:grid-cols-[0.95fr_1.05fr] lg:px-8">
+    <div className="bg-moon-ivory">
+      {/* Hero Section */}
+      <section className="mx-auto grid min-h-[calc(100vh-6rem)] max-w-7xl items-center gap-12 px-4 py-14 sm:px-6 lg:grid-cols-[0.95fr_1.05fr] lg:px-8 animate-in fade-in slide-in-from-bottom-8 duration-1000 fill-mode-both">
         <div className="max-w-2xl">
-          <p className="text-sm font-semibold uppercase tracking-[0.14em] text-[#B76E79]">
+          <p className="text-sm font-semibold uppercase tracking-widest text-rose-clay">
             Australian boutique crystal demo
           </p>
-          <h1 className="mt-5 text-5xl font-black leading-[1.02] tracking-tight text-[#2F2523] sm:text-6xl">
+          <h1 className="mt-5 text-5xl font-serif leading-tight tracking-tight text-charcoal-cocoa sm:text-6xl">
             Gift-ready crystals for calm spaces and daily rituals.
           </h1>
-          <p className="mt-6 text-lg leading-8 text-[#7B6D66]">
+          <p className="mt-6 text-lg leading-relaxed text-soft-taupe">
             {siteConfig.name} curates bracelets, tumbled stones, crystal points,
             ritual sets and suncatchers with a soft lifestyle storefront
             experience.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <Link
-              href="/shop"
-              className="inline-flex items-center gap-2 rounded-full bg-[#2F2523] px-6 py-3 text-sm font-bold text-white transition-colors hover:bg-[#4A3732]"
-            >
+            <Button href="/shop" variant="primary" size="lg">
               Shop crystals
-              <ArrowRight size={16} />
-            </Link>
-            <Link
-              href="/crystal-guide"
-              className="inline-flex items-center rounded-full border border-[#D8CBBF] bg-white/50 px-6 py-3 text-sm font-bold text-[#2F2523] transition-colors hover:border-[#B76E79]"
-            >
+            </Button>
+            <Button href="/crystal-guide" variant="outline" size="lg">
               Read the guide
-            </Link>
+            </Button>
           </div>
-          <div className="mt-10 grid max-w-lg grid-cols-3 gap-4 border-t border-[#E8E1D8] pt-6 text-sm text-[#7B6D66]">
+          <div className="mt-10 flex w-full justify-center items-center gap-4 border-t border-mist-gray pt-6 text-sm text-soft-taupe font-medium">
             <span>Small catalogue</span>
+            <span className="h-1 w-1 rounded-full bg-mist-gray shrink-0"></span>
             <span>AUD pricing</span>
+            <span className="h-1 w-1 rounded-full bg-mist-gray shrink-0"></span>
             <span>Test checkout</span>
           </div>
         </div>
 
         <div className="grid gap-4 sm:grid-cols-[1fr_0.72fr] lg:relative lg:block lg:min-h-[480px]">
           {heroProduct && (
-            <div className="relative aspect-[4/5] overflow-hidden rounded-[2rem] bg-white shadow-[0_24px_70px_rgba(74,50,39,0.16)] lg:absolute lg:right-0 lg:top-0 lg:h-[78%] lg:w-[72%]">
+            <div className="relative aspect-[4/5] overflow-hidden rounded-[2rem] bg-warm-white shadow-[var(--shadow-boutique-heavy)] lg:absolute lg:right-0 lg:top-0 lg:h-[78%] lg:w-[72%] transition-transform duration-700 hover:scale-[1.02]">
               <Image
                 src={heroProduct.image}
                 alt={heroProduct.name}
@@ -63,20 +61,20 @@ export default async function Home() {
             </div>
           )}
           {secondaryProduct && (
-            <div className="rounded-[1.5rem] border border-[#E8E1D8] bg-white p-4 shadow-[0_18px_50px_rgba(74,50,39,0.12)] sm:self-end lg:absolute lg:bottom-0 lg:left-0 lg:w-[52%]">
-              <div className="relative aspect-square overflow-hidden rounded-[1rem] bg-[#F4EEE6]">
+            <div className="rounded-[1.5rem] border border-mist-gray bg-warm-white p-4 shadow-[var(--shadow-boutique-hover)] sm:self-end lg:absolute lg:bottom-0 lg:left-0 lg:w-[52%] backdrop-blur-sm bg-warm-white/95">
+              <div className="relative aspect-square overflow-hidden rounded-[1rem] bg-mist-gray/30">
                 <Image
                   src={secondaryProduct.image}
                   alt={secondaryProduct.name}
                   fill
-                  className="object-cover"
+                  className="object-cover transition-transform duration-700 hover:scale-105"
                   sizes="260px"
                 />
               </div>
-              <p className="mt-3 text-xs font-semibold uppercase tracking-wide text-[#B76E79]">
+              <p className="mt-4 text-xs font-semibold uppercase tracking-widest text-rose-clay">
                 Featured piece
               </p>
-              <p className="mt-1 line-clamp-1 text-sm font-semibold text-[#2F2523]">
+              <p className="mt-1 line-clamp-1 text-sm font-semibold text-charcoal-cocoa">
                 {secondaryProduct.name}
               </p>
             </div>
@@ -84,8 +82,9 @@ export default async function Home() {
         </div>
       </section>
 
-      <section className="bg-white py-8">
-        <div className="mx-auto grid max-w-7xl gap-4 px-4 sm:px-6 md:grid-cols-3 lg:px-8">
+      {/* Trust Values Section */}
+      <section className="bg-warm-white py-12 border-y border-mist-gray/50 animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-200 fill-mode-both">
+        <div className="mx-auto grid max-w-7xl gap-6 px-4 sm:px-6 md:grid-cols-3 lg:px-8">
           {[
             [
               PackageCheck,
@@ -107,16 +106,16 @@ export default async function Home() {
             return (
               <div
                 key={title as string}
-                className="flex gap-4 rounded-3xl bg-[#FBF7F1] p-5"
+                className="flex gap-5 rounded-2xl bg-moon-ivory/50 p-6 transition-colors hover:bg-moon-ivory"
               >
-                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#E9D8DC] text-[#8F4F5B]">
-                  <TrustIcon size={20} />
+                <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-rose-clay/10 text-deep-rose">
+                  <TrustIcon size={22} strokeWidth={2} />
                 </span>
                 <div>
-                  <h2 className="text-sm font-bold text-[#2F2523]">
+                  <h2 className="text-base font-bold text-charcoal-cocoa">
                     {title as string}
                   </h2>
-                  <p className="mt-1 text-sm leading-6 text-[#7B6D66]">
+                  <p className="mt-1.5 text-sm leading-relaxed text-soft-taupe">
                     {body as string}
                   </p>
                 </div>
@@ -126,36 +125,38 @@ export default async function Home() {
         </div>
       </section>
 
-      <section className="bg-[#FBF7F1] py-16">
+      {/* Categories Section */}
+      <section className="bg-moon-ivory py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-3xl text-center">
-            <p className="text-sm font-semibold uppercase tracking-[0.14em] text-[#B76E79]">
+          <div className="mx-auto max-w-3xl text-center animate-in fade-in slide-in-from-bottom-8 duration-700 fill-mode-both">
+            <p className="text-sm font-semibold uppercase tracking-widest text-rose-clay">
               Shop by collection
             </p>
-            <h2 className="mt-3 text-4xl font-black tracking-tight text-[#2F2523]">
+            <h2 className="mt-4 text-4xl font-serif tracking-tight text-charcoal-cocoa sm:text-5xl">
               Choose by how the piece fits your routine
             </h2>
-            <p className="mt-4 text-base leading-7 text-[#7B6D66]">
+            <p className="mt-4 text-lg leading-relaxed text-soft-taupe">
               Browse a focused catalogue by wearable pieces, desk stones,
               display points, curated sets and window light catchers.
             </p>
           </div>
 
-          <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-            {productCategories.map((category) => (
+          <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-5">
+            {productCategories.map((category, index) => (
               <Link
                 key={category.slug}
                 href={`/collections/${category.slug}`}
-                className="group rounded-3xl border border-[#E8E1D8] bg-white p-6 transition hover:-translate-y-1 hover:border-[#D8CBBF] hover:shadow-[0_18px_45px_rgba(74,50,39,0.08)]"
+                className="group rounded-3xl border border-mist-gray bg-warm-white p-6 transition-all duration-300 hover:-translate-y-1 hover:border-rose-clay/30 hover:shadow-[var(--shadow-boutique-hover)]"
+                style={{ animationDelay: `${index * 100}ms` }}
               >
-                <h3 className="text-base font-bold text-[#2F2523]">
+                <h3 className="text-lg font-bold text-charcoal-cocoa">
                   {category.name}
                 </h3>
-                <p className="mt-3 line-clamp-3 text-sm leading-6 text-[#7B6D66]">
+                <p className="mt-3 line-clamp-3 text-sm leading-relaxed text-soft-taupe">
                   {category.description}
                 </p>
-                <span className="mt-5 inline-flex text-sm font-semibold text-[#B76E79]">
-                  Explore
+                <span className="mt-6 inline-flex text-sm font-bold text-rose-clay group-hover:text-deep-rose transition-colors">
+                  Explore <ArrowRight size={16} className="ml-1 opacity-0 -translate-x-2 transition-all group-hover:opacity-100 group-hover:translate-x-0" />
                 </span>
               </Link>
             ))}
@@ -163,56 +164,60 @@ export default async function Home() {
         </div>
       </section>
 
-      <section className="bg-white py-16">
+      {/* Featured Section */}
+      <section className="bg-warm-white py-20 border-t border-mist-gray">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex items-end justify-between gap-6">
+          <div className="flex items-end justify-between gap-6 mb-10">
             <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.14em] text-[#B76E79]">
+              <p className="text-sm font-semibold uppercase tracking-widest text-rose-clay">
                 Featured
               </p>
-              <h2 className="mt-3 text-4xl font-black tracking-tight text-[#2F2523]">
+              <h2 className="mt-3 text-4xl font-serif tracking-tight text-charcoal-cocoa">
                 New pieces for quiet rituals
               </h2>
             </div>
-            <Link
-              href="/shop"
-              className="hidden text-sm font-bold text-[#2F2523] underline-offset-4 hover:underline sm:inline"
-            >
+            <Button href="/shop" variant="ghost" className="hidden sm:inline-flex">
               Shop all
-            </Link>
+            </Button>
           </div>
 
-          <div className="mt-8 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
             {featuredProducts.map((item) => (
               <ItemCell item={item} key={item.id} />
             ))}
           </div>
+          
+          <div className="mt-10 flex justify-center sm:hidden">
+            <Button href="/shop" variant="outline" size="lg" className="w-full">
+              Shop all
+            </Button>
+          </div>
         </div>
       </section>
 
-      <section className="bg-[#2F2523] py-16 text-white">
-        <div className="mx-auto grid max-w-7xl gap-8 px-4 sm:px-6 lg:grid-cols-[1fr_0.7fr] lg:px-8">
+      {/* Guide CTA Section */}
+      <section className="bg-charcoal-cocoa py-20 text-warm-white relative overflow-hidden">
+        {/* Subtle background decoration */}
+        <div className="absolute top-0 right-0 -mr-20 -mt-20 h-64 w-64 rounded-full bg-mist-gray opacity-5 blur-3xl"></div>
+        
+        <div className="mx-auto grid max-w-7xl gap-8 px-4 sm:px-6 lg:grid-cols-[1fr_0.7fr] lg:px-8 relative z-10">
           <div>
-            <p className="text-sm font-semibold uppercase tracking-[0.14em] text-[#C7B7D8]">
+            <p className="text-sm font-semibold uppercase tracking-widest text-lavender-quartz">
               Crystal guide
             </p>
-            <h2 className="mt-3 text-4xl font-black tracking-tight">
+            <h2 className="mt-4 text-4xl font-serif tracking-tight sm:text-5xl">
               Browse by intention, but keep it grounded.
             </h2>
-            <p className="mt-5 max-w-2xl text-base leading-7 text-[#D8CBBF]">
+            <p className="mt-6 max-w-2xl text-lg leading-relaxed text-mist-gray/80">
               Crystal meanings in this demo are traditional associations and
               lifestyle notes. They help shoppers browse, gift and style pieces
               without making medical claims.
             </p>
           </div>
-          <div className="flex items-center lg:justify-end">
-            <Link
-              href="/crystal-guide"
-              className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-bold text-[#2F2523] transition hover:bg-[#FBF7F1]"
-            >
+          <div className="flex items-center lg:justify-end mt-6 lg:mt-0">
+            <Button href="/crystal-guide" variant="secondary" size="lg">
               Read the guide
-              <ArrowRight size={16} />
-            </Link>
+            </Button>
           </div>
         </div>
       </section>

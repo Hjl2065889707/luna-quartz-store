@@ -1,22 +1,33 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@theme {
+  --color-moon-ivory: #FBF7F1;
+  --color-warm-white: #FFFFFF;
+  --color-charcoal-cocoa: #2F2523;
+  --color-soft-taupe: #7B6D66;
+  --color-mist-gray: #E8E1D8;
+  --color-rose-clay: #B76E79;
+  --color-deep-rose: #8F4F5B;
+  --color-sage: #7D9271;
+  --color-lavender-quartz: #C7B7D8;
+  --color-honey-citrine: #D9A441;
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: Arial, Helvetica, sans-serif;
-  --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  --font-sans: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+
+  --shadow-boutique: 0 18px 45px rgba(47, 37, 35, 0.08);
+  --shadow-boutique-hover: 0 24px 60px rgba(47, 37, 35, 0.12);
+  --shadow-boutique-heavy: 0 24px 70px rgba(47, 37, 35, 0.16);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-moon-ivory);
+  color: var(--color-charcoal-cocoa);
+  font-family: var(--font-sans);
   overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* Toast slide-in animation */
