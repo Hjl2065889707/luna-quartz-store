@@ -139,8 +139,8 @@ SEO 学习和实施计划详见：[技术 SEO 学习与实施计划](docs/seo-fo
 - [x] `/collections/[slug]` 动态 metadata 和 canonical。
 - [x] `/product/[id]` 动态 metadata 和 canonical。
 - [x] Open Graph metadata，至少覆盖首页、分类页、商品详情页。
-- [ ] `robots.txt`，允许公开页面，屏蔽 admin、checkout、account、API 等不适合索引的路径。
-- [ ] `sitemap.xml`，包含首页、信息页、shop、collections、active products。
+- [x] `robots.txt`，允许公开页面，屏蔽 admin、checkout、account、API 等不适合索引的路径。
+- [x] `sitemap.xml`，包含首页、信息页、shop、collections、active products。
 - [ ] Product JSON-LD，包含 name、description、image、sku/id、offers、priceCurrency、availability。
 - [ ] 图片 alt 文案检查，避免空泛或重复。
 - [ ] 检查分页页的 canonical / robots 策略，避免无意义重复索引。
