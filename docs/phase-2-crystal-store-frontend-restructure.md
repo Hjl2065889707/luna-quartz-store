@@ -1,6 +1,6 @@
 # Phase 2：水晶独立站前台重构计划
 
-> 更新日期：2026-07-11
+> 更新日期：2026-07-12
 >
 > 目标：把项目从“商品列表练习”重构成一个更像真实水晶独立站的作品集 demo，同时保留 Next.js 全栈、Stripe test mode、后台商品管理和订单链路。
 
@@ -16,6 +16,7 @@
 - 有 About、FAQ、Shipping & Returns、Contact、Crystal Guide 等信息页。
 - 商品详情、购物车、结账、订单状态仍然能跑通。
 - 页面文案以英文为主，更符合澳洲求职作品集语境。
+- 移动端导航不是桌面端缩窄版，而是独立的 hamburger drawer + 搜索模式。
 
 ## 推荐站点结构
 
@@ -160,10 +161,25 @@
 
 ### Step 5：视觉和 SEO 收尾
 
-- [ ] 商品卡片英文化和视觉统一。
-- [ ] 商品详情页英文化和信任信息补充。
+- [x] 商品卡片英文化和视觉统一。
+- [x] 商品详情页英文化和信任信息补充。
+- [x] 移动端 Navbar 重构为 hamburger / logo / search / cart。
+- [x] 移动端搜索从常驻输入框改为点击 search icon 后进入搜索模式。
+- [x] 搜索结果改为点击进入商品详情页。
+- [x] 修复移动端右侧白边和 checkout success 底部白边。
 - [ ] 基础 SEO metadata。
-- [ ] 后续考虑 sitemap、robots、Product JSON-LD。
+- [ ] sitemap、robots、Product JSON-LD。
+
+### Step 6：技术 SEO 和上线前包装
+
+- [ ] 统一站点 URL 配置。
+- [ ] 根布局 metadataBase、title template、默认 Open Graph。
+- [ ] 首页、shop、collection、product、信息页 metadata。
+- [ ] `robots.txt`。
+- [ ] `sitemap.xml`。
+- [ ] Product JSON-LD。
+- [ ] README、环境变量、部署说明。
+- [ ] 核心 checkout / webhook 测试。
 
 ## 简历表达方向
 
@@ -174,3 +190,9 @@ Built a portfolio-ready e-commerce storefront with Next.js, TypeScript, Prisma a
 ```
 
 重点不是说“我做了几个页面”，而是强调你理解真实电商站的信息架构、商品浏览路径、支付和订单链路。
+
+SEO 完成后，可以补充：
+
+```text
+Implemented SEO-ready storefront pages with dynamic metadata, sitemap.xml, robots.txt, Open Graph tags and Product JSON-LD structured data.
+```

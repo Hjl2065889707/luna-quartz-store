@@ -1,6 +1,6 @@
 # UI Review 与水晶独立站重构记录
 
-> 更新日期：2026-07-11
+> 更新日期：2026-07-12
 
 ## 结论
 
@@ -88,6 +88,11 @@ clear ecommerce usability
 - Navbar 增加顶部 trust note。
 - Brand mark 从纯黑改为 Rose Clay。
 - Footer 改为深色 Charcoal Cocoa，提高品牌完成度。
+- 移动端 Navbar 从常驻搜索栏 + 横向分类胶囊，重构为更符合电商习惯的 hamburger / logo / search / cart。
+- hamburger drawer 承载主导航、collections、登录注册或用户入口，避免首屏导航过重。
+- 移动端搜索改为点击 search icon 后替换 navbar 的搜索模式，结果列表点击进入商品详情页。
+- 购物车下拉、drawer、搜索结果都经过移动端横向溢出检查。
+- checkout success page 移动端底部白色空白已修复。
 
 ### 全站英文化和后台统一
 
@@ -107,6 +112,8 @@ clear ecommerce usability
 - 列表页和分类页都复用分页组件。
 - `getActiveProductsByCategory` 已删除，避免保留过时查询函数。
 - 分页查询中的 `where` 已提取为局部变量，避免 `count` 和 `findMany` 条件不一致。
+- SearchBar 搜索结果已从“直接加入购物车”改为进入商品详情页，更符合搜索意图。
+- 移动端导航状态被拆到 `MobileNav` client component，避免把交互状态塞进 server `Navbar`。
 
 ### 仍待处理
 
@@ -115,17 +122,18 @@ clear ecommerce usability
 - 商品详情页还没有 related products。
 - 信息页内容还是骨架，后续可以补更真实的品牌文案。
 - 内部代码注释仍有部分中文，但用户可见页面和主要错误信息已经英文化。
+- 技术 SEO 仍待补齐：metadata、Open Graph、robots、sitemap、Product JSON-LD。
 
 ## 后续建议
 
 下一步建议处理：
 
 ```text
-Product detail related products + 商品图片资源优化
+技术 SEO：metadata + robots + sitemap + Product JSON-LD
 ```
 
 或者：
 
 ```text
-信息页品牌文案深化 + SEO metadata
+README / 环境变量 / 部署说明 / 核心测试
 ```

@@ -1,6 +1,6 @@
 # 技术债务 & 后续优化 TODO
 
-> 更新日期：2026-07-11
+> 更新日期：2026-07-12
 >
 > 这份清单记录项目当前真实状态。已完成项保留在“已完成”区域，方便回顾项目是如何从学习 demo 逐步收尾成作品集项目的。
 
@@ -16,21 +16,24 @@
 - Checkout / webhook / order status 的关键业务链路已做运行时校验和幂等处理。
 - `/shop` 和 `/collections/[slug]` 已支持服务端分页。
 - 用户可见页面已统一为英文，并应用 Luna & Quartz 水晶独立站视觉系统。
+- 移动端 Navbar 已从“桌面端缩窄版”重构为 hamburger drawer + 搜索模式切换。
+- 搜索结果已从 quick add 改为点击进入商品详情页，更符合电商搜索预期。
+- Checkout success page 移动端底部白色空白已修复。
 
 下一阶段建议进入：
 
 ```text
-水晶独立站产品化
-  -> 24 个英文水晶商品
-  -> 首页 landing page
-  -> 分类页面
-  -> 商品列表分页
-  -> 前台英文化
-  -> 首页和商品页视觉升级
-  -> 技术 SEO
+技术 SEO 和上线前包装
+  -> metadata / Open Graph
+  -> robots.txt / sitemap.xml
+  -> Product JSON-LD
+  -> 图片 alt 和页面可索引性检查
+  -> README / 环境变量 / 部署说明
+  -> 关键业务测试
 ```
 
 阶段计划详见：[Phase 2：水晶独立站前台重构计划](docs/phase-2-crystal-store-frontend-restructure.md)。
+SEO 学习和实施计划详见：[技术 SEO 学习与实施计划](docs/seo-foundation-plan.md)。
 
 ---
 
@@ -78,6 +81,16 @@
 - [x] 准备 24 个水晶商品数据。
 - [x] 为 mock 商品配置公开 placeholder 图片 URL。
 
+### 移动端体验和视觉验收
+
+- [x] 移动端 Navbar 改为 hamburger / logo / search icon / cart 的真实电商结构。
+- [x] 新增移动端 hamburger drawer，承载主导航、collections、登录/注册入口。
+- [x] 移动端搜索改为点击 search icon 后替换 navbar 的搜索模式。
+- [x] SearchBar 支持自动 focus，并在选中结果后关闭搜索模式。
+- [x] 搜索结果改为商品详情页链接，避免搜索场景直接加购造成意图不清。
+- [x] 修复移动端右侧白边和购物车下拉宽度溢出。
+- [x] 修复 checkout success page 移动端底部白色空白。
+
 ---
 
 ## 高优先级 TODO
@@ -119,13 +132,18 @@
 
 ### 3. 技术 SEO
 
+- [ ] 统一站点 canonical base URL 配置，例如 `NEXT_PUBLIC_SITE_URL`。
+- [ ] 根布局设置 `metadataBase`、title template、默认 description、Open Graph 和 Twitter card。
 - [ ] 首页 metadata。
-- [ ] 商品详情页动态 metadata。
-- [ ] Open Graph metadata。
-- [ ] `robots.txt`。
-- [ ] `sitemap.xml`。
-- [ ] Product JSON-LD。
-- [ ] 图片 alt 文案。
+- [ ] `/shop` metadata。
+- [ ] `/collections/[slug]` 动态 metadata 和 canonical。
+- [ ] `/product/[id]` 动态 metadata 和 canonical。
+- [ ] Open Graph metadata，至少覆盖首页、分类页、商品详情页。
+- [ ] `robots.txt`，允许公开页面，屏蔽 admin、checkout、account、API 等不适合索引的路径。
+- [ ] `sitemap.xml`，包含首页、信息页、shop、collections、active products。
+- [ ] Product JSON-LD，包含 name、description、image、sku/id、offers、priceCurrency、availability。
+- [ ] 图片 alt 文案检查，避免空泛或重复。
+- [ ] 检查分页页的 canonical / robots 策略，避免无意义重复索引。
 
 ### 4. 部署准备
 
