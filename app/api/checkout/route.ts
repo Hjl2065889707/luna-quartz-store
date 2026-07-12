@@ -7,6 +7,7 @@ import {
   CheckoutItemSnapshot,
   checkoutRequestSchema,
 } from '@/lib/schemas/checkout'
+import { siteConfig } from '@/lib/site'
 
 export async function POST(req: NextRequest) {
   try {
@@ -82,13 +83,14 @@ export async function POST(req: NextRequest) {
         quantity: item.quantity,
       }
     })
+    const siteUrl = siteConfig.url
 
     // 调用 Stripe SDK 创建 Checkout Session
     const session = await stripe.checkout.sessions.create({
       mode: 'payment',
       line_items: lineItems,
-      success_url: `${req.nextUrl.origin}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${req.nextUrl.origin}/checkout`,
+      success_url: `${siteUrl}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${siteUrl}/checkout`,
       metadata: {
         userId: userSession.user.id,
         shippingInfo: JSON.stringify(validationResult.data.shippingInfo),
