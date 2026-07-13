@@ -11,7 +11,7 @@
 - 腾讯云服务器部署练习
 - 后续预留迁移到 C# / ASP.NET Core Web API 的空间
 
-## 当前进度更新：2026-07-09
+## 当前进度更新：2026-07-13
 
 本文档最初记录的是 Phase 1 的 code review 结果，其中很多问题已经在后续阶段修复。现在项目状态如下：
 
@@ -23,6 +23,7 @@
 - 已移除 `next/font/google`，改用系统字体，避免腾讯云或其他网络受限环境构建失败。
 - 已删除废弃的 `data/product.ts`。
 - 已移除客户端请求里的硬编码 `localhost:3000`，改为环境变量驱动的 API base URL。
+- Stripe checkout redirect URL 已改为使用 `NEXT_PUBLIC_SITE_URL`，避免反向代理部署后误跳 localhost。
 - 已将 Next 16 弃用的 `middleware.ts` 迁移为 `proxy.ts`。
 - 已在 `next.config.ts` 配置 `turbopack.root`，消除 workspace root 推断警告。
 
@@ -38,19 +39,22 @@
 - 用户订单页会显示退款说明。
 - 订单状态、状态样式和状态流转规则已集中到 `lib/orderStatus.ts`。
 - 订单状态更新 API 已使用 Zod 校验请求体。
+- 腾讯云 CVM + Nginx + HTTPS + PM2 部署已跑通。
+- Stripe test checkout + webhook 入站验收已跑通。
+- Admin 运营页面已显式动态渲染，避免生产环境复用 build 时数据。
+- 商品图片已从大体积 PNG 优化为 WebP。
 
 已完成的展示一致性修复：
 
 - 全站金额显示统一为 `AUD`，使用 `formatCurrency()`。
 - 用户端和 admin 端订单状态展示已统一。
 
-当前仍然需要推进的重点：
+当前版本已经可以暂时封版。后续如果继续推进，重点不再是补页面，而是：
 
 ```text
-Batch 2：水晶独立站英文产品化
-Batch 3：商品列表分页、筛选、排序
-Batch 4：技术 SEO 和 README
-Batch 5：腾讯云或 Vercel 部署
+Batch 6：关键 API / webhook 测试
+Batch 7：OrderItem 商品快照
+Batch 8：PostgreSQL 或 C# / ASP.NET Core 后端迁移
 ```
 
 因此，下方的 P0/P1 审查内容应理解为“历史发现和最佳实践说明”。如果某一项已经修复，应以本节和 `TODO.md` 的最新状态为准。
@@ -88,10 +92,10 @@ Batch 5：腾讯云或 Vercel 部署
 
 ```text
 Batch 1：修硬伤和最佳实践地基（已完成）
-Batch 2：水晶独立站英文产品化（下一阶段）
-Batch 3：商品列表分页、筛选、排序（下一阶段重点学习）
-Batch 4：技术 SEO 和 README（待做）
-Batch 5：腾讯云或 Vercel 部署（待做）
+Batch 2：水晶独立站英文产品化（已完成）
+Batch 3：商品列表分页、筛选、排序（已完成分页）
+Batch 4：技术 SEO 和 README（已完成）
+Batch 5：腾讯云部署（已完成）
 ```
 
 ---
@@ -616,10 +620,10 @@ git rm --cached public/uploads/1783402804051-g1sfef.png
 
 - `prisma/seed.ts`
 
-当前逻辑：
+历史逻辑：
 
 ```ts
-admin@store.com / admin123
+seed 脚本曾经包含固定 admin 邮箱和密码
 ```
 
 为什么这是问题：
@@ -628,17 +632,21 @@ admin@store.com / admin123
 
 最佳实践：
 
-seed 脚本读取环境变量：
+当前实现已经改为读取环境变量：
 
 ```text
 SEED_ADMIN_EMAIL
 SEED_ADMIN_PASSWORD
 ```
 
-如果没有设置，就只在开发环境使用默认值，并且明确标注：
+如果没有设置，`pnpm seed` 会直接失败，避免无意中把固定弱密码部署到公网环境。
+
+公开 README 不保存 admin 密码。需要演示后台时，可以临时创建演示账号或私下提供凭据。
+
+不要采用：
 
 ```text
-Demo only. Do not use in production.
+Demo only hard-coded password
 ```
 
 你能学到什么：

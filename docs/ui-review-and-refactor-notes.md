@@ -118,7 +118,7 @@ clear ecommerce usability
 ### 仍待处理
 
 - `ItemCell` 命名仍偏练习项目，后续可以逐步改所有引用为 `ProductCard`。
-- 首页和商品卡片仍受 placeholder 图片质量限制，真实部署前建议换成统一风格图片。
+- 商品图片已替换为统一风格的本地 WebP，后续如果继续 polish，可以再提升商品摄影质量。
 - 商品详情页还没有 related products。
 - 信息页内容还是骨架，后续可以补更真实的品牌文案。
 - 内部代码注释仍有部分中文，但用户可见页面和主要错误信息已经英文化。
@@ -129,14 +129,8 @@ clear ecommerce usability
 
 ## 后续建议
 
-下一步建议处理：
+当前版本已经完成 SEO、README、部署和图片性能收尾。后续如果继续投入，建议处理：
 
 ```text
-分页页 canonical / robots 策略 + 关键支付测试
-```
-
-或者：
-
-```text
-README / 环境变量 / 部署说明 / 核心测试
+关键支付测试 + OrderItem 商品快照
 ```

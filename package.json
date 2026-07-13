@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "seed": "tsx prisma/seed.ts",
-    "update-product-images": "tsx prisma/update-product-images.ts"
+    "update-product-images": "tsx prisma/update-product-images.ts",
+    "update-admin-user": "tsx prisma/update-admin-user.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",

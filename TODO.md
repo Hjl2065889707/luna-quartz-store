@@ -1,12 +1,12 @@
 # 技术债务 & 后续优化 TODO
 
-> 更新日期：2026-07-12
+> 更新日期：2026-07-13
 >
 > 这份清单记录项目当前真实状态。已完成项保留在“已完成”区域，方便回顾项目是如何从学习 demo 逐步收尾成作品集项目的。
 
 ## 当前阶段结论
 
-项目已经完成第一轮工程质量收尾：
+项目当前版本已经可以作为作品集 demo 暂时封版：
 
 - `pnpm lint` 通过。
 - `pnpm exec tsc --noEmit --pretty false` 通过。
@@ -19,22 +19,24 @@
 - 移动端 Navbar 已从“桌面端缩窄版”重构为 hamburger drawer + 搜索模式切换。
 - 搜索结果已从 quick add 改为点击进入商品详情页，更符合电商搜索预期。
 - Checkout success page 移动端底部白色空白已修复。
+- 已部署到 `https://shop.huangjunlong.cloud`。
+- 腾讯云 CVM + Nginx + HTTPS + PM2 部署链路已跑通。
+- Stripe test checkout + webhook + 订单创建 + 后台订单展示已跑通。
+- 商品图片已从大体积 PNG 优化为 WebP。
 
-下一阶段建议进入：
+下一阶段建议：
 
 ```text
-腾讯云部署执行
-  -> 子域名 / HTTPS / Nginx
-  -> Node.js / pnpm / PM2
-  -> 生产环境变量
-  -> Prisma / SQLite 初始化
-  -> Stripe test checkout
-  -> Stripe webhook 入站验收
+暂时不继续扩功能
+  -> 准备简历 bullet
+  -> 准备作品集截图
+  -> 保留 TODO 作为后续 .NET 后端迁移素材
 ```
 
 阶段计划详见：[Phase 2：水晶独立站前台重构计划](docs/phase-2-crystal-store-frontend-restructure.md)。
 SEO 学习和实施计划详见：[技术 SEO 学习与实施计划](docs/seo-foundation-plan.md)。
 腾讯云部署 checklist 详见：[腾讯云部署 Checklist](docs/tencent-cloud-deployment-checklist.md)。
+最终 review 详见：[最终 Review 和作品集收尾](docs/final-review-and-portfolio-handoff.md)。
 
 ---
 
@@ -80,7 +82,7 @@ SEO 学习和实施计划详见：[技术 SEO 学习与实施计划](docs/seo-fo
 - [x] 客户端 API base URL 改成环境变量驱动，移除硬编码 `localhost:3000`。
 - [x] 全站金额显示统一为 `AUD`，使用 `formatCurrency()`。
 - [x] 准备 24 个水晶商品数据。
-- [x] 为 mock 商品配置公开 placeholder 图片 URL。
+- [x] 为 mock 商品配置统一风格的本地商品图片。
 - [x] 将商品 PNG 图压缩为 1000px WebP，总体积从约 55MB 降到约 2.2MB。
 - [x] 新增 `pnpm update-product-images`，线上可只更新商品图片路径，不清空订单数据。
 
@@ -152,11 +154,13 @@ SEO 学习和实施计划详见：[技术 SEO 学习与实施计划](docs/seo-fo
 
 - [x] 重写 README，记录项目定位、技术栈、SEO、支付链路、环境变量和部署注意事项。
 - [x] 新增腾讯云部署 checklist，覆盖 Nginx、HTTPS、PM2、SQLite、Stripe webhook、SEO 验收和回滚。
-- [ ] 确认腾讯云子域名、HTTPS、Nginx 反向代理方案。
-- [ ] 部署后测试 Stripe API 出站访问。
-- [ ] 部署后测试 Stripe webhook 入站访问。
-- [ ] 决定最终公开 demo 是腾讯云还是 Vercel。
-- [ ] 准备生产环境变量清单。
+- [x] 确认腾讯云子域名、HTTPS、Nginx 反向代理方案。
+- [x] 部署后测试 Stripe API 出站访问。
+- [x] 部署后测试 Stripe webhook 入站访问。
+- [x] 当前公开 demo 决定使用腾讯云部署版本。
+- [x] 准备生产环境变量清单。
+- [x] 修复 Stripe success URL 在反向代理环境下误用 localhost 的问题。
+- [x] 将后台运营页面显式设为动态渲染，避免生产环境复用 build 时数据。
 
 ---
 
@@ -181,7 +185,7 @@ SEO 学习和实施计划详见：[技术 SEO 学习与实施计划](docs/seo-fo
 ### 用户体验
 
 - [x] 统一 SearchBar、Cart、Checkout 的水晶独立站视觉风格。
-- [ ] 替换商品 placeholder 图片为统一风格的真实/生成商品图。
+- [x] 替换商品 placeholder 图片为统一风格的本地 WebP 商品图。
 - [ ] 商品详情页增加 related products。
 - [ ] 商品详情页和购物车数量选择器限制最大库存。
 - [ ] 缺货时禁用“加入购物车”按钮。

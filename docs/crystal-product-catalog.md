@@ -6,7 +6,7 @@
 prisma/crystal-products.ts
 ```
 
-当前采用的是 demo placeholder 图片策略：24 个商品复用少量公开可访问的 Wikimedia 图片。这样可以快速推进分页、首页产品化、SEO 和部署，不再把时间耗在 mock 商品摄影上。
+当前采用的是本地 demo 商品图策略：24 个商品使用统一风格的本地 WebP 图片，图片路径维护在 `prisma/crystal-products.ts`。这样既能支撑真实 storefront 视觉，也避免依赖外链图片导致线上加载不稳定。
 
 后续接入 seed 时，优先使用：
 
@@ -93,8 +93,8 @@ totalPages = 3
 当前选择：
 
 ```text
-少量 Wikimedia 图片作为 placeholder
-24 个商品复用这些图片
+本地 WebP 商品图
+24 个商品分别配置对应图片
 商品名、描述、价格和分类保持真实感
 ```
 
@@ -103,30 +103,35 @@ totalPages = 3
 - 这只是作品集 demo，不会真实下单和发货。
 - 当前学习重点是分页、商品页、购物车、支付、订单、SEO 和部署。
 - 商品摄影不是这个阶段的核心能力。
-- 复用少量图片足够支撑页面视觉和功能演示。
+- WebP 图片体积较小，适合部署后的商品列表性能。
 
-当前图片来源：
+当前图片状态：
 
-| Placeholder | Source |
+| Item | Status |
 | --- | --- |
-| Amethyst | Wikimedia upload image from Wikipedia Amethyst page |
-| Rose Quartz | Wikimedia upload image from Wikipedia Rose quartz page |
-| Clear Quartz | Wikimedia upload image from Wikipedia Quartz page |
-| Labradorite | Wikimedia upload image from Wikipedia Labradorite page |
-| Fluorite | Wikimedia upload image from Wikipedia Fluorite page |
-| Citrine | Wikimedia upload image from Wikipedia Citrine page |
-| Suncatcher / Prism | Wikimedia upload image from Wikipedia Prism page |
+| Format | WebP |
+| Size | 1000 x 1000 |
+| Total products | 24 |
+| Total product image size | about 2.2MB |
+| Original PNG total size | about 55MB |
 
-所有 URL 已用 `curl -I` 验证能返回 `200`。
+线上更新图片路径时使用：
+
+```bash
+pnpm update-product-images
+```
+
+不要为了更新图片路径直接跑 `pnpm seed`，因为当前 seed 会清空订单和订单明细。
 
 ## 图片后续替换
 
 如果后面想进一步 polish，可以再替换为：
 
 - 自己用 AI 生成的统一商品图。
-- Unsplash / Pexels 等图库图。
-- 自己下载后放进 `public/products/` 的本地图片。
-- 真实商业项目的 CDN 图片。
+- 更高质量的统一 AI 商品摄影。
+- 自己拍摄或有明确授权的商品图。
+- 对象存储和 CDN 图片。
+- 上传时自动生成 thumbnail / medium / large 多尺寸版本。
 
 但这不是当前阶段的高优先级。
 

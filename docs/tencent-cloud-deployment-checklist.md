@@ -1,8 +1,28 @@
 # 腾讯云部署 Checklist：Luna & Quartz
 
-> 更新日期：2026-07-12
+> 更新日期：2026-07-13
 >
 > 目标：把 Luna & Quartz 部署到腾讯云 CVM，并完整演示 Stripe test checkout + webhook + 订单创建 + 库存扣减链路。
+
+## 0. 当前部署结果
+
+当前 demo 已部署到：
+
+```text
+https://shop.huangjunlong.cloud
+```
+
+已完成：
+
+- 子域名解析到腾讯云服务器。
+- Nginx 反向代理到 Next.js production server。
+- HTTPS 证书覆盖 `shop.huangjunlong.cloud`。
+- PM2 管理 Next.js 进程。
+- Prisma SQLite 生产 demo 数据库初始化。
+- Stripe test checkout 跑通。
+- Stripe webhook 入站跑通。
+- 支付后订单能在用户订单页和后台订单页显示。
+- `robots.txt` 和 `sitemap.xml` 使用 HTTPS 线上域名。
 
 ## 1. 部署目标
 
@@ -237,6 +257,9 @@ NEXT_PUBLIC_API_BASE_URL="https://shop.example.com"
 
 STRIPE_SECRET_KEY="sk_test_..."
 STRIPE_WEBHOOK_SECRET="whsec_..."
+
+SEED_ADMIN_EMAIL="replace-with-demo-admin-email"
+SEED_ADMIN_PASSWORD="replace-with-strong-demo-admin-password"
 ```
 
 生成 `NEXTAUTH_SECRET` 可以用：
@@ -251,6 +274,8 @@ openssl rand -base64 32
 - `NEXT_PUBLIC_SITE_URL` 必须是最终公网 HTTPS 域名。
 - `NEXTAUTH_URL` 必须和公网域名一致。
 - `STRIPE_WEBHOOK_SECRET` 要来自 Stripe Dashboard 的 webhook endpoint，不是 Stripe CLI 的本地 secret。
+- `SEED_ADMIN_PASSWORD` 不要使用公开仓库里出现过的密码。
+- 公开 demo 不建议长期暴露可写 admin 账号。
 
 ## 8. 数据库初始化
 
@@ -615,9 +640,11 @@ git pull
 pnpm install
 pnpm prisma generate
 pnpm prisma db push
+pnpm update-admin-user
 pnpm update-product-images
 pnpm build
 pm2 restart luna-quartz
+pm2 save
 ```
 
 如果更新失败：

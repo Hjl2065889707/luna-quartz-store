@@ -32,6 +32,19 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+!.env.example
+
+# local databases and SQLite runtime files
+*.db
+*.db-journal
+*.sqlite
+*.sqlite-journal
+*.sqlite3
+*.sqlite3-journal
+
+# runtime uploads are local deployment data, not source assets
+/public/uploads/*
+!/public/uploads/.gitkeep
 
 # vercel
 .vercel

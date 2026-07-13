@@ -3,10 +3,49 @@ import { getServerSession } from 'next-auth'
 import { authOptions } from '../auth/[...nextauth]/route'
 import { writeFile } from 'fs/promises'
 import path from 'path'
+import { randomUUID } from 'crypto'
 
 // 允许的图片类型
-const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/avif']
+const ALLOWED_TYPES = {
+  'image/jpeg': 'jpg',
+  'image/png': 'png',
+  'image/webp': 'webp',
+  'image/avif': 'avif',
+} as const
 const MAX_SIZE = 5 * 1024 * 1024 // 5MB
+
+type AllowedImageType = keyof typeof ALLOWED_TYPES
+
+const isAllowedImageType = (type: string): type is AllowedImageType =>
+  type in ALLOWED_TYPES
+
+const hasValidImageSignature = (buffer: Buffer, type: AllowedImageType) => {
+  if (type === 'image/jpeg') {
+    return buffer[0] === 0xff && buffer[1] === 0xd8 && buffer[2] === 0xff
+  }
+
+  if (type === 'image/png') {
+    return buffer.subarray(0, 8).equals(
+      Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]),
+    )
+  }
+
+  if (type === 'image/webp') {
+    return (
+      buffer.toString('ascii', 0, 4) === 'RIFF' &&
+      buffer.toString('ascii', 8, 12) === 'WEBP'
+    )
+  }
+
+  if (type === 'image/avif') {
+    return (
+      buffer.toString('ascii', 4, 8) === 'ftyp' &&
+      buffer.toString('ascii', 8, 32).includes('avif')
+    )
+  }
+
+  return false
+}
 
 export async function POST(req: NextRequest) {
   // 1. 权限校验
@@ -24,7 +63,7 @@ export async function POST(req: NextRequest) {
   }
 
   // 3. 校验文件类型和大小
-  if (!ALLOWED_TYPES.includes(file.type)) {
+  if (!isAllowedImageType(file.type)) {
     return NextResponse.json(
       { error: 'Only JPG, PNG, WebP and AVIF files are supported' },
       { status: 400 },
@@ -38,13 +77,21 @@ export async function POST(req: NextRequest) {
     )
   }
 
-  // 4. 生成唯一文件名（时间戳 + 随机数 + 扩展名）
-  const ext = file.name.split('.').pop()
-  const fileName = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`
-
-  // 5. 写入 public/uploads/
   const bytes = await file.arrayBuffer()
   const buffer = Buffer.from(bytes)
+
+  if (!hasValidImageSignature(buffer, file.type)) {
+    return NextResponse.json(
+      { error: 'The uploaded file is not a valid image' },
+      { status: 400 },
+    )
+  }
+
+  // 4. 生成唯一文件名。扩展名来自服务端校验过的 MIME type，不信任用户原始文件名。
+  const ext = ALLOWED_TYPES[file.type]
+  const fileName = `${Date.now()}-${randomUUID()}.${ext}`
+
+  // 5. 写入 public/uploads/
   const filePath = path.join(process.cwd(), 'public', 'uploads', fileName)
   await writeFile(filePath, buffer)
 

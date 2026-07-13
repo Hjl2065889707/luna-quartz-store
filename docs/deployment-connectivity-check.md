@@ -23,7 +23,20 @@
 
 中国大陆服务器访问 Stripe、Google 等海外服务时可能不稳定。Stripe 如果不能稳定访问，就会直接影响 checkout 流程。
 
-## 当前结论更新：2026-07-09
+## 当前结论更新：2026-07-13
+
+最终结果：
+
+- 项目已部署到 `https://shop.huangjunlong.cloud`。
+- 子域名、Nginx、HTTPS、PM2 已配置完成。
+- Stripe test checkout 已成功创建支付 session。
+- Stripe webhook 已能从 Stripe Dashboard 打到腾讯云公网接口。
+- 支付成功后订单可以在用户订单页和后台订单页看到。
+- Google OAuth 仍不作为腾讯云部署版本核心功能。
+
+因此当前版本可以作为腾讯云部署练习和作品集 demo 使用。
+
+## 历史结论：2026-07-09
 
 初步连通性测试结果：
 
@@ -49,7 +62,7 @@ Google OAuth 不建议放进腾讯云部署版本的核心功能。
 Apple OAuth 暂缓。
 ```
 
-下一次部署前还需要确认：
+部署前曾需要确认：
 
 - 子域名是否已备案或符合腾讯云公开访问要求。
 - HTTPS 证书是否配置完成。
