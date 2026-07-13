@@ -273,6 +273,7 @@ openssl rand -base64 32
 - 不要提交 `.env.production`。
 - `NEXT_PUBLIC_SITE_URL` 必须是最终公网 HTTPS 域名。
 - `NEXTAUTH_URL` 必须和公网域名一致。
+- `DATABASE_URL` 必须和实际生产数据库文件一致，例如 `file:./prod.db`。
 - `STRIPE_WEBHOOK_SECRET` 要来自 Stripe Dashboard 的 webhook endpoint，不是 Stripe CLI 的本地 secret。
 - `SEED_ADMIN_PASSWORD` 不要使用公开仓库里出现过的密码。
 - 公开 demo 不建议长期暴露可写 admin 账号。

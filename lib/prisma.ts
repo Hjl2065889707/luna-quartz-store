@@ -1,7 +1,14 @@
+import 'dotenv/config'
 import { PrismaClient } from '@prisma/client'
 import { PrismaBetterSqlite3 } from '@prisma/adapter-better-sqlite3'
 
-const adapter = new PrismaBetterSqlite3({ url: 'file:./prisma/dev.db' })
+const databaseUrl = process.env.DATABASE_URL
+
+if (!databaseUrl) {
+  throw new Error('DATABASE_URL is required')
+}
+
+const adapter = new PrismaBetterSqlite3({ url: databaseUrl })
 
 // 第一大件：数据库的长链接保持点 (Singleton)
 // 这个代码的唯一作用是：保证在写代码（热更新重新编译）时，

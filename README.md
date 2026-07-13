@@ -197,6 +197,7 @@ NEXT_PUBLIC_API_BASE_URL="https://shop.example.com"
 - Stripe API 和 webhook 需要服务器能稳定访问 Stripe。
 - Google OAuth / Apple OAuth 暂未作为当前版本重点。
 - 当前数据库是 SQLite，适合本地学习和 demo；正式部署建议迁移到 PostgreSQL。
+- Prisma runtime 通过 `DATABASE_URL` 读取数据库路径；本地通常是 `file:./prisma/dev.db`，服务器 demo 通常是 `file:./prod.db`。
 - 商品图已压缩为 WebP；真实商业项目仍需要确认素材授权和一致性。
 - 线上更新商品图片路径时使用 `pnpm update-product-images`，不要为了改图片直接跑会清空订单的 `pnpm seed`。
 - 线上更新 admin 账号密码时使用 `pnpm update-admin-user`，不要为了改密码直接跑会清空订单的 `pnpm seed`。该脚本会把其他 ADMIN 账号降级为 USER，避免旧演示账号继续拥有后台权限。

@@ -46,6 +46,7 @@ pnpm build
 - 后台页面已经显式动态渲染，不会展示 build 时旧数据。
 - Admin seed 凭据已改为环境变量配置，仓库不再保存固定后台密码。
 - 线上 admin 密码可以通过 `pnpm update-admin-user` 更新，不需要重新 seed 或清空订单；该脚本会把其他 ADMIN 账号降级为 USER，避免旧演示账号继续拥有后台权限。
+- Prisma runtime 已改为读取 `DATABASE_URL`，避免服务器部署时误连本地开发数据库路径。
 
 ## 三、封版前修复过的重要线上问题
 
