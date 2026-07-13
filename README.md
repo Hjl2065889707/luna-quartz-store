@@ -181,14 +181,6 @@ Use `pnpm update-admin-user` to rotate the demo admin account without reseeding 
 - Admin credentials and secrets are configured through environment variables and are not committed to the repository.
 - Public demos should not expose writable admin credentials permanently.
 
-Deployment references:
-
-- [Tencent Cloud deployment checklist](docs/tencent-cloud-deployment-checklist.md)
-- [Deployment connectivity check](docs/deployment-connectivity-check.md)
-- [Stripe payment and webhook design](docs/stripe-payment-webhook-design.md)
-- [Final review and portfolio handoff](docs/final-review-and-portfolio-handoff.md)
-- [Resume and portfolio notes](docs/resume-and-portfolio-notes.en.md)
-
 ## Validation Status
 
 Before handoff, the project was validated with:

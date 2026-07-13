@@ -49,6 +49,9 @@ yarn-error.log*
 # generated source PNGs were replaced by optimized WebP product assets
 /public/products/*.png
 
+# private learning notes and project planning docs
+/docs/
+
 # vercel
 .vercel
 
