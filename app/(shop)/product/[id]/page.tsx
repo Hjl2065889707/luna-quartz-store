@@ -1,4 +1,7 @@
-import { getActiveProductById } from '@/api-client/productApi.server'
+import {
+  getActiveProductById,
+  getActiveProducts,
+} from '@/api-client/productApi.server'
 import { notFound } from 'next/navigation'
 import ProductPageLayout from './ProductPageLayout'
 import Image from 'next/image'
@@ -14,6 +17,16 @@ import {
 
 interface ProductPageProps {
   params: Promise<{ id: string }>
+}
+
+export const revalidate = 300
+
+export async function generateStaticParams() {
+  const products = await getActiveProducts()
+
+  return products.map((product) => ({
+    id: product.id,
+  }))
 }
 
 export async function generateMetadata({

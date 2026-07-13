@@ -5,18 +5,10 @@ import SearchBar from './SearchBar'
 import { productCategories } from '@/lib/categories'
 import { siteConfig } from '@/lib/site'
 import { Gem, Menu, Search, X } from 'lucide-react'
+import { useSession } from 'next-auth/react'
 import { signOut } from 'next-auth/react'
 import Link from 'next/link'
 import { useEffect, useId, useState } from 'react'
-
-type MobileNavProps = {
-  user:
-    | {
-        name: string
-        email: string
-      }
-    | null
-}
 
 const mainLinks = [
   { href: '/shop', label: 'Shop all' },
@@ -27,10 +19,17 @@ const mainLinks = [
   { href: '/contact', label: 'Contact' },
 ]
 
-export default function MobileNav({ user }: MobileNavProps) {
+export default function MobileNav() {
+  const { data: session } = useSession()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const menuId = useId()
+  const user = session?.user
+    ? {
+        name: session.user.name || 'User',
+        email: session.user.email || '',
+      }
+    : null
 
   useEffect(() => {
     const shouldLockPage = isMenuOpen

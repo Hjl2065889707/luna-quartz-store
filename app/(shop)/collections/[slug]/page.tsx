@@ -12,6 +12,8 @@ type CollectionPageProps = {
   searchParams: Promise<{ page?: string }>
 }
 
+export const revalidate = 300
+
 export function generateStaticParams() {
   return productCategories.map((category) => ({ slug: category.slug }))
 }

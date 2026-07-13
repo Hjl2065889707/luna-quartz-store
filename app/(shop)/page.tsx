@@ -14,6 +14,8 @@ export const metadata = createPageMetadata({
   path: '/',
 })
 
+export const revalidate = 300
+
 export default async function Home() {
   const products = await getActiveProducts()
   const featuredProducts = products.slice(0, 4)

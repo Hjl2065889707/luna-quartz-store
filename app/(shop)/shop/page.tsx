@@ -12,6 +12,8 @@ export const metadata: Metadata = createPageMetadata({
   path: '/shop',
 })
 
+export const revalidate = 300
+
 type ShopPageProps = {
   searchParams: Promise<{
     page?: string
