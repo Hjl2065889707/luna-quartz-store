@@ -46,6 +46,9 @@ yarn-error.log*
 /public/uploads/*
 !/public/uploads/.gitkeep
 
+# generated source PNGs were replaced by optimized WebP product assets
+/public/products/*.png
+
 # vercel
 .vercel
 

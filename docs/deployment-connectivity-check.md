@@ -235,11 +235,19 @@ https://shop.example.com/api/webhooks/stripe
 
 这样既不牺牲作品集稳定性，也能保留部署学习价值。
 
-## 推荐项目路线
+## 当前项目状态
 
-Phase 1：Code review 和作品集差距分析。（已完成）
+本文档最初用于腾讯云部署前的连通性预检。当前项目已经完成主要收尾：
 
-Phase 1.5：工程质量和支付链路收尾。（已完成）
+- Phase 1：Code review 和作品集差距分析。（已完成）
+- Phase 1.5：工程质量和支付链路收尾。（已完成）
+- Phase 2：英文水晶独立站前台重构。（已完成）
+- Phase 3：24 个商品和商品列表分页。（已完成）
+- Phase 4：SEO 基础设施。（已完成）
+- Phase 5：腾讯云部署、HTTPS、PM2、Nginx 和 Stripe webhook。（已完成）
+- Phase 6：根据线上体验评估海外部署方案。（已评估，当前暂不迁移）
+
+已经完成的工程质量和支付链路收尾包括：
 
 - lint / typecheck / build 通过
 - Checkout API 运行时校验
@@ -249,26 +257,7 @@ Phase 1.5：工程质量和支付链路收尾。（已完成）
 - success page 根据订单状态展示结果
 - 订单状态流转集中管理
 
-Phase 2：把项目改造成英文水晶独立站 demo。（下一阶段）
-
-Phase 3：准备 24 个商品，实现商品列表分页。（下一阶段重点学习）
-
-Phase 4：加入技术 SEO：
-
-- 全站 metadata
-- 商品详情页动态 metadata
-- Open Graph metadata
-- `robots.txt`
-- `sitemap.xml`
-- Product JSON-LD
-- 图片 alt 文案
-
-Phase 5：腾讯云部署。
-
-Phase 6：根据线上测试决定最终公开 demo 方案：
-
-- 如果 Stripe 和 HTTPS 都稳定，就部署到腾讯云。
-- 如果腾讯云影响支付流程，就用 Vercel 做最终公开 demo。
+后续如果要把公开 demo 迁移到海外环境，可以重新评估 Vercel、Cloudflare、澳洲 VPS 或新加坡 VPS。
 
 ## 简历定位
 

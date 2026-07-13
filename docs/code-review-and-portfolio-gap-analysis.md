@@ -554,20 +554,21 @@ uploadProductImage(file)
 
 ---
 
-### 9. `prisma/dev.db` 和上传文件被 Git 跟踪
+### 9. `prisma/dev.db`、上传文件和旧图片资源被 Git 跟踪
 
 相关文件：
 
 - `prisma/dev.db`
-- `public/uploads/1783402804051-g1sfef.png`
+- `public/uploads/...`
+- `public/products/*.png`
 
 当前情况：
 
-这些文件已经在 Git 跟踪列表里。
+这些文件曾经在 Git 跟踪列表里。
 
 为什么这是问题：
 
-数据库文件和用户上传文件通常不应该进入仓库。它们是运行时数据，不是源代码。
+数据库文件和用户上传文件通常不应该进入仓库。它们是运行时数据，不是源代码。商品图片迁移到 WebP 后，旧的大体积 PNG 也不应该继续保留在公开仓库里。
 
 最佳实践：
 
@@ -583,6 +584,7 @@ uploadProductImage(file)
 
 - 本地数据库文件
 - 用户上传文件
+- 已被 WebP 替代的旧 PNG 素材
 - `.env`
 - secret key
 
@@ -594,6 +596,7 @@ uploadProductImage(file)
 .env*
 prisma/dev.db
 public/uploads/*
+public/products/*.png
 !public/uploads/.gitkeep
 ```
 
@@ -601,10 +604,11 @@ public/uploads/*
 
 ```bash
 git rm --cached prisma/dev.db
-git rm --cached public/uploads/1783402804051-g1sfef.png
+git rm --cached public/uploads/<runtime-upload-file>
+git rm public/products/*.png
 ```
 
-注意：执行前确认当前 Git 状态，避免误删用户数据。
+注意：执行前确认当前 Git 状态，避免误删用户数据。`--cached` 只会停止 Git 跟踪，不会删除本地文件；旧 PNG 如果已经确认不再被代码引用，可以直接从本地和仓库删除。
 
 你能学到什么：
 
