@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '../auth/[...nextauth]/route'
-import { writeFile } from 'fs/promises'
+import { mkdir, writeFile } from 'fs/promises'
 import path from 'path'
 import { randomUUID } from 'crypto'
 
@@ -92,7 +92,10 @@ export async function POST(req: NextRequest) {
   const fileName = `${Date.now()}-${randomUUID()}.${ext}`
 
   // 5. 写入 public/uploads/
-  const filePath = path.join(process.cwd(), 'public', 'uploads', fileName)
+  const uploadDir = path.join(process.cwd(), 'public', 'uploads')
+  await mkdir(uploadDir, { recursive: true })
+
+  const filePath = path.join(uploadDir, fileName)
   await writeFile(filePath, buffer)
 
   // 6. 返回可访问的 URL
