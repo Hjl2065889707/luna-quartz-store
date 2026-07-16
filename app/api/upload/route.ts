@@ -54,6 +54,16 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
+  if (process.env.ENABLE_LOCAL_UPLOADS !== 'true') {
+    return NextResponse.json(
+      {
+        error:
+          'Image uploads are disabled in this deployment. Use static demo images or configure object storage for production uploads.',
+      },
+      { status: 501 },
+    )
+  }
+
   // 2. 解析 FormData
   const formData = await req.formData()
   const file = formData.get('file') as File | null
