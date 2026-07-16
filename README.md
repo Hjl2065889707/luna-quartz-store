@@ -1,6 +1,6 @@
 # Luna & Quartz
 
-Luna & Quartz is a portfolio-ready full-stack e-commerce demo built with Next.js, TypeScript, Prisma and Stripe. It simulates a boutique crystal storefront with product browsing, category pages, pagination, cart, checkout, user orders, admin workflows, SEO and VPS deployment.
+Luna & Quartz is a portfolio-ready full-stack e-commerce demo built with Next.js, TypeScript, Prisma, Postgres and Stripe. It simulates a boutique crystal storefront with product browsing, category pages, pagination, cart, checkout, user orders, admin workflows, SEO and production-style deployment.
 
 > This is a demo project for portfolio and learning purposes. It does not process real fulfilment, shipping or customer support.
 
@@ -10,7 +10,7 @@ Luna & Quartz is a portfolio-ready full-stack e-commerce demo built with Next.js
 https://shop.huangjunlong.cloud
 ```
 
-The demo is deployed on a Tencent Cloud Linux VPS with Nginx, PM2 and HTTPS. The server is located in mainland China, so overseas access may be slower than a production deployment targeted at Australian users.
+Primary demo deployment is being migrated to Vercel with Neon Postgres for faster global access. A self-hosted Tencent Cloud VPS deployment is also maintained for Linux, Nginx, PM2 and HTTPS deployment practice.
 
 Admin credentials are not published in this repository. They can be provided privately for controlled demos.
 
@@ -20,10 +20,10 @@ Admin credentials are not published in this repository. They can be provided pri
 - Storefront information architecture with landing page, shop, collections, product detail, FAQ, shipping, contact and crystal guide pages.
 - Stripe Checkout test-mode integration with signed webhook handling.
 - Idempotent order creation, server-side checkout validation and transactional stock deduction.
-- Admin product and order management with protected routes and secure image upload validation.
+- Admin product and order management with protected routes.
 - SEO foundation with metadata, canonical URLs, Open Graph, Twitter cards, sitemap.xml, robots.txt and Product JSON-LD.
 - Responsive storefront UI with mobile drawer navigation, search overlay and mobile checkout flow.
-- Production-style deployment using Nginx reverse proxy, PM2 process management, HTTPS and environment variables.
+- Production-style deployment using Vercel, Neon Postgres, environment variables and a separate self-hosted VPS deployment.
 - Product images optimized to WebP for a smaller repository and faster page loads.
 
 ## Tech Stack
@@ -32,13 +32,13 @@ Admin credentials are not published in this repository. They can be provided pri
 - React 19
 - TypeScript
 - Prisma ORM
-- SQLite for the demo database
+- Neon Postgres for the primary demo database
 - NextAuth / Auth.js credentials login
 - Stripe Checkout and Stripe webhooks
 - React Hook Form and Zod
 - Tailwind CSS
 - SWR
-- Nginx, PM2 and Tencent Cloud CVM
+- Vercel, Neon Postgres, Nginx, PM2 and Tencent Cloud CVM
 
 ## Features
 
@@ -57,7 +57,7 @@ Admin credentials are not published in this repository. They can be provided pri
 
 - `/admin` dashboard
 - Product creation, editing and active/inactive management
-- Image upload with role, file size, MIME type and image signature validation
+- Runtime image upload is supported in the self-hosted VPS deployment and disabled in the Vercel demo until object storage is configured
 - Order list
 - Order status updates: `PAID -> SHIPPED -> DELIVERED`
 
@@ -136,7 +136,7 @@ http://localhost:3000
 Required values:
 
 ```env
-DATABASE_URL="file:./dev.db"
+DATABASE_URL="postgresql://user:password@host/database?sslmode=verify-full"
 
 NEXTAUTH_URL="http://localhost:3000"
 NEXTAUTH_SECRET="replace-with-local-secret"
@@ -149,6 +149,8 @@ STRIPE_WEBHOOK_SECRET="whsec_..."
 
 SEED_ADMIN_EMAIL="replace-with-demo-admin-email"
 SEED_ADMIN_PASSWORD="replace-with-strong-demo-admin-password"
+
+ENABLE_LOCAL_UPLOADS="false"
 ```
 
 For deployment, update the public URLs to the production HTTPS domain:
@@ -174,10 +176,12 @@ Use `pnpm update-admin-user` to rotate the demo admin account without reseeding 
 
 ## Deployment Notes
 
-- The current live demo runs on Tencent Cloud CVM behind Nginx and PM2.
+- The primary public demo is intended to run on Vercel with Neon Postgres.
+- A self-hosted Tencent Cloud CVM version is kept for Linux, Nginx, PM2 and HTTPS deployment practice.
 - Stripe API and webhook delivery require stable outbound and inbound network connectivity.
-- SQLite is acceptable for this portfolio demo, but PostgreSQL would be a better production choice.
-- Runtime uploads are stored in `public/uploads` for the single-server demo. A real production system should use object storage and a CDN.
+- Runtime uploads are disabled in the Vercel demo because serverless deployments should not rely on local filesystem persistence.
+- The self-hosted VPS deployment can keep local `public/uploads` for controlled demos.
+- A real production serverless system should use object storage such as Cloudflare R2, S3 or Vercel Blob with a CDN.
 - Admin credentials and secrets are configured through environment variables and are not committed to the repository.
 - Public demos should not expose writable admin credentials permanently.
 
@@ -206,7 +210,7 @@ Manual checks completed:
 ## Portfolio Summary
 
 ```txt
-Built and deployed a portfolio-ready e-commerce storefront with Next.js, TypeScript, Prisma and Stripe, including landing pages, collection-based browsing, paginated product listing, persisted cart state, authenticated checkout, webhook-based order processing, atomic stock updates, refund handling, admin product/order management, technical SEO, WebP image optimization, and self-hosted deployment with Nginx, HTTPS and PM2.
+Built and deployed a portfolio-ready e-commerce storefront with Next.js, TypeScript, Prisma, Postgres and Stripe, including landing pages, collection-based browsing, paginated product listing, persisted cart state, authenticated checkout, webhook-based order processing, atomic stock updates, refund handling, admin product/order management, technical SEO, WebP image optimization, Vercel deployment with Neon Postgres, and a separate self-hosted VPS deployment with Nginx, HTTPS and PM2.
 ```
 
 ## Future Improvements
@@ -215,5 +219,5 @@ Built and deployed a portfolio-ready e-commerce storefront with Next.js, TypeScr
 - Store order item snapshots for product name and image at purchase time.
 - Persist Stripe `paymentIntentId` and `refundId`.
 - Add related products to product detail pages.
-- Migrate the demo database from SQLite to PostgreSQL.
+- Move runtime image uploads to object storage such as Cloudflare R2, S3 or Vercel Blob.
 - Rebuild the backend with C# / ASP.NET Core Web API as a future learning project.
