@@ -18,7 +18,8 @@ type CurlMetrics = {
   speed: number
 }
 
-const siteUrl = process.env.MEASURE_SITE_URL ?? 'https://shop.huangjunlong.cloud'
+const siteUrl =
+  process.env.MEASURE_SITE_URL ?? 'https://luna-quartz-store.vercel.app'
 const repeat = Number.parseInt(process.env.MEASURE_REPEAT ?? '3', 10)
 const note = process.env.MEASURE_NOTE ?? 'manual'
 const logPath = path.join(process.cwd(), 'docs', 'loading-log.md')

@@ -7,10 +7,10 @@ Luna & Quartz is a portfolio-ready full-stack e-commerce demo built with Next.js
 ## Live Demo
 
 ```txt
-https://shop.huangjunlong.cloud
+https://luna-quartz-store.vercel.app
 ```
 
-Primary demo deployment is being migrated to Vercel with Neon Postgres for faster global access. A self-hosted Tencent Cloud VPS deployment is also maintained for Linux, Nginx, PM2 and HTTPS deployment practice.
+The primary portfolio demo is deployed on Vercel with Neon Postgres for faster global access. A self-hosted Tencent Cloud VPS deployment is also maintained separately for Linux, Nginx, PM2 and HTTPS deployment practice.
 
 Admin credentials are not published in this repository. They can be provided privately for controlled demos.
 
@@ -176,7 +176,7 @@ Use `pnpm update-admin-user` to rotate the demo admin account without reseeding 
 
 ## Deployment Notes
 
-- The primary public demo is intended to run on Vercel with Neon Postgres.
+- The primary public demo runs on Vercel with Neon Postgres.
 - A self-hosted Tencent Cloud CVM version is kept for Linux, Nginx, PM2 and HTTPS deployment practice.
 - Stripe API and webhook delivery require stable outbound and inbound network connectivity.
 - Runtime uploads are disabled in the Vercel demo because serverless deployments should not rely on local filesystem persistence.
@@ -197,12 +197,12 @@ pnpm build
 
 Manual checks completed:
 
-- HTTPS live demo access
+- Vercel live demo access
 - `/robots.txt`
 - `/sitemap.xml`
 - Product metadata and Product JSON-LD
 - Stripe test checkout
-- Stripe webhook order creation
+- Stripe webhook order creation on the Vercel endpoint
 - User order history
 - Admin order and product management
 - Mobile navigation, search, cart and checkout success page
