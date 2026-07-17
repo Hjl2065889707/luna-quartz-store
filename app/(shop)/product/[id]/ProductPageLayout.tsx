@@ -1,4 +1,3 @@
-// 这个组件只负责"结构"，不负责"内容"
 const ProductPageLayout = ({
   imageSlot,
   infoSlot,

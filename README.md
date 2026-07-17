@@ -10,7 +10,7 @@ Luna & Quartz is a portfolio-ready full-stack e-commerce demo built with Next.js
 https://luna-quartz-store.vercel.app
 ```
 
-The primary portfolio demo is deployed on Vercel with Neon Postgres for faster global access. A self-hosted Tencent Cloud VPS deployment is also maintained separately for Linux, Nginx, PM2 and HTTPS deployment practice.
+The primary portfolio demo is deployed on Vercel with Neon Postgres for faster global access. A previous Tencent Cloud VPS deployment is kept as self-hosting practice for Linux, Nginx, PM2 and HTTPS.
 
 Admin credentials are not published in this repository. They can be provided privately for controlled demos.
 
@@ -23,7 +23,7 @@ Admin credentials are not published in this repository. They can be provided pri
 - Admin product and order management with protected routes.
 - SEO foundation with metadata, canonical URLs, Open Graph, Twitter cards, sitemap.xml, robots.txt and Product JSON-LD.
 - Responsive storefront UI with mobile drawer navigation, search overlay and mobile checkout flow.
-- Production-style deployment using Vercel, Neon Postgres, environment variables and a separate self-hosted VPS deployment.
+- Production-style deployment using Vercel, Neon Postgres and environment variables, with a historical self-hosted VPS deployment documented as infrastructure practice.
 - Product images optimized to WebP for a smaller repository and faster page loads.
 
 ## Tech Stack
@@ -38,7 +38,8 @@ Admin credentials are not published in this repository. They can be provided pri
 - React Hook Form and Zod
 - Tailwind CSS
 - SWR
-- Vercel, Neon Postgres, Nginx, PM2 and Tencent Cloud CVM
+- Vercel and Neon Postgres for the primary demo
+- Nginx, PM2 and Tencent Cloud CVM for the historical self-hosted deployment
 
 ## Features
 
@@ -57,7 +58,7 @@ Admin credentials are not published in this repository. They can be provided pri
 
 - `/admin` dashboard
 - Product creation, editing and active/inactive management
-- Runtime image upload is supported in the self-hosted VPS deployment and disabled in the Vercel demo until object storage is configured
+- Runtime image upload is intentionally disabled in the Vercel demo until object storage is configured
 - Order list
 - Order status updates: `PAID -> SHIPPED -> DELIVERED`
 
@@ -177,10 +178,10 @@ Use `pnpm update-admin-user` to rotate the demo admin account without reseeding 
 ## Deployment Notes
 
 - The primary public demo runs on Vercel with Neon Postgres.
-- A self-hosted Tencent Cloud CVM version is kept for Linux, Nginx, PM2 and HTTPS deployment practice.
+- A historical Tencent Cloud CVM deployment was used to practise Linux, Nginx, PM2 and HTTPS self-hosting.
 - Stripe API and webhook delivery require stable outbound and inbound network connectivity.
 - Runtime uploads are disabled in the Vercel demo because serverless deployments should not rely on local filesystem persistence.
-- The self-hosted VPS deployment can keep local `public/uploads` for controlled demos.
+- The old self-hosted VPS deployment can keep local `public/uploads` for controlled demos, but that pattern is not portable to serverless hosting.
 - A real production serverless system should use object storage such as Cloudflare R2, S3 or Vercel Blob with a CDN.
 - Admin credentials and secrets are configured through environment variables and are not committed to the repository.
 - Public demos should not expose writable admin credentials permanently.
@@ -210,7 +211,7 @@ Manual checks completed:
 ## Portfolio Summary
 
 ```txt
-Built and deployed a portfolio-ready e-commerce storefront with Next.js, TypeScript, Prisma, Postgres and Stripe, including landing pages, collection-based browsing, paginated product listing, persisted cart state, authenticated checkout, webhook-based order processing, atomic stock updates, refund handling, admin product/order management, technical SEO, WebP image optimization, Vercel deployment with Neon Postgres, and a separate self-hosted VPS deployment with Nginx, HTTPS and PM2.
+Built and deployed a portfolio-ready e-commerce storefront with Next.js, TypeScript, Prisma, Postgres and Stripe, including landing pages, collection-based browsing, paginated product listing, persisted cart state, authenticated checkout, webhook-based order processing, atomic stock updates, refund handling, admin product/order management, technical SEO, WebP image optimization, Vercel deployment with Neon Postgres, and self-hosted VPS deployment practice with Nginx, HTTPS and PM2.
 ```
 
 ## Future Improvements

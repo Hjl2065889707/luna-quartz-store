@@ -14,7 +14,6 @@ import {
 import { Product } from '@/types'
 import { useToast } from '@/context/ToastContext'
 
-// Discriminated Union：TypeScript 根据 mode 自动推断 product 是否存在
 type ProductDialogProps =
   | { mode: 'create' }
   | { mode: 'edit'; product: Product }
@@ -26,7 +25,6 @@ const ProductDialog = (props: ProductDialogProps) => {
   const router = useRouter()
   const { showToast } = useToast()
 
-  // 编辑模式下，初始预览使用现有图片
   const [imageFile, setImageFile] = useState<File | null>(null)
   const [previewUrl, setPreviewUrl] = useState<string | null>(
     isEdit ? props.product.image : null,
@@ -58,7 +56,6 @@ const ProductDialog = (props: ProductDialogProps) => {
       setPreviewUrl(null)
       setImageFile(null)
     } else {
-      // 编辑模式：重置回原始值
       reset()
       setPreviewUrl(props.product.image)
       setImageFile(null)
@@ -93,14 +90,12 @@ const ProductDialog = (props: ProductDialogProps) => {
   }
 
   const onSubmit = async (data: ProductFormValues) => {
-    // 无论创建还是编辑，都必须有图片
     if (!previewUrl && !imageFile) {
       setUploadError('Please upload a product image')
       return
     }
 
     try {
-      // 如果选了新图片就上传，否则保留原图
       let imageUrl = isEdit ? props.product.image : ''
       if (imageFile) {
         const { url } = await uploadImage(imageFile)
@@ -126,7 +121,6 @@ const ProductDialog = (props: ProductDialogProps) => {
 
   return (
     <>
-      {/* Trigger Button — 创建和编辑样式不同 */}
       {isEdit ? (
         <button
           onClick={openDialog}

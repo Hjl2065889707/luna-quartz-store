@@ -12,8 +12,7 @@ async function main() {
     )
   }
 
-  // 清空商品演示数据前，先删除依赖 Product 的订单明细和订单。
-  // 否则已有 OrderItem 会通过外键引用 Product，导致 product.deleteMany() 失败。
+  // Reset dependent order rows before replacing demo product data.
   await prisma.orderItem.deleteMany({})
   await prisma.order.deleteMany({})
   await prisma.product.deleteMany({})

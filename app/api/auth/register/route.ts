@@ -51,7 +51,6 @@ export async function POST(request: Request) {
   } catch (error) {
     console.error('Unexpected registration error:', error)
 
-    // 给前端返回一个体面的 500
     return NextResponse.json(
       { error: 'Sorry, something went wrong. Please try again later.' },
       { status: 500 },

@@ -9,7 +9,7 @@ The project is portfolio-ready as a full-stack e-commerce demo.
 
 - Primary demo: `https://luna-quartz-store.vercel.app`
 - Primary deployment: Vercel + Neon Postgres
-- Secondary deployment: Tencent Cloud CVM, Nginx, PM2 and HTTPS for self-hosting practice
+- Historical deployment: Tencent Cloud CVM, Nginx, PM2 and HTTPS for self-hosting practice
 - Stripe test checkout and webhook order creation have been validated
 - Admin credentials are managed through environment variables and are not published
 
@@ -29,7 +29,7 @@ The project is portfolio-ready as a full-stack e-commerce demo.
 - Technical SEO foundation with metadata, canonical URLs, Open Graph, Twitter cards, robots.txt, sitemap.xml and Product JSON-LD
 - WebP product image optimization
 - Vercel deployment with Neon Postgres
-- Self-hosted VPS deployment with Nginx, HTTPS and PM2
+- Self-hosted VPS deployment practice with Nginx, HTTPS and PM2
 
 ## High Priority Future Work
 

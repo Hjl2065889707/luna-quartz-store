@@ -28,13 +28,11 @@ export async function PATCH(req: NextRequest, { params }: RouteParams) {
 
   const { status } = validationResult.data
 
-  // 查询当前订单
   const order = await prisma.order.findUnique({ where: { id } })
   if (!order) {
     return NextResponse.json({ error: 'Order not found' }, { status: 404 })
   }
 
-  // 校验状态转换是否合法
   if (getNextOrderStatus(order.status) !== status) {
     return NextResponse.json(
       { error: `Cannot change status from ${order.status} to ${status}` },

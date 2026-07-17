@@ -62,16 +62,14 @@ const createPaidOrder = async ({
   shipping: CheckoutFormValues
   orderItems: CheckoutItemSnapshot[]
 }) => {
-  // webhook 可能被 Stripe 重试，也可能因为网络问题重复投递。
-  // 订单表里的 stripeSessionId 是唯一键；这里先查一次，让重复事件直接结束。
+  // Stripe may retry webhook delivery, so session IDs are handled idempotently.
   const existingOrder = await tx.order.findUnique({
     where: { stripeSessionId: sessionId },
   })
 
   if (existingOrder) return
 
-  // 这里用 updateMany 是为了把“检查库存”和“扣库存”合成一个数据库操作。
-  // 如果库存已经不够，where 条件匹配不到记录，updated.count 就会是 0。
+  // Combine the stock check and decrement into one atomic database operation.
   for (const item of orderItems) {
     const updated = await tx.product.updateMany({
       where: {
@@ -158,8 +156,7 @@ const refundPaymentAndRecordOrder = async ({
     throw new Error(`Missing payment intent for Stripe session ${session.id}`)
   }
 
-  // 不要把 Stripe API 调用放进数据库事务里。
-  // 退款是外部网络请求；用 Stripe idempotency key 保证 webhook 重试时不会重复退款。
+  // Keep the external Stripe refund request outside the database transaction.
   await stripe.refunds.create(
     { payment_intent: paymentIntentId },
     { idempotencyKey: `refund_${session.id}` },
@@ -174,12 +171,11 @@ const refundPaymentAndRecordOrder = async ({
 }
 
 export async function POST(req: NextRequest) {
-  const body = await req.text() // 注意：必须用 text() 而不是 json()
+  const body = await req.text()
   const signature = req.headers.get('stripe-signature')!
 
   let event: Stripe.Event
 
-  // 第一步：验签
   try {
     event = stripe.webhooks.constructEvent(
       body,
@@ -187,14 +183,13 @@ export async function POST(req: NextRequest) {
       process.env.STRIPE_WEBHOOK_SECRET!,
     )
   } catch (err) {
-    console.error('Webhook 签名验证失败', err)
-    return NextResponse.json({ error: '签名无效' }, { status: 400 })
+    console.error('Webhook signature verification failed', err)
+    return NextResponse.json({ error: 'Invalid signature' }, { status: 400 })
   }
 
-  // 第二步：只处理 checkout.session.completed 事件
   if (event.type === 'checkout.session.completed') {
-    const session = event.data.object // 这就是 Stripe Checkout Session 对象
-    console.log('支付成功！Session ID:', session.id)
+    const session = event.data.object
+    console.log('Checkout session completed:', session.id)
 
     const { userId, shipping, orderItems } = parseSessionMetadata(
       session.metadata,
@@ -212,7 +207,7 @@ export async function POST(req: NextRequest) {
       })
     } catch (error) {
       if (error instanceof InsufficientStockError) {
-        console.error('库存不足，准备自动退款：', {
+        console.error('Insufficient stock, refunding payment:', {
           sessionId: session.id,
           productId: error.productId,
         })
@@ -231,6 +226,5 @@ export async function POST(req: NextRequest) {
     }
   }
 
-  // 第三步：返回 200 告诉 Stripe "我收到了"
   return NextResponse.json({ received: true })
 }

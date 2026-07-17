@@ -29,7 +29,6 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Please sign in first' }, { status: 401 })
     }
 
-    // 商品信息校验（金额/库存/名称等）
     const checkoutItems: CheckoutItemSnapshot[] = []
 
     for (const item of validationResult.data.items) {
@@ -85,7 +84,6 @@ export async function POST(req: NextRequest) {
     })
     const siteUrl = siteConfig.url
 
-    // 调用 Stripe SDK 创建 Checkout Session
     const session = await stripe.checkout.sessions.create({
       mode: 'payment',
       line_items: lineItems,
@@ -97,7 +95,6 @@ export async function POST(req: NextRequest) {
         items: JSON.stringify(checkoutItems),
       },
     })
-    // 把 Stripe 生成的支付页面 URL 返回给前端
     return NextResponse.json({ url: session.url })
   } catch (error) {
     console.error('Failed to create checkout session:', error)

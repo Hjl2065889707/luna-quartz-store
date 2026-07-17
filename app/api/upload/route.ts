@@ -5,7 +5,6 @@ import { mkdir, writeFile } from 'fs/promises'
 import path from 'path'
 import { randomUUID } from 'crypto'
 
-// 允许的图片类型
 const ALLOWED_TYPES = {
   'image/jpeg': 'jpg',
   'image/png': 'png',
@@ -48,7 +47,6 @@ const hasValidImageSignature = (buffer: Buffer, type: AllowedImageType) => {
 }
 
 export async function POST(req: NextRequest) {
-  // 1. 权限校验
   const session = await getServerSession(authOptions)
   if (!session?.user || session.user.role !== 'ADMIN') {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
@@ -64,7 +62,6 @@ export async function POST(req: NextRequest) {
     )
   }
 
-  // 2. 解析 FormData
   const formData = await req.formData()
   const file = formData.get('file') as File | null
 
@@ -72,7 +69,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Please choose a file' }, { status: 400 })
   }
 
-  // 3. 校验文件类型和大小
   if (!isAllowedImageType(file.type)) {
     return NextResponse.json(
       { error: 'Only JPG, PNG, WebP and AVIF files are supported' },
@@ -97,17 +93,14 @@ export async function POST(req: NextRequest) {
     )
   }
 
-  // 4. 生成唯一文件名。扩展名来自服务端校验过的 MIME type，不信任用户原始文件名。
   const ext = ALLOWED_TYPES[file.type]
   const fileName = `${Date.now()}-${randomUUID()}.${ext}`
 
-  // 5. 写入 public/uploads/
   const uploadDir = path.join(process.cwd(), 'public', 'uploads')
   await mkdir(uploadDir, { recursive: true })
 
   const filePath = path.join(uploadDir, fileName)
   await writeFile(filePath, buffer)
 
-  // 6. 返回可访问的 URL
   return NextResponse.json({ url: `/uploads/${fileName}` })
 }
